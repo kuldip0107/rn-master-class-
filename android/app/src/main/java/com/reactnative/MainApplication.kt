@@ -15,7 +15,8 @@ class MainApplication : Application(), ReactApplication {
       packageList =
         PackageList(this).packages.apply {
           // Packages that cannot be autolinked yet can be added manually here, for example:
-          // add(MyReactNativePackage())
+          add(com.reactnative.googleauth.GoogleAuthPackage())
+          add(com.reactnative.filedownload.FileDownloadPackage())
         },
     )
   }

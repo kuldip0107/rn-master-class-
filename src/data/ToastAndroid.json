@@ -1,0 +1,66 @@
+{
+  "component": "ToastAndroid",
+  "library": "react-native",
+  "description": "Exposes Android's native toast functionality to React Native. Allows showing brief messages on the screen with optional positioning and offset. Available only on Android.",
+  "methods": {
+    "show": {
+      "signature": "static show(message: string, duration: number)",
+      "description": "Displays a toast message for a short or long duration at the default position (bottom of the screen).",
+      "parameters": {
+        "message": "string - The text to display in the toast",
+        "duration": "number - Duration of the toast; either ToastAndroid.SHORT or ToastAndroid.LONG"
+      }
+    },
+    "showWithGravity": {
+      "signature": "static showWithGravity(message: string, duration: number, gravity: number)",
+      "description": "Displays a toast message at a specific position on the screen. Works only on Android API 29 and below.",
+      "parameters": {
+        "message": "string - The text to display",
+        "duration": "number - Toast duration (SHORT or LONG)",
+        "gravity": "number - Toast position; one of ToastAndroid.TOP, ToastAndroid.BOTTOM, ToastAndroid.CENTER"
+      },
+      "note": "Starting Android 11 (API 30), gravity has no effect. Consider using Snackbar for newer versions."
+    },
+    "showWithGravityAndOffset": {
+      "signature": "static showWithGravityAndOffset(message: string, duration: number, gravity: number, xOffset: number, yOffset: number)",
+      "description": "Displays a toast message at a specific position with X/Y pixel offsets. Works only on Android API 29 and below.",
+      "parameters": {
+        "message": "string - The text to display",
+        "duration": "number - Toast duration (SHORT or LONG)",
+        "gravity": "number - Toast position (TOP, BOTTOM, CENTER)",
+        "xOffset": "number - Horizontal offset in pixels",
+        "yOffset": "number - Vertical offset in pixels"
+      }
+    }
+  },
+  "constants": {
+    "SHORT": {
+      "type": "number",
+      "description": "Displays the toast for a short duration"
+    },
+    "LONG": {
+      "type": "number",
+      "description": "Displays the toast for a long duration"
+    },
+    "TOP": {
+      "type": "number",
+      "description": "Toast appears at the top of the screen"
+    },
+    "BOTTOM": {
+      "type": "number",
+      "description": "Toast appears at the bottom of the screen"
+    },
+    "CENTER": {
+      "type": "number",
+      "description": "Toast appears at the center of the screen"
+    }
+  },
+  "notes": [
+    "ToastAndroid is Android-only; iOS requires a different approach (e.g., using third-party libraries).",
+    "For Android 11+, gravity and offset do not affect text toasts.",
+    "Snackbar or notification libraries are recommended for advanced toast positioning on newer Android versions."
+  ],
+  "example": {
+    "tsx": "import { ToastAndroid, Button } from 'react-native';\n\n<Button\n  title=\"Show Toast\"\n  onPress={() => {\n    ToastAndroid.show('Hello Toast!', ToastAndroid.SHORT);\n  }}\n/>\n\n<Button\n  title=\"Toast Center\"\n  onPress={() => {\n    ToastAndroid.showWithGravity('Centered Toast', ToastAndroid.LONG, ToastAndroid.CENTER);\n  }}\n/>\n\n<Button\n  title=\"Toast With Offset\"\n  onPress={() => {\n    ToastAndroid.showWithGravityAndOffset('Offset Toast', ToastAndroid.LONG, ToastAndroid.BOTTOM, 50, 100);\n  }}\n/>"
+  }
+}

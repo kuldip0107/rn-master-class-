@@ -1,0 +1,52 @@
+{
+  "module": "Appearance",
+  "library": "react-native",
+  "description": "Provides access to the user's preferred appearance settings, such as light or dark color schemes, and allows subscribing to changes.",
+  "methods": {
+    "getColorScheme": {
+      "description": "Returns the current user preferred color scheme.",
+      "signature": "static getColorScheme(): 'light' | 'dark' | null",
+      "returns": "'light' | 'dark' | null",
+      "notes": [
+        "May return null if the user has not specified a preference.",
+        "Always returns 'light' when debugging with Chrome.",
+        "Value can change later (e.g., system-level theme change, scheduled changes)."
+      ]
+    },
+    "setColorScheme": {
+      "description": "Forces the application to adopt a specific color scheme, overriding system preference.",
+      "signature": "static setColorScheme('light' | 'dark' | null): void",
+      "parameters": {
+        "light": "Apply light user interface style.",
+        "dark": "Apply dark user interface style.",
+        "null": "Follow the system's interface style (default)."
+      },
+      "notes": [
+        "Does not affect system-wide interface style.",
+        "Changes apply to the app and all native elements within the app."
+      ]
+    },
+    "addChangeListener": {
+      "description": "Adds an event listener that fires whenever appearance preferences change.",
+      "signature": "static addChangeListener(listener: (preferences: { colorScheme: 'light' | 'dark' | null }) => void): NativeEventSubscription",
+      "parameters": {
+        "listener": "Function called with updated preferences: { colorScheme }."
+      },
+      "returns": "NativeEventSubscription object which can be removed to unsubscribe."
+    }
+  },
+  "example": [
+    {
+      "description": "Get current color scheme",
+      "code": "const colorScheme = Appearance.getColorScheme();\nif (colorScheme === 'dark') {\n  // Apply dark theme\n}"
+    },
+    {
+      "description": "Force dark mode in app",
+      "code": "Appearance.setColorScheme('dark');"
+    },
+    {
+      "description": "Subscribe to color scheme changes",
+      "code": "const subscription = Appearance.addChangeListener(({ colorScheme }) => {\n  console.log('Color scheme changed:', colorScheme);\n});\n\n// To unsubscribe\nsubscription.remove();"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "component": "createStackNavigator",
+  "library": "@react-navigation/stack",
+  "description": "Creates a stack navigator for transitioning between screens in a stack-based navigation pattern. Each new screen is pushed onto the stack and can be popped back.",
+  "usage": {
+    "staticAPI": "createStackNavigator(config) returns a Stack Navigator object with Navigator and Screen components.",
+    "dynamicAPI": "Use <Stack.Navigator> and <Stack.Screen> in your component tree."
+  },
+  "methods": {
+    "Navigator": "Component wrapping all stack screens and managing navigation state.",
+    "Screen": "Component representing an individual screen in the stack."
+  },
+  "props": {
+    "initialRouteName": "Name of the first screen to display in the stack.",
+    "screenOptions": "Default options to apply to all screens in the navigator.",
+    "detachInactiveScreens": "Boolean to detach inactive screens to save memory (default true).",
+    "keyboardHandlingEnabled": "Whether keyboard should automatically dismiss on navigation (default true).",
+    "headerMode": "How header is rendered: 'float' (default iOS), 'screen', or 'none'.",
+    "mode": "Deprecated, use 'presentation' in screen options instead ('card' or 'modal').",
+    "presentation": "Sets the transition style: 'card', 'modal', 'transparentModal'.",
+    "animation": "Default animation for screen transitions: 'default', 'fade', 'slide_from_right', etc."
+  },
+  "screenOptions": {
+    "title": "Fallback string for header title.",
+    "headerShown": "Boolean to show or hide the header (default true).",
+    "header": "Custom header component function receiving { navigation, route, options, back, layout, progress }.",
+    "headerStyle": "Style object for header container.",
+    "headerTitleStyle": "Style object for header title text.",
+    "headerBackTitle": "Title for the back button on iOS.",
+    "headerBackImage": "Custom back button component function.",
+    "gestureEnabled": "Boolean to enable swipe gestures for dismissing the screen.",
+    "gestureDirection": "Direction for gestures: 'horizontal', 'horizontal-inverted', 'vertical', 'vertical-inverted'.",
+    "gestureResponseDistance": "Distance from the edge for gesture recognition.",
+    "gestureVelocityImpact": "Effect of gesture velocity (default 0.3).",
+    "animationTypeForReplace": "'push' or 'pop', for replacing a screen."
+  },
+  "transitionAnimations": {
+    "cardStyleInterpolator": "Function to interpolate the style of the screen card during transition.",
+    "headerStyleInterpolator": "Function to interpolate the style of the header during transition.",
+    "transitionSpec": "Object to configure timing or spring animations with options like duration, damping, stiffness.",
+    "preMadeConfigs": {
+      "TransitionSpecs": [
+        "TransitionIOSSpec",
+        "FadeInFromBottomAndroidSpec",
+        "FadeOutToBottomAndroidSpec",
+        "RevealFromBottomAndroidSpec"
+      ],
+      "CardStyleInterpolators": [
+        "forHorizontalIOS",
+        "forVerticalIOS",
+        "forModalPresentationIOS",
+        "forFadeFromBottomAndroid",
+        "forRevealFromBottomAndroid"
+      ],
+      "HeaderStyleInterpolators": [
+        "forUIKit",
+        "forFade",
+        "forStatic"
+      ],
+      "TransitionPresets": [
+        "SlideFromRightIOS",
+        "ModalSlideFromBottomIOS",
+        "ModalPresentationIOS",
+        "FadeFromBottomAndroid",
+        "RevealFromBottomAndroid",
+        "ScaleFromCenterAndroid",
+        "DefaultTransition",
+        "ModalTransition"
+      ]
+    }
+  },
+  "refMethods": {
+    "push": "Pushes a new screen on top of the stack.",
+    "pop": "Pops the current screen from the stack, optional count to pop multiple.",
+    "popToTop": "Pops all screens except the first one.",
+    "replace": "Replaces the current screen with a new screen.",
+    "popTo": "Pops back to a specific screen in the stack."
+  },
+  "hooks": {
+    "useCardAnimation": "Returns animation values for the current and next screens, including progress, closing, swiping, inverted, layouts."
+  },
+  "notes": [
+    "Use screenOptions for default configuration of all screens.",
+    "Custom headers require specifying headerMode or height in headerStyle to avoid glitches.",
+    "Animations can be customized per screen using cardStyleInterpolator and transitionSpec.",
+    "Detach inactive screens to improve performance, but disable for transparent modals."
+  ],
+  "example": {
+    "tsx": "import { createStackNavigator } from '@react-navigation/stack';\n\nconst Stack = createStackNavigator();\n\n<Stack.Navigator\n  initialRouteName='Home'\n  screenOptions={{ headerShown: true, gestureEnabled: true }}\n>\n  <Stack.Screen name='Home' component={HomeScreen} />\n  <Stack.Screen\n    name='Profile'\n    component={ProfileScreen}\n    options={{\n      title: 'Profile',\n      presentation: 'modal',\n      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS\n    }}\n  />\n</Stack.Navigator>"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "module": "Platform",
+  "library": "react-native",
+  "description": "Provides information about the OS and device type the app is running on, along with platform-specific constants and methods.",
+  "properties": {
+    "constants": {
+      "description": "Contains common and platform-specific constants.",
+      "type": "object",
+      "keys": {
+        "isTesting": { "type": "boolean", "description": "Whether the app is running in testing mode." },
+        "reactNativeVersion": { "type": "object", "description": "RN version object: { major, minor, patch, prerelease }." },
+        "Version": { "type": "number|string", "description": "OS version (number for Android, string for iOS)." },
+        "Release": { "type": "string", "description": "Android OS release string." },
+        "Serial": { "type": "string", "description": "Hardware serial number (Android)." },
+        "Fingerprint": { "type": "string", "description": "Build fingerprint (Android)." },
+        "Model": { "type": "string", "description": "End-user visible device name (Android)." },
+        "Brand": { "type": "string", "description": "Consumer-visible device brand (Android)." },
+        "Manufacturer": { "type": "string", "description": "Device manufacturer (Android)." },
+        "ServerHost": { "type": "string", "description": "Server host (Android, optional)." },
+        "uiMode": { "type": "string", "description": "Android UI mode: 'car', 'desk', 'normal', 'tv', 'watch', 'unknown'." },
+        "forceTouchAvailable": { "type": "boolean", "description": "3D Touch availability (iOS)." },
+        "interfaceIdiom": { "type": "string", "description": "UI type for iOS devices (UIUserInterfaceIdiom)." },
+        "osVersion": { "type": "string", "description": "iOS version string." },
+        "systemName": { "type": "string", "description": "OS name (iOS)." }
+      }
+    },
+    "isPad": { "type": "boolean", "description": "Whether the device is an iPad." },
+    "isTV": { "type": "boolean", "description": "Whether the device is a TV." },
+    "isVision": { "type": "boolean", "description": "Whether the device is an Apple Vision (Vision Pro). Returns false on Vision Pro if isPad is true)." },
+    "isTesting": { "type": "boolean", "description": "Whether the app is running in Developer Mode with testing flag set." },
+    "OS": { "type": "enum('android','ios')", "description": "Current OS name." },
+    "Version": { "type": "number|string", "description": "Current OS version (number for Android, string for iOS)." }
+  },
+  "methods": {
+    "select": {
+      "description": "Returns the most appropriate value for the current platform.",
+      "signature": "select(config: {android?: any, ios?: any, native?: any, default?: any}): any",
+      "parameters": {
+        "config": {
+          "type": "object",
+          "description": "Keys can be android, ios, native, default to provide platform-specific values."
+        }
+      },
+      "examples": [
+        {
+          "description": "Platform-specific styles with StyleSheet",
+          "code": "import {Platform, StyleSheet} from 'react-native';\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    ...Platform.select({\n      android: { backgroundColor: 'green' },\n      ios: { backgroundColor: 'red' },\n      default: { backgroundColor: 'blue' }\n    }),\n  },\n});"
+        },
+        {
+          "description": "Platform-specific component import",
+          "code": "const Component = Platform.select({\n  ios: () => require('ComponentIOS'),\n  android: () => require('ComponentAndroid'),\n})();\n<Component />;"
+        },
+        {
+          "description": "Select for native vs web",
+          "code": "const Component = Platform.select({\n  native: () => require('ComponentForNative'),\n  default: () => require('ComponentForWeb'),\n})();\n<Component />;"
+        }
+      ]
+    }
+  }
+}

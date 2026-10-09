@@ -1,0 +1,87 @@
+{
+  "module": "Linking",
+  "library": "react-native",
+  "description": "Provides an interface to interact with both incoming and outgoing app links, including deep links, universal links, and custom URL schemes.",
+  "methods": {
+    "addEventListener": {
+      "description": "Adds a handler to Linking changes by listening to the 'url' event.",
+      "signature": "addEventListener(type: 'url', handler: (event: {url: string}) => void) => EmitterSubscription",
+      "parameters": {
+        "type": {
+          "type": "string",
+          "required": true,
+          "description": "Event type to listen for.",
+          "values": ["url"]
+        },
+        "handler": {
+          "type": "function",
+          "required": true,
+          "description": "Function called when the 'url' event is fired. Receives an object with a 'url' string."
+        }
+      },
+      "returns": "EmitterSubscription object, which has a remove() method to unsubscribe."
+    },
+    "canOpenURL": {
+      "description": "Determines whether an installed app can handle a given URL.",
+      "signature": "canOpenURL(url: string) => Promise<boolean>",
+      "parameters": {
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "The URL to check. For web URLs, include protocol (http:// or https://)."
+        }
+      },
+      "returns": "Promise<boolean> resolved to true if the URL can be handled, false otherwise."
+    },
+    "getInitialURL": {
+      "description": "Returns the URL that triggered the app launch, or null if none.",
+      "signature": "getInitialURL() => Promise<string | null>",
+      "parameters": null,
+      "returns": "Promise<string | null>"
+    },
+    "openSettings": {
+      "description": "Opens the app's custom settings page in the system settings.",
+      "signature": "openSettings() => Promise<void>",
+      "parameters": null,
+      "returns": "Promise<void>"
+    },
+    "openURL": {
+      "description": "Opens the given URL with an installed app if possible.",
+      "signature": "openURL(url: string) => Promise<any>",
+      "parameters": {
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "The URL to open. Can be http(s), tel, mailto, geo, or custom URL schemes."
+        }
+      },
+      "returns": "Promise resolved if the URL opens successfully, rejected if it cannot be handled."
+    },
+    "sendIntent": {
+      "description": "Android-only. Launches an Android intent with optional extras.",
+      "signature": "sendIntent(action: string, extras?: Array<{key: string, value: string | number | boolean}>) => Promise<void>",
+      "parameters": {
+        "action": {
+          "type": "string",
+          "required": true,
+          "description": "The Android intent action to trigger."
+        },
+        "extras": {
+          "type": "array",
+          "required": false,
+          "description": "Optional array of key-value pairs to pass as extras in the intent."
+        }
+      },
+      "returns": "Promise<void>"
+    }
+  },
+  "notes": [
+    "Supports deep links, universal links, and custom URL schemes.",
+    "Check canOpenURL() before opening non-http(s) URLs to prevent errors.",
+    "getInitialURL may return null during Remote JS Debugging on iOS.",
+    "sendIntent is Android-only and allows launching intents with optional data."
+  ],
+  "example": {
+    "tsx": "import { Linking } from 'react-native';\n\n// Listen for deep links\nconst subscription = Linking.addEventListener('url', ({url}) => {\n  console.log('Received URL:', url);\n});\n\n// Check if a URL can be opened\nLinking.canOpenURL('mailto:test@example.com').then(canOpen => {\n  if (canOpen) Linking.openURL('mailto:test@example.com');\n});\n\n// Get URL that opened the app\nLinking.getInitialURL().then(url => console.log('Initial URL:', url));\n\n// Open settings\nLinking.openSettings();\n\n// Android send intent\nLinking.sendIntent('android.intent.action.VIEW', [{key: 'id', value: 123}]);\n\n// Clean up\nsubscription.remove();"
+  }
+}

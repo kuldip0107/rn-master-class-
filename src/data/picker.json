@@ -1,0 +1,54 @@
+{
+  "component": "Picker",
+  "library": "@react-native-picker/picker",
+  "description": "A cross-platform dropdown selector for React Native. Supports iOS, Android, Web, and Windows with customizable items, styles, and programmatic control.",
+  "basicExample": {
+    "tsx": "import React, { useState } from 'react';\nimport { View } from 'react-native';\nimport { Picker } from '@react-native-picker/picker';\n\nexport default function MyPicker() {\n  const [selectedLanguage, setSelectedLanguage] = useState();\n\n  return (\n    <View>\n      <Picker\n        selectedValue={selectedLanguage}\n        onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}\n      >\n        <Picker.Item label=\"Java\" value=\"java\" />\n        <Picker.Item label=\"JavaScript\" value=\"js\" />\n      </Picker>\n    </View>\n  );\n}"
+  },
+  "androidProgrammaticControl": {
+    "description": "Open/close the Picker programmatically (Android only, v1.16.0+).",
+    "tsx": "const pickerRef = useRef();\n\nfunction open() {\n  pickerRef.current.focus();\n}\n\nfunction close() {\n  pickerRef.current.blur();\n}\n\n<Picker\n  ref={pickerRef}\n  selectedValue={selectedLanguage}\n  onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}\n>\n  <Picker.Item label=\"Java\" value=\"java\" />\n  <Picker.Item label=\"JavaScript\" value=\"js\" />\n</Picker>"
+  },
+  "props": {
+    "selectedValue": { "type": "any", "required": false, "description": "Value matching the value of one of the Picker items." },
+    "onValueChange": { "type": "function(itemValue, itemIndex)", "required": false, "description": "Callback invoked when an item is selected." },
+    "style": { "type": "pickerStyleType", "optional": true, "description": "Custom style for the Picker component." },
+    "testID": { "type": "string", "optional": true, "description": "Used to locate this view in end-to-end tests." },
+    "enabled": { "type": "bool", "optional": true, "default": true, "description": "Whether the Picker is enabled or disabled (Android, Web, Windows)." },
+    "mode": { "type": "enum('dialog', 'dropdown')", "optional": true, "description": "Android only: defines how the Picker items are displayed." },
+    "dropdownIconColor": { "type": "ColorValue", "optional": true, "description": "Android only: color of the dropdown triangle." },
+    "dropdownIconRippleColor": { "type": "ColorValue", "optional": true, "description": "Android only: ripple color of the dropdown triangle." },
+    "prompt": { "type": "string", "optional": true, "description": "Android only: title shown when Picker is in dialog mode." },
+    "itemStyle": { "type": "text styles", "optional": true, "description": "Custom style for Picker items (iOS, Windows)." },
+    "numberOfLines": { "type": "number", "optional": true, "default": 1, "description": "Maximum number of lines for Picker items (Android & iOS)." },
+    "onBlur": { "type": "function", "optional": true, "description": "Android only: invoked when Picker loses focus." },
+    "onFocus": { "type": "function", "optional": true, "description": "Android only: invoked when Picker gains focus." },
+    "selectionColor": { "type": "ColorValue", "optional": true, "description": "iOS only: color of the selection highlight." }
+  },
+  "methods": {
+    "blur": { "platform": "Android", "description": "Programmatically closes the Picker." },
+    "focus": { "platform": "Android", "description": "Programmatically opens the Picker." }
+  },
+  "PickerItemProps": {
+    "label": { "type": "string", "required": true, "description": "Text displayed for this Picker item." },
+    "value": { "type": "string|number", "required": true, "description": "Value assigned to this Picker item." },
+    "color": { "type": "ColorValue", "optional": true, "description": "Text color of the Picker item." },
+    "fontFamily": { "type": "string", "optional": true, "description": "Font family for the Picker item." },
+    "style": { "type": "ViewStyleProp", "optional": true, "description": "Android only: style for the item label." },
+    "enabled": { "type": "boolean", "optional": true, "default": true, "description": "Android only: whether the item is selectable." },
+    "contentDescription": { "type": "string", "optional": true, "description": "Android only: content description for accessibility." }
+  },
+  "PickerIOSProps": {
+    "itemStyle": { "type": "text styles", "optional": true },
+    "onValueChange": { "type": "function", "optional": true },
+    "selectedValue": { "type": "any", "optional": true },
+    "selectionColor": { "type": "ColorValue", "optional": true },
+    "themeVariant": { "type": "enum('light', 'dark')", "optional": true }
+  },
+  "notes": [
+    "Requires `selectedValue` state for controlled behavior.",
+    "Supports programmatic open/close on Android using `ref`.",
+    "Customizable per-item styles and selection colors.",
+    "Picker.Item is required for each selectable option."
+  ]
+}

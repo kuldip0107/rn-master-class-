@@ -1,0 +1,61 @@
+{
+  "module": "StyleSheet",
+  "library": "react-native",
+  "description": "An abstraction similar to CSS StyleSheets. Used to create, compose, flatten, and manage styles in React Native.",
+  "methods": {
+    "compose": {
+      "description": "Combines two style objects such that style2 overrides style1. If either style is falsy, the other is returned directly.",
+      "signature": "compose(style1: Object, style2: Object) => Object | Object[]",
+      "parameters": {
+        "style1": { "type": "Object", "required": true, "description": "First style object" },
+        "style2": { "type": "Object", "required": true, "description": "Second style object, overrides style1" }
+      },
+      "returns": "Combined style object or array"
+    },
+    "create": {
+      "description": "Creates a StyleSheet object and provides static type checking against native style properties.",
+      "signature": "create(styles: Object) => Object",
+      "parameters": {
+        "styles": { "type": "Object", "required": true, "description": "An object mapping keys to ViewStyle, TextStyle, or ImageStyle" }
+      },
+      "returns": "StyleSheet object"
+    },
+    "flatten": {
+      "description": "Flattens an array of style objects into a single aggregated style object.",
+      "signature": "flatten(styles: Array<Object>) => Object",
+      "parameters": {
+        "styles": { "type": "Array<Object>", "required": true, "description": "Array of style objects to flatten" }
+      },
+      "returns": "Flattened style object"
+    },
+    "setStyleAttributePreprocessor": {
+      "description": "Experimental. Sets a function to pre-process a style property value, e.g., colors or transforms.",
+      "signature": "setStyleAttributePreprocessor(property: string, process: function) => void",
+      "parameters": {
+        "property": { "type": "string", "required": true, "description": "The style property to preprocess" },
+        "process": { "type": "function", "required": true, "description": "Function that processes the property value" }
+      },
+      "returns": "void",
+      "notes": ["Experimental API: may change or be removed without notice."]
+    }
+  },
+  "properties": {
+    "absoluteFill": {
+      "description": "Predefined style for overlays with position absolute and zero positioning (left:0, right:0, top:0, bottom:0)."
+    },
+    "absoluteFillObject": {
+      "description": "Like absoluteFill but can be customized for minor tweaks."
+    },
+    "hairlineWidth": {
+      "description": "Width of a thin line on the platform. Useful for borders or separators. Value may vary between devices."
+    }
+  },
+  "usage_tips": [
+    "Move styles outside of render functions for better performance and readability.",
+    "Use StyleSheet.create() for static type checking and IDE suggestions.",
+    "Name styles meaningfully to encourage reuse and clarity."
+  ],
+  "example": {
+    "tsx": "import { StyleSheet, View, Text } from 'react-native';\n\nconst styles = StyleSheet.create({\n  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },\n  text: { fontSize: 18, color: 'blue' }\n});\n\nexport default function App() {\n  return (\n    <View style={styles.container}>\n      <Text style={styles.text}>Hello, StyleSheet!</Text>\n    </View>\n  );\n}"
+  }
+}

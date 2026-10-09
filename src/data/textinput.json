@@ -1,0 +1,180 @@
+{
+  "component": "TextInput",
+  "category": "Basic UI",
+  "description": "TextInput is a foundational React Native component for entering text using the keyboard. It supports single-line and multi-line input, keyboard customization, autofill, validation, and accessibility.",
+  "coreConcepts": [
+    "Controlled vs uncontrolled input",
+    "Keyboard interaction and focus handling",
+    "Platform-specific behavior (Android vs iOS)",
+    "Secure and formatted input"
+  ],
+  "features": [
+    "Single-line and multi-line input",
+    "Custom keyboard types",
+    "Auto-capitalization and auto-correction",
+    "Secure text entry (passwords)",
+    "Autofill and autocomplete",
+    "Programmatic focus and blur"
+  ],
+  "basicUsage": {
+    "description": "Subscribe to onChangeText to read user input",
+    "example": "<TextInput placeholder=\"Enter name\" onChangeText={(text) => setName(text)} />"
+  },
+  "controlModes": {
+    "controlled": {
+      "description": "Value is controlled by state",
+      "uses": ["value", "onChangeText"]
+    },
+    "uncontrolled": {
+      "description": "Initial value only",
+      "uses": ["defaultValue"]
+    }
+  },
+  "keyboardProps": [
+    {
+      "name": "keyboardType",
+      "type": "enum",
+      "description": "Determines which keyboard to open",
+      "examples": ["default", "numeric", "email-address", "phone-pad"]
+    },
+    {
+      "name": "inputMode",
+      "type": "enum",
+      "description": "HTML-like keyboard hint with higher priority than keyboardType"
+    },
+    {
+      "name": "returnKeyType",
+      "type": "enum",
+      "description": "Controls the return key appearance"
+    }
+  ],
+  "textBehaviorProps": [
+    {
+      "name": "autoCapitalize",
+      "type": "enum",
+      "default": "sentences",
+      "description": "Automatically capitalizes characters"
+    },
+    {
+      "name": "autoCorrect",
+      "type": "boolean",
+      "default": true,
+      "description": "Enables or disables auto-correction"
+    },
+    {
+      "name": "maxLength",
+      "type": "number",
+      "description": "Limits number of characters"
+    }
+  ],
+  "securityProps": [
+    {
+      "name": "secureTextEntry",
+      "type": "boolean",
+      "default": false,
+      "description": "Hides entered text for passwords"
+    },
+    {
+      "name": "textContentType",
+      "type": "enum",
+      "description": "Provides semantic meaning for autofill (iOS)"
+    },
+    {
+      "name": "passwordRules",
+      "type": "string",
+      "platform": "iOS"
+    }
+  ],
+  "multilineSupport": {
+    "multiline": {
+      "type": "boolean",
+      "default": false,
+      "description": "Allows multiple lines of input"
+    },
+    "numberOfLines": {
+      "type": "number",
+      "description": "Sets max visible lines"
+    },
+    "note": "Border side styles do not work directly with multiline"
+  },
+  "events": [
+    "onChangeText",
+    "onFocus",
+    "onBlur",
+    "onSubmitEditing",
+    "onEndEditing",
+    "onKeyPress",
+    "onSelectionChange",
+    "onContentSizeChange"
+  ],
+  "selectionProps": [
+    {
+      "name": "selection",
+      "type": "object",
+      "description": "Controls cursor position"
+    },
+    {
+      "name": "selectionColor",
+      "type": "color",
+      "description": "Cursor and selection color"
+    }
+  ],
+  "accessibilityProps": [
+    "allowFontScaling",
+    "maxFontSizeMultiplier",
+    "importantForAutofill",
+    "accessible"
+  ],
+  "platformSpecific": {
+    "android": [
+      "underlineColorAndroid",
+      "cursorColor",
+      "disableFullscreenUI",
+      "selectionHandleColor"
+    ],
+    "ios": [
+      "clearButtonMode",
+      "keyboardAppearance",
+      "inputAccessoryViewID",
+      "spellCheck"
+    ]
+  },
+  "methods": [
+    {
+      "name": "focus",
+      "description": "Focuses the input programmatically"
+    },
+    {
+      "name": "blur",
+      "description": "Removes focus from the input"
+    },
+    {
+      "name": "clear",
+      "description": "Clears all text"
+    },
+    {
+      "name": "isFocused",
+      "description": "Returns whether input is focused"
+    }
+  ],
+  "knownIssues": [
+    "Android onKeyPreIme not supported",
+    "secureTextEntry issues with some keyboard types on Android",
+    "Keyboard resize issues with absolute positioning"
+  ],
+  "bestPractices": [
+    "Use KeyboardAvoidingView with TextInput",
+    "Prefer maxLength instead of manual validation",
+    "Avoid inline styles in large forms",
+    "Use secureTextEntry for passwords",
+    "Wrap multiline inputs in a View for borders"
+  ],
+  "example": {
+    "title": "Login Input Example",
+    "code": {
+      "language": "tsx",
+      "snippet": "<TextInput\n  placeholder=\"Email\"\n  keyboardType=\"email-address\"\n  autoCapitalize=\"none\"\n  onChangeText={setEmail}\n/>"
+    }
+  },
+  "learningLevel": "Beginner to Intermediate"
+}

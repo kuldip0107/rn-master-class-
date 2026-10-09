@@ -1,0 +1,44 @@
+{
+  "name": "Text",
+  "description": "A React Native component for displaying text. It supports nesting, styling, and touch handling.",
+  "categories": [
+    {
+      "title": "Common Props",
+      "data": [
+        {
+          "name": "style",
+          "type": "TextStyle",
+          "description": "Styles to apply to the text, such as color, fontSize, and fontWeight."
+        },
+        {
+          "name": "numberOfLines",
+          "type": "number",
+          "description": "Limits the text to a specified number of lines. Truncates with ... at the end."
+        },
+        {
+          "name": "ellipsizeMode",
+          "type": "enum('head', 'middle', 'tail', 'clip')",
+          "description": "how to truncate the text when it exceeds the number of lines."
+        },
+        {
+          "name": "onPress",
+          "type": "function",
+          "description": "Function to be called when the text is pressed."
+        },
+        {
+          "name": "selectable",
+          "type": "boolean",
+          "description": "Values: true | false. If true, the user can select and copy the text."
+        }
+      ]
+    }
+  ],
+  "example": {
+    "title": "Basic Text Usage",
+    "description": "Examples of styling, nesting, and limiting lines of text.",
+    "code": {
+      "language": "jsx",
+      "snippet": "import React from 'react';\nimport { Text, View, StyleSheet } from 'react-native';\n\nconst TextExample = () => {\n  return (\n    <View style={styles.container}>\n      <Text style={styles.baseText}>\n        This is base text.\n        <Text style={styles.innerText}> This is nested bold text.</Text>\n      </Text>\n      \n      <Text \n        numberOfLines={1} \n        ellipsizeMode='tail' \n        style={styles.longText}\n      >\n        This is a very long text that will be truncated after one line because of the numberOfLines prop.\n      </Text>\n    </View>\n  );\n};\n\nconst styles = StyleSheet.create({\n  container: {\n    padding: 20,\n  },\n  baseText: {\n    fontFamily: 'Cochin',\n    fontSize: 20,\n    marginVertical: 10,\n  },\n  innerText: {\n    fontWeight: 'bold',\n    color: 'blue',\n  },\n  longText: {\n    fontSize: 16,\n    marginTop: 20,\n    color: '#555',\n  }\n});\n\nexport default TextExample;"
+    }
+  }
+}

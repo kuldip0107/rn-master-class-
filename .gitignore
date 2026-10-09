@@ -73,3 +73,12 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# JVM Crash Logs & Scratches
+hs_err_*.log
+replay_*.log
+*.log
+config*.json
+config*.txt
+rnconfig.json
+

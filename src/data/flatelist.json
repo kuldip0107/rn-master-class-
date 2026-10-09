@@ -1,0 +1,193 @@
+{
+  "component": "FlatList",
+  "description": "A high-performance component for rendering large, flat lists of data efficiently using lazy loading and windowing.",
+  "status": "Recommended for large lists",
+  "comparison": {
+    "flatListVsScrollView": {
+      "FlatList": "Optimized for large datasets with lazy rendering and better memory usage.",
+      "ScrollView": "Renders all children at once and is not suitable for long lists."
+    }
+  },
+  "features": [
+    "Cross-platform support",
+    "Lazy rendering",
+    "Pull to refresh",
+    "Infinite scroll",
+    "Header & footer support",
+    "Item separators",
+    "Multiple columns"
+  ],
+  "categories": [
+    {
+      "title": "Required Props",
+      "data": [
+        {
+          "id": "1",
+          "name": "data",
+          "description": "Array of items to be rendered in the list.",
+          "type": "Array"
+        },
+        {
+          "id": "2",
+          "name": "renderItem",
+          "description": "Function that renders each item in the list.",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "title": "Key & Re-render Control",
+      "data": [
+        {
+          "id": "3",
+          "name": "keyExtractor",
+          "description": "Extracts a unique key for each list item.",
+          "type": "function"
+        },
+        {
+          "id": "4",
+          "name": "extraData",
+          "description": "Forces FlatList to re-render when external state changes.",
+          "type": "any"
+        }
+      ]
+    },
+    {
+      "title": "Layout & Display",
+      "data": [
+        {
+          "id": "5",
+          "name": "horizontal",
+          "description": "Displays list items horizontally instead of vertically.",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "6",
+          "name": "numColumns",
+          "description": "Renders items in multiple columns (vertical only).",
+          "type": "number"
+        },
+        {
+          "id": "7",
+          "name": "columnWrapperStyle",
+          "description": "Styles the row wrapper when using multiple columns.",
+          "type": "ViewStyle"
+        }
+      ]
+    },
+    {
+      "title": "Header, Footer & Empty State",
+      "data": [
+        {
+          "id": "8",
+          "name": "ListHeaderComponent",
+          "description": "Component rendered at the top of the list.",
+          "type": "component | element"
+        },
+        {
+          "id": "9",
+          "name": "ListFooterComponent",
+          "description": "Component rendered at the bottom of the list.",
+          "type": "component | element"
+        },
+        {
+          "id": "10",
+          "name": "ListEmptyComponent",
+          "description": "Component rendered when data is empty.",
+          "type": "component | element"
+        }
+      ]
+    },
+    {
+      "title": "Refresh & Pagination",
+      "data": [
+        {
+          "id": "11",
+          "name": "refreshing",
+          "description": "Shows loading indicator during pull-to-refresh.",
+          "type": "boolean"
+        },
+        {
+          "id": "12",
+          "name": "onRefresh",
+          "description": "Callback triggered on pull-to-refresh.",
+          "type": "function"
+        },
+        {
+          "id": "13",
+          "name": "onEndReached",
+          "description": "Called when the end of the list is reached (infinite scroll).",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "title": "Performance Optimization",
+      "data": [
+        {
+          "id": "14",
+          "name": "initialNumToRender",
+          "description": "Number of items rendered initially.",
+          "type": "number",
+          "default": 10
+        },
+        {
+          "id": "15",
+          "name": "getItemLayout",
+          "description": "Optimizes scrolling by providing fixed item dimensions.",
+          "type": "function"
+        },
+        {
+          "id": "16",
+          "name": "removeClippedSubviews",
+          "description": "Improves performance by removing offscreen items.",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "title": "Viewability",
+      "data": [
+        {
+          "id": "17",
+          "name": "onViewableItemsChanged",
+          "description": "Called when list item visibility changes.",
+          "type": "function"
+        },
+        {
+          "id": "18",
+          "name": "viewabilityConfig",
+          "description": "Controls when items are considered visible.",
+          "type": "object"
+        }
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "name": "scrollToIndex",
+      "description": "Scrolls to a specific item index."
+    },
+    {
+      "name": "scrollToOffset",
+      "description": "Scrolls to a specific pixel offset."
+    },
+    {
+      "name": "scrollToEnd",
+      "description": "Scrolls to the end of the list."
+    },
+    {
+      "name": "flashScrollIndicators",
+      "description": "Shows scroll indicators briefly."
+    }
+  ],
+  "example": {
+    "title": "Basic FlatList Example",
+    "description": "A simple vertical list rendering text items.",
+    "code": {
+      "language": "tsx",
+      "snippet": "import { FlatList, Text, View } from 'react-native';\n\nconst data = [{ id: '1', title: 'Item 1' }, { id: '2', title: 'Item 2' }];\n\n<FlatList\n  data={data}\n  keyExtractor={(item) => item.id}\n  renderItem={({ item }) => (\n    <View style={{ padding: 16 }}>\n      <Text>{item.title}</Text>\n    </View>\n  )}\n/>"
+    }
+  }
+}

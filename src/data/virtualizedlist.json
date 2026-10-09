@@ -1,0 +1,119 @@
+{
+  "component": "VirtualizedList",
+  "category": "Lists (Advanced)",
+  "description": "VirtualizedList is the base implementation behind FlatList and SectionList. It provides high performance rendering for very large lists by rendering only visible items and replacing offscreen items with blank space.",
+  "whenToUse": [
+    "When you need more control than FlatList or SectionList",
+    "When working with immutable or non-array data",
+    "When building highly optimized large lists"
+  ],
+  "coreConcept": {
+    "virtualization": "Only a small window of items is rendered at a time to improve memory usage and performance",
+    "renderWindow": "Visible items plus a buffer area above and below the screen"
+  },
+  "features": [
+    "High performance for large lists",
+    "Custom data access using getItem",
+    "Custom item counting using getItemCount",
+    "Supports pull-to-refresh",
+    "Supports horizontal and vertical lists",
+    "Supports infinite scrolling"
+  ],
+  "requiredProps": {
+    "data": {
+      "type": "any",
+      "description": "Data source passed to getItem and getItemCount"
+    },
+    "getItem": {
+      "type": "function",
+      "description": "Returns an item from the data for a given index"
+    },
+    "getItemCount": {
+      "type": "function",
+      "description": "Returns the total number of items in the data"
+    },
+    "renderItem": {
+      "type": "function",
+      "description": "Renders an item into the list"
+    }
+  },
+  "importantProps": [
+    {
+      "name": "keyExtractor",
+      "type": "function",
+      "description": "Extracts a unique key for each item"
+    },
+    {
+      "name": "horizontal",
+      "type": "boolean",
+      "description": "Renders items horizontally"
+    },
+    {
+      "name": "initialNumToRender",
+      "type": "number",
+      "default": 10,
+      "description": "Initial number of items rendered"
+    },
+    {
+      "name": "maxToRenderPerBatch",
+      "type": "number",
+      "description": "Maximum items rendered per batch"
+    },
+    {
+      "name": "windowSize",
+      "type": "number",
+      "description": "Number of screens rendered outside visible area"
+    },
+    {
+      "name": "extraData",
+      "type": "any",
+      "description": "Triggers re-render when external data changes"
+    }
+  ],
+  "scrollEvents": [
+    {
+      "name": "onEndReached",
+      "description": "Called when user scrolls near the end"
+    },
+    {
+      "name": "onStartReached",
+      "description": "Called when user scrolls near the start"
+    },
+    {
+      "name": "onViewableItemsChanged",
+      "description": "Called when visible items change"
+    }
+  ],
+  "refreshProps": {
+    "refreshing": {
+      "type": "boolean",
+      "description": "Shows loading indicator"
+    },
+    "onRefresh": {
+      "type": "function",
+      "description": "Triggered on pull-to-refresh"
+    }
+  },
+  "performanceTips": [
+    "Use getItemLayout when possible",
+    "Keep renderItem lightweight",
+    "Avoid anonymous functions in renderItem",
+    "Tune windowSize and maxToRenderPerBatch"
+  ],
+  "caveats": [
+    "Internal state is lost when items unmount",
+    "PureComponent – shallow equality matters",
+    "Fast scrolling may show blank areas briefly"
+  ],
+  "comparison": {
+    "FlatList": "Easier to use, built on top of VirtualizedList",
+    "SectionList": "Adds section support on top of VirtualizedList",
+    "VirtualizedList": "Most flexible but most complex"
+  },
+  "exampleUseCases": [
+    "Infinite feeds",
+    "Large chat history",
+    "Custom data structures"
+  ],
+  "learningLevel": "Advanced"
+}

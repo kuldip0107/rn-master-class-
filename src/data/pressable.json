@@ -1,0 +1,150 @@
+{
+  "component": "Pressable",
+  "type": "Core Component",
+  "description": "Pressable is a wrapper component that detects different stages of press interactions on its child elements.",
+  "basicExample": {
+    "tsx": "<Pressable onPress={onPressFunction}><Text>I'm pressable!</Text></Pressable>"
+  },
+  "howItWorks": {
+    "pressFlow": [
+      "onPressIn is triggered when the touch starts",
+      "onPressOut is triggered when the touch ends",
+      "onPress is called after onPressOut",
+      "onLongPress is triggered if the press lasts longer than 500ms"
+    ],
+    "notes": [
+      "onPressOut always fires when the finger is released",
+      "onLongPress does not cancel onPressOut"
+    ]
+  },
+  "touchAreas": {
+    "hitRect": {
+      "description": "Defines how far outside the component a touch can be detected",
+      "prop": "hitSlop"
+    },
+    "pressRect": {
+      "description": "Allows the finger to move outside while maintaining the press",
+      "prop": "pressRetentionOffset"
+    },
+    "limitations": [
+      "Touch area never exceeds parent bounds",
+      "Z-index of sibling views takes priority"
+    ]
+  },
+  "importantInfo": {
+    "apiUsed": "Pressability API",
+    "recommendedFor": [
+      "Custom buttons",
+      "Cards",
+      "List items",
+      "Touchable UI elements"
+    ]
+  },
+  "props": {
+    "android_disableSound": {
+      "platform": "Android",
+      "type": "boolean",
+      "default": false,
+      "description": "Disables Android system sound on press"
+    },
+    "android_ripple": {
+      "platform": "Android",
+      "type": "RippleConfig",
+      "description": "Enables and configures ripple effect"
+    },
+    "children": {
+      "type": "ReactNode | function",
+      "description": "Can be a child component or a function receiving pressed state"
+    },
+    "unstable_pressDelay": {
+      "type": "number",
+      "description": "Delay before onPressIn is called"
+    },
+    "delayLongPress": {
+      "type": "number",
+      "default": 500,
+      "description": "Time required to trigger onLongPress"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Disables press interactions"
+    },
+    "hitSlop": {
+      "type": "number | object",
+      "description": "Increases touchable area"
+    },
+    "onPress": {
+      "type": "function",
+      "description": "Called after press is released"
+    },
+    "onPressIn": {
+      "type": "function",
+      "description": "Called when press starts"
+    },
+    "onPressOut": {
+      "type": "function",
+      "description": "Called when press ends"
+    },
+    "onLongPress": {
+      "type": "function",
+      "description": "Called after long press duration"
+    },
+    "onPressMove": {
+      "type": "function",
+      "description": "Called when finger moves while pressing"
+    },
+    "onHoverIn": {
+      "type": "function",
+      "description": "Triggered when hover starts (web / desktop)"
+    },
+    "onHoverOut": {
+      "type": "function",
+      "description": "Triggered when hover ends"
+    },
+    "pressRetentionOffset": {
+      "type": "object | number",
+      "default": {
+        "top": 20,
+        "left": 20,
+        "right": 20,
+        "bottom": 30
+      },
+      "description": "Distance finger can move before press is cancelled"
+    },
+    "style": {
+      "type": "ViewStyle | function",
+      "description": "Style or function based on pressed state"
+    },
+    "testOnly_pressed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Used for testing or documentation"
+    }
+  },
+  "androidRippleConfig": {
+    "type": "object",
+    "properties": {
+      "color": {
+        "type": "color",
+        "required": false,
+        "description": "Ripple color"
+      },
+      "borderless": {
+        "type": "boolean",
+        "required": false,
+        "description": "Ripple ignores component border"
+      },
+      "radius": {
+        "type": "number",
+        "required": false,
+        "description": "Ripple radius"
+      },
+      "foreground": {
+        "type": "boolean",
+        "required": false,
+        "description": "Ripple appears above content"
+      }
+    }
+  }
+}

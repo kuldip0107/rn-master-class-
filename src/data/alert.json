@@ -1,0 +1,71 @@
+{
+  "component": "Alert",
+  "library": "react-native",
+  "description": "Launches a system alert dialog with a title, message, and optional buttons. Works on both iOS and Android. iOS also supports prompts with text input.",
+  "basicExample": {
+    "tsx": "import { Alert, Button } from 'react-native';\n\n<Button\n  title=\"Show Alert\"\n  onPress={() => {\n    Alert.alert(\n      'Alert Title',\n      'My Alert Message',\n      [\n        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },\n        { text: 'OK', onPress: () => console.log('OK Pressed') }\n      ],\n      { cancelable: false }\n    );\n  }}\n/>"
+  },
+  "methods": {
+    "alert": {
+      "signature": "static alert(title: string, message?: string, buttons?: AlertButton[], options?: AlertOptions)",
+      "description": "Shows an alert with a title, optional message, optional buttons, and optional configuration options.",
+      "parameters": {
+        "title": "string (required) - Dialog title. Passing null or empty hides title.",
+        "message": "string (optional) - Message below the title.",
+        "buttons": "AlertButton[] (optional) - Array of button configurations.",
+        "options": "AlertOptions (optional) - Alert configuration object."
+      }
+    },
+    "prompt": {
+      "signature": "static prompt(title: string, message?: string, callbackOrButtons?: ((text: string) => void) | AlertButton[], type?: AlertType, defaultValue?: string, keyboardType?: string)",
+      "platform": "iOS",
+      "description": "Shows a prompt alert that allows text input.",
+      "parameters": {
+        "title": "string (required) - Dialog title",
+        "message": "string (optional) - Message above input",
+        "callbackOrButtons": "Function or AlertButton[] - Called with text input value or array of buttons",
+        "type": "AlertType (optional) - Text input type ('default','plain-text','secure-text','login-password')",
+        "defaultValue": "string (optional) - Default value for text input",
+        "keyboardType": "string (optional) - Keyboard type for input",
+        "options": "AlertOptions (optional) - Additional alert options"
+      }
+    }
+  },
+  "types": {
+    "AlertButtonStyle": {
+      "type": "enum",
+      "platform": "iOS",
+      "values": ["default", "cancel", "destructive"],
+      "description": "iOS-specific style for alert buttons."
+    },
+    "AlertType": {
+      "type": "enum",
+      "platform": "iOS",
+      "values": ["default", "plain-text", "secure-text", "login-password"],
+      "description": "iOS-specific alert type for text input."
+    },
+    "AlertButton": {
+      "type": "object",
+      "properties": {
+        "text": "string - Label of the button",
+        "onPress": "function - Callback when button is pressed",
+        "style": "AlertButtonStyle (iOS only) - Button style",
+        "isPreferred": "boolean (iOS only) - Whether button is emphasized"
+      }
+    },
+    "AlertOptions": {
+      "type": "object",
+      "properties": {
+        "cancelable": "boolean (Android) - Whether alert can be dismissed by tapping outside",
+        "userInterfaceStyle": "string (iOS) - 'light' or 'dark' interface style",
+        "onDismiss": "function (Android) - Callback when alert is dismissed"
+      }
+    }
+  },
+  "notes": [
+    "On Android, only up to 3 buttons are supported: neutral, negative, positive.",
+    "On iOS, any number of buttons can be provided with optional style and preferred emphasis.",
+    "Alerts on Android can be dismissed by tapping outside if cancelable=true is provided.",
+    "Prompt alerts with text input are available only on iOS."
+  ]
+}

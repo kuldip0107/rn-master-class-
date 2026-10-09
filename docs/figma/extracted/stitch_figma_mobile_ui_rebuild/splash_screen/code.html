@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RN Master Class - Splash</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#00c1fd",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e3e2e7",
+                        "surface-dim": "#dad9df",
+                        "on-tertiary-fixed": "#410001",
+                        "primary-fixed": "#d8e2ff",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#004b65",
+                        "on-tertiary-container": "#fffbff",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#0070eb",
+                        "on-error-container": "#93000a",
+                        "secondary": "#006688",
+                        "secondary-fixed": "#c2e8ff",
+                        "on-surface-variant": "#414755",
+                        "tertiary": "#bc000a",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f1f0f5",
+                        "inverse-surface": "#2f3034",
+                        "inverse-primary": "#adc6ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#005bc1",
+                        "surface-container-low": "#f4f3f8",
+                        "outline-variant": "#c1c6d7",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#930005",
+                        "on-primary-fixed-variant": "#004493",
+                        "surface": "#faf9fe",
+                        "outline": "#717786",
+                        "on-secondary-fixed-variant": "#004d67",
+                        "surface-variant": "#e3e2e7",
+                        "secondary-fixed-dim": "#75d1ff",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#1a1b1f",
+                        "tertiary-container": "#e2241f",
+                        "surface-container": "#eeedf3",
+                        "on-secondary-fixed": "#001e2b",
+                        "surface-container-high": "#e9e7ed",
+                        "primary": "#0058bc",
+                        "on-primary-container": "#fefcff",
+                        "surface-bright": "#faf9fe",
+                        "tertiary-fixed": "#ffdad5",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "on-background": "#1a1b1f",
+                        "background": "#faf9fe",
+                        "on-primary-fixed": "#001a41"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-horizontal": "20px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "touch-target": "44px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "code-snippet": ["Courier Prime"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-lg": ["13px", { "lineHeight": "18px", "fontWeight": "600" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "code-snippet": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Simulating the dark theme look from the prompt in light mode structure for compliance */
+        .splash-gradient {
+            background: linear-gradient(135deg, #0a0b10 0%, #1a1b26 100%);
+        }
+        
+        .glow-effect {
+            text-shadow: 0 0 20px rgba(0, 193, 253, 0.5);
+        }
+        
+        .logo-circle {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 30px rgba(0, 193, 253, 0.1);
+        }
+        
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            50% { width: 60%; }
+            100% { width: 100%; }
+        }
+        
+        .animate-progress {
+            animation: loadProgress 2.5s ease-in-out forwards;
+        }
+        
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        .animate-pulse-logo {
+            animation: pulseLogo 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden splash-gradient flex flex-col items-center justify-center relative font-headline-xl">
+<!-- Suppressed navigation shell due to Splash Screen intent (Transactional/Linear) -->
+<!-- Main Content Container -->
+<main class="flex flex-col items-center justify-center w-full px-margin-horizontal z-10 space-y-xl">
+<!-- Logo Graphic -->
+<div class="logo-circle w-32 h-32 rounded-full flex items-center justify-center animate-pulse-logo mb-md backdrop-blur-sm">
+<span class="font-code-snippet text-[56px] text-secondary-container glow-effect font-bold tracking-widest">
+                &lt;&gt;
+            </span>
+</div>
+<!-- Typography Cluster -->
+<div class="text-center space-y-sm flex flex-col items-center">
+<h1 class="font-headline-xl text-headline-xl text-white glow-effect">
+                RN Master Class
+            </h1>
+<p class="font-label-lg text-label-lg text-outline-variant tracking-[0.2em] uppercase mt-2">
+                Master React Native
+            </p>
+</div>
+<!-- Progress Indicator -->
+<div class="w-64 h-1 bg-white/10 rounded-full mt-xl overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full bg-secondary-container rounded-full animate-progress shadow-[0_0_10px_rgba(0,193,253,0.8)]"></div>
+</div>
+</main>
+<!-- Bottom SafeArea / Indicator (simulated for mobile view) -->
+<div class="absolute bottom-6 w-32 h-1 bg-white/20 rounded-full"></div>
+<script>
+        // Simple script to simulate a redirect after splash screen
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                // In a real app, this would navigate to the Home or Login screen
+                // window.location.href = '/home';
+                console.log('Splash screen finished loading.');
+            }, 3000);
+        });
+    </script>
+</body></html>

@@ -1,0 +1,102 @@
+{
+  "component": "KeyboardAvoidingView",
+  "description": "A component that automatically adjusts its layout (height, position, or padding) to prevent the on-screen keyboard from covering input fields.",
+  "status": "Stable",
+  "categories": [
+    {
+      "title": "Core Props",
+      "data": [
+        {
+          "id": "1",
+          "name": "behavior",
+          "description": "Defines how the view reacts to the keyboard appearance.",
+          "type": "enum('height', 'position', 'padding')"
+        },
+        {
+          "id": "2",
+          "name": "enabled",
+          "description": "Enables or disables the KeyboardAvoidingView behavior.",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "3",
+          "name": "keyboardVerticalOffset",
+          "description": "Distance between the top of the screen and the React Native view, useful when using headers or navigation bars.",
+          "type": "number",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "title": "Layout & Styling Props",
+      "data": [
+        {
+          "id": "4",
+          "name": "contentContainerStyle",
+          "description": "Style applied to the inner container when behavior is set to 'position'.",
+          "type": "ViewStyle"
+        },
+        {
+          "id": "5",
+          "name": "style",
+          "description": "Applies layout and visual styling to the KeyboardAvoidingView.",
+          "type": "ViewStyle"
+        }
+      ]
+    },
+    {
+      "title": "Platform Notes",
+      "data": [
+        {
+          "id": "6",
+          "name": "iOS Behavior",
+          "description": "Works best with 'padding' or 'position' behavior."
+        },
+        {
+          "id": "7",
+          "name": "Android Behavior",
+          "description": "Typically requires 'height' behavior and proper windowSoftInputMode settings."
+        }
+      ]
+    },
+    {
+      "title": "Best Practices",
+      "data": [
+        {
+          "id": "8",
+          "name": "Set behavior explicitly",
+          "description": "Always define behavior to ensure consistent keyboard handling on both platforms."
+        },
+        {
+          "id": "9",
+          "name": "Combine with ScrollView",
+          "description": "Use KeyboardAvoidingView with ScrollView for long forms."
+        }
+      ]
+    },
+    {
+      "title": "Common Mistakes",
+      "data": [
+        {
+          "id": "10",
+          "name": "Missing behavior prop",
+          "description": "Not setting behavior may cause inputs to be hidden by the keyboard."
+        },
+        {
+          "id": "11",
+          "name": "Incorrect offset",
+          "description": "Wrong keyboardVerticalOffset can cause layout misalignment."
+        }
+      ]
+    }
+  ],
+  "example": {
+    "title": "Basic KeyboardAvoidingView Example",
+    "description": "A simple login form that stays visible when the keyboard opens.",
+    "code": {
+      "language": "tsx",
+      "snippet": "import { KeyboardAvoidingView, TextInput, Platform } from 'react-native';\n\n<KeyboardAvoidingView\n  style={{ flex: 1 }}\n  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}\n  keyboardVerticalOffset={80}\n>\n  <TextInput placeholder=\"Email\" />\n  <TextInput placeholder=\"Password\" secureTextEntry />\n</KeyboardAvoidingView>"
+    }
+  }
+}

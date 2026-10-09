@@ -1,0 +1,44 @@
+{
+  "name": "ScrollView",
+  "description": "A generic scrolling container that can host multiple components and views. It works well for content of uncertain length.",
+  "categories": [
+    {
+      "title": "Common Props",
+      "data": [
+        {
+          "name": "contentContainerStyle",
+          "type": "ViewStyle",
+          "description": "These styles will be applied to the scroll view content container which wraps all of the child views."
+        },
+        {
+          "name": "horizontal",
+          "type": "boolean",
+          "description": "When true, the scroll view's children are arranged horizontally in a row instead of vertically in a column."
+        },
+        {
+          "name": "showsVerticalScrollIndicator",
+          "type": "boolean",
+          "description": "When false, the vertical scroll indicator will not be visible."
+        },
+        {
+          "name": "showsHorizontalScrollIndicator",
+          "type": "boolean",
+          "description": "When false, the horizontal scroll indicator will not be visible."
+        },
+        {
+          "name": "bounces",
+          "type": "boolean",
+          "description": "When true, the scroll view bounces when it reaches the end of the content. Default is true on iOS."
+        }
+      ]
+    }
+  ],
+  "example": {
+    "title": "Vertical & Horizontal ScrollView",
+    "description": "Demonstrates a basic vertical scrollview and a horizontal one with card-like items.",
+    "code": {
+      "language": "jsx",
+      "snippet": "import React from 'react';\nimport { ScrollView, View, Text, StyleSheet } from 'react-native';\n\nconst ScrollViewExample = () => {\n  return (\n    <View style={styles.container}>\n      <Text style={styles.header}>Vertical Scroll</Text>\n      <ScrollView style={styles.scrollView}>\n        {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (\n            <View key={item} style={styles.box}>\n                <Text style={styles.text}>Box {item}</Text>\n            </View>\n        ))}\n      </ScrollView>\n\n      <Text style={styles.header}>Horizontal Scroll</Text>\n      <ScrollView \n        horizontal \n        showsHorizontalScrollIndicator={false}\n        style={styles.horizontalScroll}\n      >\n        {[1, 2, 3, 4, 5].map((item) => (\n            <View key={item} style={styles.card}>\n                <Text style={styles.text}>Card {item}</Text>\n            </View>\n        ))}\n      </ScrollView>\n    </View>\n  );\n};\n\nconst styles = StyleSheet.create({\n  container: { flex: 1, paddingTop: 40, paddingHorizontal: 10 },\n  header: { fontSize: 20, fontWeight: 'bold', marginVertical: 10 },\n  scrollView: { height: 200, backgroundColor: '#f0f0f0', marginBottom: 20 },\n  horizontalScroll: { flexGrow: 0 },\n  box: {\n    height: 60,\n    backgroundColor: '#3498db',\n    margin: 10,\n    justifyContent: 'center',\n    alignItems: 'center',\n    borderRadius: 8\n  },\n  card: {\n    width: 120,\n    height: 120,\n    backgroundColor: '#e74c3c',\n    marginRight: 15,\n    justifyContent: 'center',\n    alignItems: 'center',\n    borderRadius: 12\n  },\n  text: { color: 'white', fontWeight: 'bold' }\n});\n\nexport default ScrollViewExample;"
+    }
+  }
+}

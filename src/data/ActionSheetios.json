@@ -1,0 +1,55 @@
+{
+  "component": "ActionSheetIOS",
+  "library": "react-native",
+  "description": "Displays native iOS Action Sheet and Share Sheet components. Provides a way to show a set of options or share content natively on iOS.",
+  "methods": {
+    "showActionSheetWithOptions": {
+      "signature": "static showActionSheetWithOptions(options: ActionSheetIOSOptions, callback: (buttonIndex: number) => void)",
+      "description": "Displays an iOS action sheet with buttons, title, message, and optional customization.",
+      "parameters": {
+        "options": {
+          "options": "array of strings - list of button titles (required)",
+          "cancelButtonIndex": "number - index of cancel button in options",
+          "cancelButtonTintColor": "string - color for cancel button text",
+          "destructiveButtonIndex": "number or array - index/indices of destructive buttons",
+          "title": "string - title displayed above buttons",
+          "message": "string - message displayed below title",
+          "anchor": "number - node to which the action sheet is anchored (iPad only)",
+          "tintColor": "string - color for non-destructive button titles",
+          "disabledButtonIndices": "array of numbers - indices of disabled buttons",
+          "userInterfaceStyle": "string - 'light' or 'dark' for interface style"
+        },
+        "callback": "function(buttonIndex: number) - called with the index of the pressed button"
+      }
+    },
+    "dismissActionSheet": {
+      "signature": "static dismissActionSheet()",
+      "description": "Dismisses the currently presented iOS action sheet. Logs a warning if no action sheet is present."
+    },
+    "showShareActionSheetWithOptions": {
+      "signature": "static showShareActionSheetWithOptions(options: ShareActionSheetIOSOptions, failureCallback: (error: Error) => void, successCallback: (success: boolean, method: string) => void)",
+      "description": "Displays the iOS share sheet for sharing messages, URLs, and subjects.",
+      "parameters": {
+        "options": {
+          "url": "string - URL to share",
+          "message": "string - message to share",
+          "subject": "string - subject of the message",
+          "excludedActivityTypes": "array - activities to exclude from the share sheet"
+        },
+        "failureCallback": "function(error: Error) - called on failure",
+        "successCallback": "function(success: boolean, method: string) - called on success, method indicates how content was shared"
+      },
+      "notes": [
+        "If url points to a local file or base64 URI, it will be shared directly.",
+        "URLs must follow proper format (RFC 2396)."
+      ]
+    }
+  },
+  "example": {
+    "tsx": "import { ActionSheetIOS, Button } from 'react-native';\n\n<Button\n  title=\"Show Action Sheet\"\n  onPress={() => {\n    ActionSheetIOS.showActionSheetWithOptions(\n      {\n        options: ['Cancel', 'Delete'],\n        destructiveButtonIndex: 1,\n        cancelButtonIndex: 0\n      },\n      buttonIndex => {\n        if (buttonIndex === 1) {\n          // destructive action\n        }\n      }\n    );\n  }}\n/>\n\n<Button\n  title=\"Share\"\n  onPress={() => {\n    ActionSheetIOS.showShareActionSheetWithOptions(\n      {\n        message: 'Check this out!',\n        url: 'https://example.com'\n      },\n      error => console.error(error),\n      (success, method) => {\n        if (success) console.log('Shared via', method);\n      }\n    );\n  }}\n/>"
+  },
+  "notes": [
+    "ActionSheetIOS is iOS-only; Android requires a different approach.",
+    "Use showActionSheetWithOptions for standard action sheets and showShareActionSheetWithOptions for sharing content."
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "component": "Image",
+  "description": "A React Native component for displaying images from network URLs, local assets, camera roll, or base64 data. Supports resizing, loading states, accessibility, and caching.",
+  "categories": [
+    {
+      "title": "Accessibility Props",
+      "data": [
+        {
+          "id": "1",
+          "name": "accessible",
+          "type": "boolean",
+          "default": false,
+          "description": "Marks the image as an accessibility element."
+        },
+        {
+          "id": "2",
+          "name": "accessibilityLabel",
+          "type": "string",
+          "description": "Text read by screen readers when the image is focused."
+        },
+        {
+          "id": "3",
+          "name": "alt",
+          "type": "string",
+          "description": "Alternative text for screen readers. Automatically enables accessibility."
+        }
+      ]
+    },
+    {
+      "title": "Image Display Props",
+      "data": [
+        {
+          "id": "4",
+          "name": "source",
+          "type": "ImageSource",
+          "description": "Specifies the image source (remote URL, local asset, or base64)."
+        },
+        {
+          "id": "5",
+          "name": "resizeMode",
+          "type": "enum",
+          "options": ["cover", "contain", "stretch", "repeat", "center"],
+          "default": "cover",
+          "description": "Controls how the image is resized to fit its container."
+        },
+        {
+          "id": "6",
+          "name": "blurRadius",
+          "type": "number",
+          "description": "Applies a blur filter to the image."
+        },
+        {
+          "id": "7",
+          "name": "tintColor",
+          "type": "color",
+          "description": "Applies a tint color to non-transparent pixels."
+        }
+      ]
+    },
+    {
+      "title": "Layout & Style Props",
+      "data": [
+        {
+          "id": "8",
+          "name": "style",
+          "type": "ImageStyle",
+          "description": "Applies layout, size, border, and transform styles."
+        },
+        {
+          "id": "9",
+          "name": "width",
+          "type": "number",
+          "description": "Sets the width of the image."
+        },
+        {
+          "id": "10",
+          "name": "height",
+          "type": "number",
+          "description": "Sets the height of the image."
+        }
+      ]
+    },
+    {
+      "title": "Loading & Events",
+      "data": [
+        {
+          "id": "11",
+          "name": "defaultSource",
+          "type": "ImageSource",
+          "description": "Placeholder image displayed while loading."
+        },
+        {
+          "id": "12",
+          "name": "onLoad",
+          "type": "function",
+          "description": "Called when the image loads successfully."
+        },
+        {
+          "id": "13",
+          "name": "onError",
+          "type": "function",
+          "description": "Called when the image fails to load."
+        },
+        {
+          "id": "14",
+          "name": "onLoadStart",
+          "type": "function",
+          "description": "Called when image loading starts."
+        },
+        {
+          "id": "15",
+          "name": "onLoadEnd",
+          "type": "function",
+          "description": "Called when image loading finishes (success or failure)."
+        }
+      ]
+    },
+    {
+      "title": "Performance & Caching",
+      "data": [
+        {
+          "id": "16",
+          "name": "resizeMethod",
+          "type": "enum",
+          "options": ["auto", "resize", "scale", "none"],
+          "default": "auto",
+          "description": "Controls how image resizing is handled on Android."
+        },
+        {
+          "id": "17",
+          "name": "fadeDuration",
+          "type": "number",
+          "default": 300,
+          "description": "Fade-in animation duration (Android only)."
+        }
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "name": "prefetch",
+      "description": "Preloads a remote image to cache.",
+      "signature": "Image.prefetch(url: string): Promise<boolean>"
+    },
+    {
+      "name": "getSize",
+      "description": "Retrieves image width and height before rendering.",
+      "signature": "Image.getSize(uri: string): Promise<{ width: number, height: number }>"
+    },
+    {
+      "name": "queryCache",
+      "description": "Checks whether images exist in memory or disk cache.",
+      "signature": "Image.queryCache(urls: string[]): Promise<Record<string, string>>"
+    }
+  ],
+  "example": {
+    "title": "Basic Image Example",
+    "description": "Displays a remote image with fixed dimensions.",
+    "code": {
+      "language": "tsx",
+      "snippet": "<Image\n  source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}\n  style={{ width: 100, height: 100 }}\n  resizeMode=\"contain\"\n/>"
+    }
+  }
+}

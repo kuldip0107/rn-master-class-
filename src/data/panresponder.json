@@ -1,0 +1,48 @@
+{
+  "component": "PanResponder",
+  "library": "react-native",
+  "description": "Reconciles multiple touches into a single gesture. Provides a predictable wrapper around gesture responder system and works well with Animated for complex gestures.",
+  "gestureState": {
+    "stateID": "ID of the gestureState, persists as long as at least one touch is active",
+    "moveX": "Latest X coordinate of the most recently moved touch",
+    "moveY": "Latest Y coordinate of the most recently moved touch",
+    "x0": "X coordinate when gesture was granted",
+    "y0": "Y coordinate when gesture was granted",
+    "dx": "Accumulated horizontal distance since gesture started",
+    "dy": "Accumulated vertical distance since gesture started",
+    "vx": "Current horizontal velocity",
+    "vy": "Current vertical velocity",
+    "numberActiveTouches": "Number of touches currently on screen"
+  },
+  "methods": {
+    "create": {
+      "description": "Creates a PanResponder instance with provided callback configuration.",
+      "parameters": {
+        "config": "object, required. Provides enhanced versions of all typical onResponder* callbacks, each receiving (event, gestureState)."
+      }
+    }
+  },
+  "callbacks": [
+    "onMoveShouldSetPanResponder",
+    "onMoveShouldSetPanResponderCapture",
+    "onStartShouldSetPanResponder",
+    "onStartShouldSetPanResponderCapture",
+    "onPanResponderReject",
+    "onPanResponderGrant",
+    "onPanResponderStart",
+    "onPanResponderEnd",
+    "onPanResponderRelease",
+    "onPanResponderMove",
+    "onPanResponderTerminate",
+    "onPanResponderTerminationRequest",
+    "onShouldBlockNativeResponder"
+  ],
+  "usagePattern": {
+    "tsx": "const panResponder = React.useRef(PanResponder.create({\n  onStartShouldSetPanResponder: () => true,\n  onPanResponderMove: (evt, gestureState) => {\n    // handle movement\n  },\n  onPanResponderRelease: (evt, gestureState) => {\n    // handle release\n  }\n})).current;\n\nreturn <View {...panResponder.panHandlers} />;"
+  },
+  "notes": [
+    "Works well with Animated API to handle drag gestures.",
+    "onStartShould* callbacks reflect gesture state only for start/end events; once responder is active, gestureState updates reliably.",
+    "numberActiveTouches may be inaccurate unless this view is the responder."
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "component": "Vibration",
+  "description": "Triggers a vibration on the device.",
+  "methods": {
+    "vibrate": {
+      "signature": "static vibrate(pattern: number | number[], repeat: boolean)",
+      "description": "Triggers a vibration. On Android, passing a number triggers a vibration for that duration. Passing an array triggers a pattern [0, 500, 200, 500] (wait 0ms, vibrate 500ms, wait 200ms, vibrate 500ms). On iOS, duration is ignored and it vibrates for a fixed duration."
+    },
+    "cancel": {
+      "signature": "static cancel()",
+      "description": "Stops the vibration."
+    }
+  },
+  "example": {
+    "title": "Vibration Patterns",
+    "description": "Vibrate for 500ms (Android) or fixed duration (iOS).",
+    "code": {
+      "language": "js",
+      "snippet": "import { Vibration, Button, View } from 'react-native';\n\nconst App = () => (\n  <View>\n    <Button title=\"Vibrate\" onPress={() => Vibration.vibrate()} />\n    <Button title=\"Vibrate Pattern (Android)\" onPress={() => Vibration.vibrate([0, 500, 200, 500])} />\n    <Button title=\"Stop Vibration\" onPress={() => Vibration.cancel()} />\n  </View>\n);"
+    }
+  }
+}

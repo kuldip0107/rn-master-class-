@@ -1,0 +1,62 @@
+{
+  "component": "RefreshControl",
+  "library": "react-native",
+  "description": "Used inside a ScrollView or ListView to add pull-to-refresh functionality. When the ScrollView is at scrollY: 0, swiping down triggers an onRefresh event.",
+  "props": {
+    "refreshing": {
+      "type": "boolean",
+      "required": true,
+      "description": "Whether the view should be indicating an active refresh. Controlled prop."
+    },
+    "onRefresh": {
+      "type": "function",
+      "required": true,
+      "description": "Called when the view starts refreshing."
+    },
+    "colors": {
+      "type": "array of colors",
+      "platform": "Android",
+      "description": "The colors (at least one) that will be used to draw the refresh indicator."
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "platform": "Android",
+      "description": "Whether the pull-to-refresh functionality is enabled."
+    },
+    "progressBackgroundColor": {
+      "type": "color",
+      "platform": "Android",
+      "description": "The background color of the refresh indicator."
+    },
+    "progressViewOffset": {
+      "type": "number",
+      "default": 0,
+      "description": "Progress view top offset."
+    },
+    "size": {
+      "type": "enum('default','large')",
+      "default": "default",
+      "platform": "Android",
+      "description": "Size of the refresh indicator."
+    },
+    "tintColor": {
+      "type": "color",
+      "platform": "iOS",
+      "description": "The color of the refresh indicator."
+    },
+    "title": {
+      "type": "string",
+      "platform": "iOS",
+      "description": "The title displayed under the refresh indicator."
+    },
+    "titleColor": {
+      "type": "color",
+      "platform": "iOS",
+      "description": "The color of the refresh indicator title."
+    }
+  },
+  "example": {
+    "tsx": "import React, { useState } from 'react';\nimport { ScrollView, RefreshControl, Text } from 'react-native';\n\nexport default function PullToRefreshExample() {\n  const [refreshing, setRefreshing] = useState(false);\n\n  const onRefresh = () => {\n    setRefreshing(true);\n    setTimeout(() => setRefreshing(false), 2000);\n  };\n\n  return (\n    <ScrollView\n      contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'center'}}\n      refreshControl={\n        <RefreshControl\n          refreshing={refreshing}\n          onRefresh={onRefresh}\n          tintColor=\"#ff0000\"\n          title=\"Loading...\"\n          titleColor=\"#00ff00\"\n        />\n      }\n    >\n      <Text>Pull down to see RefreshControl in action!</Text>\n    </ScrollView>\n  );\n}"
+  }
+}

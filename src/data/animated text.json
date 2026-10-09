@@ -1,0 +1,30 @@
+{
+  "component": "Animated.Text",
+  "library": "react-native",
+  "description": "A wrapper for the standard Text component that allows animation of style properties using the Animated API.",
+  "usage": "Use Animated.Value or Animated.ValueXY to animate properties such as opacity, color, position, scale, or rotation of text.",
+  "example": {
+    "tsx": "import React, { useRef, useEffect } from 'react';\nimport { Animated, Text, View } from 'react-native';\n\nconst AnimatedTextExample = () => {\n  const fadeAnim = useRef(new Animated.Value(0)).current;\n\n  useEffect(() => {\n    Animated.timing(fadeAnim, {\n      toValue: 1,\n      duration: 1000,\n      useNativeDriver: true\n    }).start();\n  }, [fadeAnim]);\n\n  return (\n    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>\n      <Animated.Text style={{opacity: fadeAnim, fontSize: 24, color: 'blue'}}>\n        Hello, Animated Text!\n      </Animated.Text>\n    </View>\n  );\n};\n\nexport default AnimatedTextExample;"
+  },
+  "animatableProps": [
+    "opacity",
+    "color",
+    "transform: [{translateX}, {translateY}, {scale}, {rotate}]",
+    "fontSize"
+  ],
+  "methods": {
+    "timing": "Animate a value over a specified duration with easing.",
+    "spring": "Animate a value using spring physics.",
+    "decay": "Animate a value with initial velocity, gradually slowing to stop.",
+    "add/subtract/multiply/divide/modulo": "Combine animated values for complex animations.",
+    "interpolate": "Map input ranges of an Animated.Value to output ranges (e.g., colors, sizes, positions).",
+    "sequence": "Run multiple animations one after another.",
+    "parallel": "Run multiple animations at the same time.",
+    "loop": "Repeat an animation multiple times or infinitely."
+  },
+  "notes": [
+    "Always use useNativeDriver: true where possible for better performance.",
+    "Animated.Text can animate style properties only, not text content directly.",
+    "For color changes, use interpolate with an Animated.Value mapped to color strings."
+  ]
+}

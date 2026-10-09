@@ -1,0 +1,96 @@
+{
+  "component": "SectionList",
+  "category": "Lists",
+  "description": "SectionList is a performant React Native component used to render grouped or sectioned lists with headers, footers, separators, and advanced scrolling features.",
+  "whenToUse": [
+    "When data is grouped into sections",
+    "When you need headers for each group",
+    "When FlatList is not enough"
+  ],
+  "features": [
+    "Cross-platform support",
+    "Section headers and footers",
+    "Item separators",
+    "Pull to refresh",
+    "Scroll loading",
+    "Sticky headers (iOS)"
+  ],
+  "requiredProps": {
+    "sections": {
+      "type": "array",
+      "description": "Array of section objects containing data"
+    },
+    "renderItem": {
+      "type": "function",
+      "description": "Function to render each item in a section"
+    }
+  },
+  "importantProps": [
+    {
+      "name": "renderSectionHeader",
+      "type": "function",
+      "description": "Renders the header for each section"
+    },
+    {
+      "name": "renderSectionFooter",
+      "type": "function",
+      "description": "Renders the footer for each section"
+    },
+    {
+      "name": "ItemSeparatorComponent",
+      "type": "component",
+      "description": "Rendered between each item"
+    },
+    {
+      "name": "ListHeaderComponent",
+      "type": "component",
+      "description": "Rendered at the top of the list"
+    },
+    {
+      "name": "ListFooterComponent",
+      "type": "component",
+      "description": "Rendered at the bottom of the list"
+    },
+    {
+      "name": "keyExtractor",
+      "type": "function",
+      "description": "Returns a unique key for each item"
+    },
+    {
+      "name": "refreshing",
+      "type": "boolean",
+      "default": false,
+      "description": "Shows loading indicator during refresh"
+    },
+    {
+      "name": "onRefresh",
+      "type": "function",
+      "description": "Called when pull-to-refresh is triggered"
+    }
+  ],
+  "sectionStructure": {
+    "title": "string",
+    "data": "array",
+    "key": "string (optional)"
+  },
+  "notes": [
+    "SectionList is a PureComponent",
+    "extraData should be used if UI depends on external state",
+    "Offscreen items may unmount for performance",
+    "Use keyExtractor for better performance"
+  ],
+  "comparison": {
+    "FlatList": "Use when data is simple and not grouped",
+    "SectionList": "Use when data needs grouping with headers"
+  },
+  "exampleUseCase": [
+    "Contacts grouped by alphabet",
+    "Chat messages grouped by date",
+    "Settings grouped by category"
+  ],
+  "platformBehavior": {
+    "ios": "Sticky headers enabled by default",
+    "android": "Sticky headers disabled by default"
+  },
+  "learningLevel": "Beginner to Intermediate"
+}

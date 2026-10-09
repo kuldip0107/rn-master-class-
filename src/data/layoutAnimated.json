@@ -1,0 +1,97 @@
+{
+  "component": "LayoutAnimation",
+  "library": "react-native",
+  "description": "Automatically animates views to their new positions when the next layout happens. Useful for animating state changes or view updates.",
+  "androidSetup": {
+    "note": "On Android, you must enable LayoutAnimation experimentally via UIManager.",
+    "code": "if (Platform.OS === 'android') {\n  if (UIManager.setLayoutAnimationEnabledExperimental) {\n    UIManager.setLayoutAnimationEnabledExperimental(true);\n  }\n}"
+  },
+  "methods": {
+    "configureNext": {
+      "description": "Schedules an animation to happen on the next layout update.",
+      "parameters": {
+        "config": "object, required. See config structure below.",
+        "onAnimationDidEnd": "function, optional. Called when the animation finishes.",
+        "onAnimationDidFail": "function, optional. Called when the animation fails."
+      },
+      "configStructure": {
+        "duration": "number, milliseconds, optional",
+        "create": {
+          "type": "string, animation type",
+          "property": "string, layout property to animate, optional",
+          "springDamping": "number, optional, only for spring type",
+          "initialVelocity": "number, optional",
+          "delay": "number, optional",
+          "duration": "number, optional"
+        },
+        "update": {
+          "type": "string, animation type, optional",
+          "springDamping": "number, optional",
+          "duration": "number, optional",
+          "delay": "number, optional"
+        },
+        "delete": {
+          "type": "string, animation type, optional",
+          "property": "string, layout property to animate, optional",
+          "duration": "number, optional",
+          "delay": "number, optional"
+        }
+      }
+    },
+    "create": {
+      "description": "Helper to create a valid animation config object for configureNext.",
+      "parameters": {
+        "duration": "number, milliseconds",
+        "type": "string, animation type",
+        "creationProp": "string, layout property to animate"
+      }
+    }
+  },
+  "types": {
+    "Types": [
+      "spring",
+      "linear",
+      "easeInEaseOut",
+      "easeIn",
+      "easeOut",
+      "keyboard"
+    ],
+    "Properties": [
+      "opacity",
+      "scaleX",
+      "scaleY",
+      "scaleXY"
+    ]
+  },
+  "presets": {
+    "easeInEaseOut": {
+      "description": "Calls configureNext() with easeInEaseOut preset.",
+      "config": "create(300, 'easeInEaseOut', 'opacity')"
+    },
+    "linear": {
+      "description": "Calls configureNext() with linear preset.",
+      "config": "create(500, 'linear', 'opacity')"
+    },
+    "spring": {
+      "description": "Calls configureNext() with spring preset.",
+      "config": {
+        "duration": 700,
+        "create": {
+          "type": "linear",
+          "property": "opacity"
+        },
+        "update": {
+          "type": "spring",
+          "springDamping": 0.4
+        },
+        "delete": {
+          "type": "linear",
+          "property": "opacity"
+        }
+      }
+    }
+  },
+  "example": {
+    "tsx": "LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);\nsetState({ items: updatedItems });"
+  }
+}

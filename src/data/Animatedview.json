@@ -1,0 +1,109 @@
+{
+  "component": "Animated",
+  "library": "react-native",
+  "description": "Library to make fluid, declarative animations in React Native. Provides Animated.Value, Animated.ValueXY, timing, spring, decay, and composition functions.",
+  "valueTypes": [
+    {
+      "type": "Animated.Value",
+      "description": "For single value animations. Can bind to style or props, interpolated, and drives multiple properties."
+    },
+    {
+      "type": "Animated.ValueXY",
+      "description": "For 2D vector animations such as pan gestures."
+    }
+  ],
+  "animatableComponents": [
+    "Animated.View",
+    "Animated.Image",
+    "Animated.ScrollView",
+    "Animated.FlatList",
+    "Animated.SectionList"
+  ],
+  "methods": {
+    "decay": {
+      "description": "Animates a value from an initial velocity to zero using decay.",
+      "config": {
+        "velocity": "number, required",
+        "deceleration": "number, default 0.997",
+        "isInteraction": "boolean, default true",
+        "useNativeDriver": "boolean, required"
+      }
+    },
+    "timing": {
+      "description": "Animates a value along a timed easing curve.",
+      "config": {
+        "duration": "milliseconds, default 500",
+        "easing": "Easing function, default Easing.inOut(Easing.ease)",
+        "delay": "milliseconds, default 0",
+        "isInteraction": "boolean, default true",
+        "useNativeDriver": "boolean, required"
+      }
+    },
+    "spring": {
+      "description": "Animates a value using spring physics (damped harmonic oscillator).",
+      "config": {
+        "friction": "default 7",
+        "tension": "default 40",
+        "speed": "default 12",
+        "bounciness": "default 8",
+        "stiffness": "default 100",
+        "damping": "default 10",
+        "mass": "default 1",
+        "velocity": "default 0",
+        "overshootClamping": "boolean, default false",
+        "restDisplacementThreshold": "default 0.001",
+        "restSpeedThreshold": "default 0.001",
+        "delay": "milliseconds, default 0",
+        "isInteraction": "boolean, default true",
+        "useNativeDriver": "boolean, required"
+      }
+    },
+    "add": "Creates new Animated value by adding two Animated values.",
+    "subtract": "Creates new Animated value by subtracting second from first.",
+    "multiply": "Creates new Animated value by multiplying two values.",
+    "divide": "Creates new Animated value by dividing first by second.",
+    "modulo": "Creates new Animated value as modulo of a value.",
+    "diffClamp": "Limits a value between min and max based on value difference.",
+    "delay": "Starts an animation after a given delay.",
+    "sequence": "Runs animations in order, waiting for each to complete before starting the next.",
+    "parallel": "Runs animations simultaneously. Can use stopTogether flag.",
+    "stagger": "Runs animations in sequence with a staggered delay.",
+    "loop": {
+      "description": "Loops an animation a specified number of times or infinitely.",
+      "config": {
+        "iterations": "number, default -1 (infinite)"
+      }
+    },
+    "event": {
+      "description": "Maps events (e.g., gestures, scroll) to animated values.",
+      "config": {
+        "listener": "optional async listener",
+        "useNativeDriver": "boolean, required"
+      }
+    },
+    "forkEvent": "Attach a new JS listener to an existing AnimatedEvent.",
+    "unforkEvent": "Remove a JS listener from an AnimatedEvent.",
+    "start": "Starts the animation. Optional callback provides {finished: boolean}.",
+    "stop": "Stops any running animation.",
+    "reset": "Stops animation and resets value to original."
+  },
+  "interpolation": {
+    "description": "Maps input ranges to output ranges. Supports extrapolation, clamping, and easing."
+  },
+  "nodeTypes": [
+    "Node",
+    "Interpolation"
+  ],
+  "utility": {
+    "createAnimatedComponent": "Wraps any React component to make it animatable.",
+    "attachNativeEvent": "Imperative API to attach animated value to events. Prefer Animated.event with useNativeDriver."
+  },
+  "notes": [
+    "Do not modify animated values directly; use useRef or Animated.Value.",
+    "Use useNativeDriver: true to offload animation to native UI thread.",
+    "Animations can be composed using parallel, sequence, stagger, delay, loop."
+  ],
+  "example": {
+    "tsx": "const fadeAnim = useRef(new Animated.Value(0)).current;\n\nAnimated.timing(fadeAnim, {\n  toValue: 1,\n  duration: 500,\n  useNativeDriver: true\n}).start();\n\n<Animated.View style={{opacity: fadeAnim}} />"
+  }
+}

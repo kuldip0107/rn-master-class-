@@ -1,0 +1,82 @@
+{
+  "component": "TouchableHighlight",
+  "type": "Core Component",
+  "description": "A wrapper that makes a view respond to touches by decreasing opacity and showing an underlay color when pressed. For more advanced touch handling, consider using Pressable.",
+  "basicExample": {
+    "tsx": "function MyComponent(props) {\n  return (\n    <View {...props} style={{flex: 1, backgroundColor: '#fff'}}>\n      <Text>My Component</Text>\n    </View>\n  );\n}\n\n<TouchableHighlight\n  activeOpacity={0.6}\n  underlayColor=\"#DDDDDD\"\n  onPress={() => alert('Pressed!')}\n>\n  <MyComponent />\n</TouchableHighlight>"
+  },
+  "howItWorks": {
+    "pressEffect": [
+      "When pressed, the opacity of the wrapped view decreases, allowing the underlay color to show through",
+      "The underlay is created by wrapping the child in a new View, which can affect layout",
+      "TouchableHighlight must have exactly one child; for multiple children, wrap them in a View"
+    ],
+    "tip": "For more extensive and future-proof touch handling, use Pressable instead"
+  },
+  "props": {
+    "activeOpacity": {
+      "type": "number",
+      "default": 0.85,
+      "description": "Opacity of the view when pressed (requires underlayColor to be set)"
+    },
+    "underlayColor": {
+      "type": "color",
+      "description": "The color of the underlay that shows through when pressed"
+    },
+    "onHideUnderlay": {
+      "type": "function",
+      "description": "Called immediately after the underlay is hidden"
+    },
+    "onShowUnderlay": {
+      "type": "function",
+      "description": "Called immediately after the underlay is shown"
+    },
+    "ref": {
+      "type": "function",
+      "description": "Ref setter assigned to the element node when mounted"
+    },
+    "style": {
+      "type": "ViewStyle",
+      "description": "Style for the wrapped view"
+    },
+    "hasTVPreferredFocus": {
+      "platform": "iOS / Apple TV",
+      "type": "boolean",
+      "description": "TV preferred focus (see View component)"
+    },
+    "nextFocusDown": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating down"
+    },
+    "nextFocusForward": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating forward"
+    },
+    "nextFocusLeft": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating left"
+    },
+    "nextFocusRight": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating right"
+    },
+    "nextFocusUp": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating up"
+    },
+    "testOnly_pressed": {
+      "type": "boolean",
+      "description": "Used for snapshot testing"
+    }
+  },
+  "notes": [
+    "TouchableHighlight inherits all props from TouchableWithoutFeedback",
+    "Use underlayColor and activeOpacity to customize press effect",
+    "Better for simple tap interactions, especially when you want a visual underlay color"
+  ]
+}

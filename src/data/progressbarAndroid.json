@@ -1,0 +1,39 @@
+{
+  "component": "ProgressBarAndroid",
+  "library": "react-native",
+  "platform": "Android",
+  "deprecated": true,
+  "replacement": "Use community packages such as @react-native-community/progress-bar-android",
+  "description": "Android-only React component used to indicate that the app is loading or there is some activity in the app.",
+  "props": {
+    "animating": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to show the progress bar or hide it."
+    },
+    "color": {
+      "type": "color",
+      "description": "Color of the progress bar."
+    },
+    "indeterminate": {
+      "type": "boolean",
+      "description": "If the progress bar will show indeterminate progress. Can only be false if styleAttr is Horizontal and a progress value is provided."
+    },
+    "progress": {
+      "type": "number",
+      "description": "Progress value between 0 and 1."
+    },
+    "styleAttr": {
+      "type": "enum('Horizontal','Normal','Small','Large','Inverse','SmallInverse','LargeInverse')",
+      "default": "Normal",
+      "description": "Style of the progress bar."
+    },
+    "testID": {
+      "type": "string",
+      "description": "Used to locate this view in end-to-end tests."
+    }
+  },
+  "example": {
+    "tsx": "import React from 'react';\nimport { ProgressBarAndroid, View } from 'react-native';\n\nexport default function App() {\n  return (\n    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>\n      <ProgressBarAndroid styleAttr=\"Horizontal\" indeterminate={false} progress={0.5} color=\"#6a51ae\" />\n    </View>\n  );\n}"
+  }
+}

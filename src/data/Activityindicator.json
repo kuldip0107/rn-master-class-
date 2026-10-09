@@ -1,0 +1,36 @@
+{
+  "component": "ActivityIndicator",
+  "library": "react-native",
+  "description": "Displays a circular loading indicator to indicate progress or loading state.",
+  "props": {
+    "animating": {
+      "type": "bool",
+      "default": true,
+      "description": "Whether to show the indicator (true) or hide it (false)."
+    },
+    "color": {
+      "type": "color",
+      "default": "null (system accent color on Android), '#999999' on iOS",
+      "description": "The foreground color of the spinner."
+    },
+    "hidesWhenStopped": {
+      "type": "bool",
+      "default": true,
+      "platform": "iOS",
+      "description": "Whether the indicator should hide when not animating."
+    },
+    "ref": {
+      "type": "ref",
+      "description": "A ref setter that will be assigned an element node when mounted."
+    },
+    "size": {
+      "type": "enum('small', 'large') | number",
+      "default": "'small'",
+      "platform": "Android",
+      "description": "Size of the indicator."
+    }
+  },
+  "example": {
+    "tsx": "import React, { useState } from 'react';\nimport { ActivityIndicator, View, Button } from 'react-native';\n\nexport default function LoadingExample() {\n  const [loading, setLoading] = useState(true);\n\n  return (\n    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>\n      <ActivityIndicator animating={loading} size=\"large\" color=\"#0000ff\" />\n      <Button title=\"Toggle Loading\" onPress={() => setLoading(!loading)} />\n    </View>\n  );\n}"
+  }
+}

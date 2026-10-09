@@ -1,0 +1,41 @@
+{
+  "module": "BackHandler",
+  "library": "react-native",
+  "description": "Detects hardware back button presses on Android, lets you register event listeners, and control app behavior on back press. Android-only.",
+  "methods": {
+    "addEventListener": {
+      "description": "Registers a handler function for the hardware back button press event. Returns a subscription object that can be removed.",
+      "signature": "addEventListener(eventName: BackPressEventName, handler: () => boolean | null | undefined) => NativeEventSubscription",
+      "parameters": {
+        "eventName": {
+          "type": "string",
+          "required": true,
+          "description": "Name of the back press event to listen for.",
+          "values": ["hardwareBackPress"]
+        },
+        "handler": {
+          "type": "function",
+          "required": true,
+          "description": "Function called when the back button is pressed. Return true to prevent default behavior, false to allow default behavior or let other listeners handle it."
+        }
+      },
+      "returns": "NativeEventSubscription object. Use subscription.remove() to unsubscribe."
+    },
+    "exitApp": {
+      "description": "Programmatically exits the app.",
+      "signature": "exitApp()",
+      "parameters": null,
+      "returns": "void"
+    }
+  },
+  "notes": [
+    "Event subscriptions are called in reverse order (last registered first).",
+    "Returning true in a handler prevents earlier subscriptions and system default behavior.",
+    "Returning false allows the event to bubble and invokes default behavior if no other listener handles it.",
+    "Does not work if a Modal is open (see React Native Modal docs).",
+    "For React Navigation, refer to Custom Android Back Button Behavior for integrating navigation actions."
+  ],
+  "example": {
+    "tsx": "import { BackHandler } from 'react-native';\nimport React, { useEffect } from 'react';\n\nexport default function App() {\n  useEffect(() => {\n    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {\n      if (window.confirm('Do you want to exit the app?')) {\n        BackHandler.exitApp();\n        return true;\n      }\n      return false;\n    });\n\n    return () => subscription.remove();\n  }, []);\n\n  return null;\n}"
+  }
+}

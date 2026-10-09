@@ -1,0 +1,152 @@
+{
+  "component": "Button",
+  "description": "A basic cross-platform button component that renders a native-looking button on both Android and iOS. Supports minimal customization.",
+  "categories": [
+    {
+      "title": "Required Props",
+      "data": [
+        {
+          "id": "1",
+          "name": "onPress",
+          "type": "function",
+          "required": true,
+          "description": "Handler function called when the user taps the button."
+        },
+        {
+          "id": "2",
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Text displayed inside the button. On Android, the text is automatically uppercased."
+        }
+      ]
+    },
+    {
+      "title": "Optional Props",
+      "data": [
+        {
+          "id": "3",
+          "name": "color",
+          "type": "color",
+          "default": {
+            "android": "#2196F3",
+            "ios": "#007AFF"
+          },
+          "description": "Text color on iOS and background color on Android."
+        },
+        {
+          "id": "4",
+          "name": "disabled",
+          "type": "boolean",
+          "default": false,
+          "description": "Disables all interactions for the button."
+        },
+        {
+          "id": "5",
+          "name": "accessibilityLabel",
+          "type": "string",
+          "description": "Text used by screen readers for accessibility."
+        },
+        {
+          "id": "6",
+          "name": "accessibilityLanguage",
+          "platform": "iOS",
+          "type": "string",
+          "description": "Specifies the language used by the screen reader when interacting with the button."
+        }
+      ]
+    },
+    {
+      "title": "Accessibility Props",
+      "data": [
+        {
+          "id": "7",
+          "name": "accessibilityActions",
+          "type": "array",
+          "description": "Defines custom accessibility actions that assistive technologies can trigger."
+        },
+        {
+          "id": "8",
+          "name": "onAccessibilityAction",
+          "type": "function",
+          "description": "Callback invoked when an accessibility action is performed."
+        }
+      ]
+    },
+    {
+      "title": "TV & Platform Specific Props",
+      "data": [
+        {
+          "id": "9",
+          "name": "hasTVPreferredFocus",
+          "platform": "TV",
+          "type": "boolean",
+          "default": false,
+          "description": "Gives the button preferred focus on TV platforms."
+        },
+        {
+          "id": "10",
+          "name": "nextFocusUp",
+          "platform": "Android TV",
+          "type": "number",
+          "description": "Specifies the next view to receive focus when navigating up."
+        },
+        {
+          "id": "11",
+          "name": "nextFocusDown",
+          "platform": "Android TV",
+          "type": "number",
+          "description": "Specifies the next view to receive focus when navigating down."
+        },
+        {
+          "id": "12",
+          "name": "nextFocusLeft",
+          "platform": "Android TV",
+          "type": "number",
+          "description": "Specifies the next view to receive focus when navigating left."
+        },
+        {
+          "id": "13",
+          "name": "nextFocusRight",
+          "platform": "Android TV",
+          "type": "number",
+          "description": "Specifies the next view to receive focus when navigating right."
+        },
+        {
+          "id": "14",
+          "name": "nextFocusForward",
+          "platform": "Android TV",
+          "type": "number",
+          "description": "Specifies the next view to receive focus when navigating forward."
+        }
+      ]
+    },
+    {
+      "title": "Testing & Android Specific",
+      "data": [
+        {
+          "id": "15",
+          "name": "testID",
+          "type": "string",
+          "description": "Identifier used for end-to-end testing."
+        },
+        {
+          "id": "16",
+          "name": "touchSoundDisabled",
+          "platform": "Android",
+          "type": "boolean",
+          "default": false,
+          "description": "Disables the system touch sound when the button is pressed."
+        }
+      ]
+    }
+  ],
+  "example": {
+    "title": "Basic Button Example",
+    "description": "A simple button with custom color and accessibility label.",
+    "code": {
+      "language": "tsx",
+      "snippet": "<Button\n  title=\"Learn More\"\n  onPress={onPressLearnMore}\n  color=\"#841584\"\n  accessibilityLabel=\"Learn more about this purple button\"\n/>"
+    }
+  }
+}

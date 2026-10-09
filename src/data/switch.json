@@ -1,0 +1,49 @@
+{
+  "component": "Switch",
+  "type": "Core Component",
+  "description": "Renders a boolean input. Controlled component requiring `onValueChange` to update the `value` prop, otherwise it will render the supplied value instead of user changes.",
+  "basicExample": {
+    "tsx": "import { Switch, View } from 'react-native';\nimport React, { useState } from 'react';\n\nexport default function App() {\n  const [isEnabled, setIsEnabled] = useState(false);\n  return (\n    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>\n      <Switch\n        value={isEnabled}\n        onValueChange={setIsEnabled}\n        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}\n        trackColor={{ false: '#767577', true: '#81b0ff' }}\n        ios_backgroundColor=\"#3e3e3e\"\n      />\n    </View>\n  );\n}"
+  },
+  "props": {
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, user cannot toggle the switch."
+    },
+    "ios_backgroundColor": {
+      "type": "color",
+      "description": "iOS only. Custom color for the background, visible when value is false or switch is disabled."
+    },
+    "onChange": {
+      "type": "function",
+      "description": "Called when the user attempts to change the switch. Receives the change event as argument."
+    },
+    "onValueChange": {
+      "type": "function",
+      "description": "Called when the user attempts to change the switch. Receives the new boolean value as argument. Use this to control the component."
+    },
+    "ref": {
+      "type": "ref",
+      "description": "Ref setter assigned to the element node when mounted."
+    },
+    "thumbColor": {
+      "type": "color",
+      "description": "Color of the foreground switch grip. On iOS, setting this removes the drop shadow."
+    },
+    "trackColor": {
+      "type": "object",
+      "description": "Custom colors for the switch track. Should be an object with `{ false: color, true: color }`."
+    },
+    "value": {
+      "type": "boolean",
+      "default": false,
+      "description": "Current value of the switch. If true, the switch is turned on."
+    }
+  },
+  "notes": [
+    "Controlled component: always use `onValueChange` to update `value`.",
+    "iOS-specific background color can be set via `ios_backgroundColor`.",
+    "Use `thumbColor` and `trackColor` to customize the switch appearance."
+  ]
+}

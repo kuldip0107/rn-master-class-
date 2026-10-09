@@ -1,0 +1,100 @@
+
+{
+  "component": "Modal",
+  "library": "react-native",
+  "description": "A component to present content above an enclosing view, optionally with animations and transparency. Useful for dialogs, pop-ups, and overlay content.",
+  "basicExample": {
+    "tsx": "import { Modal, View, Text, Button } from 'react-native';\n\nconst [modalVisible, setModalVisible] = useState(false);\n\n<Modal\n  animationType=\"slide\"\n  transparent={true}\n  visible={modalVisible}\n  onRequestClose={() => setModalVisible(false)}\n>\n  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>\n    <Text>Hello, Modal!</Text>\n    <Button title=\"Close\" onPress={() => setModalVisible(false)} />\n  </View>\n</Modal>"
+  },
+  "props": {
+    "animationType": {
+      "type": "enum('none','slide','fade')",
+      "default": "none",
+      "description": "Controls how the modal animates when it appears."
+    },
+    "backdropColor": {
+      "type": "color",
+      "default": "white",
+      "description": "Background color of the modal container. Ignored if transparent is true."
+    },
+    "hardwareAccelerated": {
+      "type": "bool",
+      "default": false,
+      "platform": "Android",
+      "description": "Forces hardware acceleration for the modal window."
+    },
+    "navigationBarTranslucent": {
+      "type": "bool",
+      "default": false,
+      "platform": "Android",
+      "description": "Allows modal to go under the system navigation bar."
+    },
+    "statusBarTranslucent": {
+      "type": "bool",
+      "default": false,
+      "platform": "Android",
+      "description": "Allows modal to go under the system status bar."
+    },
+    "onDismiss": {
+      "type": "function",
+      "optional": true,
+      "platform": "iOS",
+      "description": "Called when the modal has been dismissed."
+    },
+    "onOrientationChange": {
+      "type": "function(orientation)",
+      "optional": true,
+      "platform": "iOS",
+      "description": "Called when device orientation changes while modal is displayed. Orientation is 'portrait' or 'landscape'."
+    },
+    "allowSwipeDismissal": {
+      "type": "bool",
+      "default": false,
+      "platform": "iOS",
+      "description": "Allows modal dismissal by swiping down. Requires onRequestClose to handle dismissal."
+    },
+    "ref": {
+      "type": "Ref",
+      "optional": true,
+      "description": "Reference setter for the modal element."
+    },
+    "onRequestClose": {
+      "type": "function",
+      "required": true,
+      "description": "Called when the user taps hardware back button (Android) or dismisses modal via swipe (iOS)."
+    },
+    "onShow": {
+      "type": "function",
+      "optional": true,
+      "description": "Called when the modal has been shown."
+    },
+    "presentationStyle": {
+      "type": "enum('fullScreen','pageSheet','formSheet','overFullScreen')",
+      "default": "fullScreen",
+      "platform": "iOS",
+      "description": "Controls how the modal appears on larger devices. Defaults depend on transparency."
+    },
+    "supportedOrientations": {
+      "type": "array of enums('portrait','portrait-upside-down','landscape','landscape-left','landscape-right')",
+      "default": ["portrait"],
+      "platform": "iOS",
+      "description": "Specifies allowed orientations for the modal."
+    },
+    "transparent": {
+      "type": "bool",
+      "default": false,
+      "description": "If true, modal renders over a transparent background."
+    },
+    "visible": {
+      "type": "bool",
+      "default": true,
+      "description": "Controls whether the modal is visible."
+    }
+  },
+  "notes": [
+    "animationType 'slide' slides modal from bottom, 'fade' fades in, 'none' shows without animation.",
+    "onRequestClose is required for Android hardware back button handling.",
+    "presentationStyle only affects iOS, particularly on iPad and larger devices.",
+    "transparent modals allow overlay effects; backdropColor is ignored in this mode."
+  ]
+}

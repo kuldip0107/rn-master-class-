@@ -1,0 +1,66 @@
+{
+  "component": "TouchableOpacity",
+  "type": "Core Component",
+  "description": "A wrapper that makes a view respond to touches by decreasing its opacity when pressed. For more advanced touch handling, consider using Pressable.",
+  "basicExample": {
+    "tsx": "<TouchableOpacity onPress={onPressFunction}><Text>Press me!</Text></TouchableOpacity>"
+  },
+  "howItWorks": {
+    "pressEffect": [
+      "When pressed, the opacity of the wrapped view decreases, dimming it",
+      "Opacity change is handled via an Animated.View wrapper",
+      "Be aware that using Animated.View can affect layout"
+    ],
+    "tip": "For more extensive and future-proof touch handling, use Pressable instead"
+  },
+  "props": {
+    "style": {
+      "type": "ViewStyle",
+      "description": "Style for the wrapped view"
+    },
+    "activeOpacity": {
+      "type": "number",
+      "default": 0.2,
+      "description": "Opacity of the view when touch is active"
+    },
+    "hasTVPreferredFocus": {
+      "platform": "iOS / Apple TV",
+      "type": "boolean",
+      "description": "TV preferred focus (see View component)"
+    },
+    "nextFocusDown": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating down"
+    },
+    "nextFocusForward": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating forward"
+    },
+    "nextFocusLeft": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating left"
+    },
+    "nextFocusRight": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating right"
+    },
+    "nextFocusUp": {
+      "platform": "Android TV",
+      "type": "number",
+      "description": "View that receives focus when navigating up"
+    },
+    "ref": {
+      "type": "function",
+      "description": "Ref setter assigned to the element node when mounted"
+    }
+  },
+  "notes": [
+    "TouchableOpacity inherits all props from TouchableWithoutFeedback",
+    "Use activeOpacity to customize press effect",
+    "Better for simple tap interactions, not for complex gestures"
+  ]
+}

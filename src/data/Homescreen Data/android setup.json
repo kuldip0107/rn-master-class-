@@ -1,0 +1,133 @@
+{
+  "courseId": "RN_ANDROID_SETUP_001",
+  "courseTitle": "React Native Android Studio Setup",
+  "level": "Beginner",
+  "platform": "Android",
+  "sections": [
+    {
+      "id": 1,
+      "title": "Required Software",
+      "description": "Install all required tools before starting React Native Android development.",
+      "steps": [
+        {
+          "id": "1.1",
+          "name": "Node.js",
+          "details": "Install the LTS version of Node.js from the official website.",
+          "verify": "node -v && npm -v"
+        },
+        {
+          "id": "1.2",
+          "name": "Java Development Kit (JDK)",
+          "details": "Install JDK 17 for best compatibility with React Native.",
+          "verify": "java -version"
+        },
+        {
+          "id": "1.3",
+          "name": "Android Studio",
+          "details": "Install Android Studio with Android SDK, Emulator, and Platform Tools."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Android Studio Configuration",
+      "description": "Configure SDK platforms and tools inside Android Studio.",
+      "sdkPlatforms": [
+        "Android 13 (API 33)",
+        "Android 14 (API 34)"
+      ],
+      "sdkTools": [
+        "Android SDK Build-Tools",
+        "Android SDK Platform-Tools",
+        "Android SDK Command-line Tools",
+        "Android Emulator"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Environment Variables",
+      "description": "Set Android environment variables on Windows system.",
+      "variables": [
+        {
+          "name": "ANDROID_HOME",
+          "valueExample": "C:/Users/USERNAME/AppData/Local/Android/Sdk"
+        }
+      ],
+      "pathAdd": [
+        "%ANDROID_HOME%/platform-tools",
+        "%ANDROID_HOME%/emulator",
+        "%ANDROID_HOME%/cmdline-tools/latest/bin"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Create React Native Project",
+      "description": "Create a new React Native application using React Native CLI.",
+      "commands": [
+        "npx react-native@latest init MyApp",
+        "cd MyApp"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Run Android Emulator",
+      "description": "Start Android emulator or connect a physical device.",
+      "methods": [
+        {
+          "type": "Emulator",
+          "steps": [
+            "Open Android Studio",
+            "Go to Device Manager",
+            "Start a virtual device"
+          ]
+        },
+        {
+          "type": "Physical Device",
+          "steps": [
+            "Enable Developer Options",
+            "Enable USB Debugging",
+            "Connect device via USB"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Run React Native App",
+      "description": "Run your React Native app on Android device.",
+      "commands": [
+        "adb devices",
+        "npx react-native run-android"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Open Project in Android Studio",
+      "description": "Open the android folder for native development and debugging.",
+      "path": "MyApp/android"
+    },
+    {
+      "id": 8,
+      "title": "Common Commands",
+      "commands": [
+        "npx react-native start",
+        "npx react-native run-android",
+        "cd android && ./gradlew assembleRelease"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Common Errors & Fixes",
+      "issues": [
+        {
+          "problem": "Gradle build failed",
+          "solution": "Ensure JDK 17 is installed and Gradle version is compatible."
+        },
+        {
+          "problem": "adb not recognized",
+          "solution": "Check ANDROID_HOME and add platform-tools to PATH."
+        }
+      ]
+    }
+  ]
+}

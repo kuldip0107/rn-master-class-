@@ -1,0 +1,97 @@
+{
+  "component": "Flexbox Layout",
+  "library": "react-native",
+  "description": "Flexbox is used to design responsive layouts in React Native across different screen sizes.",
+  "properties": {
+    "flexDirection": {
+        "description": "Defines the main axis direction.",
+        "values": ["column (default)", "row", "column-reverse", "row-reverse"]
+    },
+    "justifyContent": {
+        "description": "Aligns children along the main axis.",
+        "values": ["flex-start", "flex-end", "center", "space-between", "space-around", "space-evenly"]
+    },
+    "alignItems": {
+        "description": "Aligns children along the cross axis.",
+        "values": ["stretch", "flex-start", "flex-end", "center", "baseline"],
+        "note": "Stretch works only when child has no fixed size in that dimension."
+    },
+    "alignSelf": {
+        "description": "Overrides alignItems for a single child.",
+        "values": ["auto", "flex-start", "flex-end", "center", "stretch"]
+    },
+    "alignContent": {
+        "description": "Controls spacing between wrapped lines (multiline).",
+        "values": ["flex-start", "flex-end", "center", "stretch", "space-between", "space-around"]
+    },
+    "flexWrap": {
+        "description": "Controls wrapping behavior of children.",
+        "values": ["nowrap", "wrap", "wrap-reverse"]
+    },
+    "flex": {
+        "description": "Defines how items fill available space along the main axis.",
+        "type": "number",
+        "examples": ["flex: 1 (fills remaining)", "flex: 0 (default)"]
+    },
+    "flexGrow": {
+        "description": "Controls how extra space is distributed. Accepts any floating point number.",
+        "default": 0,
+        "type": "number"
+    },
+    "flexShrink": {
+        "description": "Controls how items shrink when overflowing.",
+        "default": 0,
+        "type": "number"
+    },
+    "flexBasis": {
+        "description": "Default size of an item before grow/shrink calculations.",
+        "type": "number | string | percentage"
+    },
+    "gap": {
+        "description": "Spacing between both rows and columns.",
+        "type": "number"
+    },
+    "rowGap": {
+        "description": "Spacing between rows.",
+        "type": "number"
+    },
+    "columnGap": {
+        "description": "Spacing between columns.",
+        "type": "number"
+    },
+    "position": {
+        "description": "Positioning type of the element.",
+        "values": ["relative (default)", "absolute"],
+        "note": "absolute takes the element out of the flow."
+    },
+    "zIndex": {
+        "description": "Stacking order of the element. Higher numbers are on top.",
+        "type": "number"
+    },
+    "direction": {
+        "description": "Layout direction for text and children.",
+        "values": ["ltr (default)", "rtl"]
+    }
+  },
+  "coreConcepts": {
+     "Containing Block": {
+         "description": "Determines the reference frame for absolute positioning.",
+         "values": [
+             "relative/static -> parent",
+             "absolute -> nearest positioned ancestor"
+         ]
+     },
+     "Flex Basis vs Width/Height": {
+         "description": "flexBasis takes precedence over width (in row) or height (in column) if both are set."
+     }
+  },
+  "bestPractices": [
+    "Use flex: 1 instead of fixed dimensions for responsive containers.",
+    "Prefer inline styles or StyleSheet for performance.",
+    "Combine justifyContent and alignItems to center content easily.",
+    "Use useWindowDimensions() hook for layout calculations if flex isn't enough."
+  ],
+  "example": {
+      "code": "import React from 'react';\nimport { View, StyleSheet, Text } from 'react-native';\n\nconst FlexboxExample = () => (\n  <View style={styles.container}>\n    <View style={[styles.box, { backgroundColor: 'powderblue' }]} />\n    <View style={[styles.box, { backgroundColor: 'skyblue' }]} />\n    <View style={[styles.box, { backgroundColor: 'steelblue' }]} />\n  </View>\n);\n\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    flexDirection: 'column',\n    justifyContent: 'center',\n    alignItems: 'center',\n  },\n  box: {\n    width: 50,\n    height: 50,\n  },\n});"
+  }
+}

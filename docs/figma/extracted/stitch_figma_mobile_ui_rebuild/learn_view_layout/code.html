@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RN Master Class - Learn</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-container": "#00c1fd",
+                      "on-error": "#ffffff",
+                      "surface-container-highest": "#e3e2e7",
+                      "surface-dim": "#dad9df",
+                      "on-tertiary-fixed": "#410001",
+                      "primary-fixed": "#d8e2ff",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#004b65",
+                      "on-tertiary-container": "#fffbff",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#0070eb",
+                      "on-error-container": "#93000a",
+                      "secondary": "#006688",
+                      "secondary-fixed": "#c2e8ff",
+                      "on-surface-variant": "#414755",
+                      "tertiary": "#bc000a",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#f1f0f5",
+                      "inverse-surface": "#2f3034",
+                      "inverse-primary": "#adc6ff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-tint": "#005bc1",
+                      "surface-container-low": "#f4f3f8",
+                      "outline-variant": "#c1c6d7",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#930005",
+                      "on-primary-fixed-variant": "#004493",
+                      "surface": "#faf9fe",
+                      "outline": "#717786",
+                      "on-secondary-fixed-variant": "#004d67",
+                      "surface-variant": "#e3e2e7",
+                      "secondary-fixed-dim": "#75d1ff",
+                      "on-secondary": "#ffffff",
+                      "on-surface": "#1a1b1f",
+                      "tertiary-container": "#e2241f",
+                      "surface-container": "#eeedf3",
+                      "on-secondary-fixed": "#001e2b",
+                      "surface-container-high": "#e9e7ed",
+                      "primary": "#0058bc",
+                      "on-primary-container": "#fefcff",
+                      "surface-bright": "#faf9fe",
+                      "tertiary-fixed": "#ffdad5",
+                      "tertiary-fixed-dim": "#ffb4aa",
+                      "on-background": "#1a1b1f",
+                      "background": "#faf9fe",
+                      "on-primary-fixed": "#001a41"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-horizontal": "20px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "touch-target": "44px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "headline-xl": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "label-lg": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "code-snippet": [
+                              "courierPrime"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-xl": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.5px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-lg": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "17px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "15px",
+                              {
+                                      "lineHeight": "22px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "code-snippet": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
+      </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden pb-[90px]">
+<!-- Top App Bar (Web / Tablet) -->
+<header class="hidden md:flex bg-background dark:bg-background flex justify-between items-center px-margin-horizontal py-md w-full sticky top-0 z-40 shadow-sm border-b border-outline-variant/30">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">replace_audio</span>
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">RN Master Class</span>
+</div>
+<nav class="flex gap-lg">
+<a class="text-on-surface-variant text-label-lg font-label-lg hover:opacity-80" href="#">Home</a>
+<a class="text-primary font-bold text-label-lg font-label-lg hover:opacity-80" href="#">Learn</a>
+<a class="text-on-surface-variant text-label-lg font-label-lg hover:opacity-80" href="#">Code</a>
+<a class="text-on-surface-variant text-label-lg font-label-lg hover:opacity-80" href="#">Profile</a>
+</nav>
+<button class="hover:opacity-80 active:scale-95 transition-transform w-touch-target h-touch-target flex items-center justify-center rounded-full text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Top App Bar (Mobile) - Used as a standard header here since this isn't the root home -->
+<header class="md:hidden bg-background dark:bg-background flex justify-between items-center px-margin-horizontal py-md w-full sticky top-0 z-40">
+<div class="flex items-center gap-sm">
+<!-- Simulated Avatar for leading -->
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">person</span>
+</div>
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">RN Master Class</span>
+</div>
+<button class="hover:opacity-80 active:scale-95 transition-transform w-touch-target h-touch-target flex items-center justify-center rounded-full text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="px-margin-horizontal py-md max-w-3xl mx-auto w-full">
+<!-- Header & Search -->
+<div class="mb-lg">
+<h1 class="text-headline-xl font-headline-xl mb-md">Learn</h1>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full bg-surface-container-low text-on-surface placeholder:text-outline rounded-xl py-3 pl-12 pr-4 border border-transparent focus:border-primary focus:ring-0 focus:outline-none transition-colors text-body-md font-body-md h-touch-target shadow-sm" placeholder="Search components &amp; APIs..." type="text"/>
+</div>
+</div>
+<!-- Section Title -->
+<h2 class="text-headline-md font-headline-md mb-md border-b border-outline-variant/30 pb-xs">View &amp; Layout Components</h2>
+<!-- Component List -->
+<div class="flex flex-col gap-sm">
+<!-- View Card -->
+<a class="group block bg-surface-container-lowest rounded-xl p-md border border-outline-variant/40 hover:border-primary/50 transition-colors shadow-sm active:bg-surface-container-low" href="#">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-body-lg font-body-lg font-bold mb-xs group-hover:text-primary transition-colors">View</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Basic building block for UI layout</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</a>
+<!-- SafeAreaView Card -->
+<a class="group block bg-surface-container-lowest rounded-xl p-md border border-outline-variant/40 hover:border-primary/50 transition-colors shadow-sm active:bg-surface-container-low" href="#">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-body-lg font-body-lg font-bold mb-xs group-hover:text-primary transition-colors">SafeAreaView</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Renders content within safe area boundaries</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</a>
+<!-- KeyboardAvoidingView Card -->
+<a class="group block bg-surface-container-lowest rounded-xl p-md border border-outline-variant/40 hover:border-primary/50 transition-colors shadow-sm active:bg-surface-container-low" href="#">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-body-lg font-body-lg font-bold mb-xs group-hover:text-primary transition-colors">KeyboardAvoidingView</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Adjusts UI when keyboard appears</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</a>
+<!-- ScrollView Card -->
+<a class="group block bg-surface-container-lowest rounded-xl p-md border border-outline-variant/40 hover:border-primary/50 transition-colors shadow-sm active:bg-surface-container-low" href="#">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-body-lg font-body-lg font-bold mb-xs group-hover:text-primary transition-colors">ScrollView</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Scrollable container for content</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</a>
+<!-- FlatList Card -->
+<a class="group block bg-surface-container-lowest rounded-xl p-md border border-outline-variant/40 hover:border-primary/50 transition-colors shadow-sm active:bg-surface-container-low" href="#">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-body-lg font-body-lg font-bold mb-xs group-hover:text-primary transition-colors">FlatList</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Efficient list rendering for large data</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</a>
+<!-- SectionList Card -->
+<a class="group block bg-surface-container-lowest rounded-xl p-md border border-outline-variant/40 hover:border-primary/50 transition-colors shadow-sm active:bg-surface-container-low" href="#">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-body-lg font-body-lg font-bold mb-xs group-hover:text-primary transition-colors">SectionList</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">List with section headers</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</a>
+<!-- Modal Card -->
+<a class="group block bg-surface-container-lowest rounded-xl p-md border border-outline-variant/40 hover:border-primary/50 transition-colors shadow-sm active:bg-surface-container-low" href="#">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-body-lg font-body-lg font-bold mb-xs group-hover:text-primary transition-colors">Modal</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Basic way to present content above an enclosing view</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</a>
+</div>
+</main>
+<!-- Bottom Nav Bar (Mobile) -->
+<nav class="md:hidden bg-background/80 dark:bg-background/80 backdrop-blur-md fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-[70px] px-lg pb-safe rounded-t-xl border-t border-outline-variant dark:border-outline shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<!-- Home (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low w-touch-target h-touch-target rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+</a>
+<!-- Learn (Active) -->
+<a class="flex flex-col items-center justify-center text-secondary-container dark:text-secondary-fixed-dim after:content-['•'] after:text-[8px] after:mt-xs w-touch-target h-touch-target rounded-xl transition-colors active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+</a>
+<!-- Code (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low w-touch-target h-touch-target rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">code</span>
+</a>
+<!-- Profile (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low w-touch-target h-touch-target rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,85 @@
+{
+  "component": "createBottomTabNavigator",
+  "library": "@react-navigation/bottom-tabs",
+  "description": "A simple tab bar at the bottom of the screen that lets you switch between different routes. Screens are lazily initialized (mounted on first focus).",
+  "installation": {
+    "npm": "npm install @react-navigation/bottom-tabs",
+    "yarn": "yarn add @react-navigation/bottom-tabs",
+    "pnpm": "pnpm add @react-navigation/bottom-tabs",
+    "bun": "bun add @react-navigation/bottom-tabs"
+  },
+  "usage": {
+    "staticAPI": "createBottomTabNavigator(config) returns a Tab Navigator object with Navigator and Screen components.",
+    "dynamicAPI": "Use <Tab.Navigator> and <Tab.Screen> in your component tree."
+  },
+  "methods": {
+    "Navigator": "Component wrapping all tab screens and managing navigation state.",
+    "Screen": "Component representing an individual screen in the tab navigator."
+  },
+  "props": {
+    "initialRouteName": "The first screen to display.",
+    "backBehavior": "Behavior when the back button is pressed: 'firstRoute', 'initialRoute', 'order', 'history', 'fullHistory', 'none'. Default is 'firstRoute'.",
+    "detachInactiveScreens": "Boolean indicating whether inactive screens should be detached to save memory. Defaults to true.",
+    "tabBar": "Function returning a custom React element to render the tab bar.",
+    "lazy": "Boolean controlling if screens should mount lazily (default true).",
+    "freezeOnBlur": "Boolean preventing inactive screens from re-rendering (default false).",
+    "popToTopOnBlur": "Boolean to pop nested stack to top when switching tabs (default false).",
+    "sceneContainerStyle": "Style object applied to the container wrapping screen content."
+  },
+  "screenOptions": {
+    "title": "Fallback title for the screen.",
+    "tabBarLabel": "Label text or function returning React Node.",
+    "tabBarShowLabel": "Boolean controlling visibility of tab label (default true).",
+    "tabBarLabelPosition": "'below-icon' or 'beside-icon'. Default is automatic based on device.",
+    "tabBarLabelStyle": "Style object for the tab label.",
+    "tabBarIcon": "Function returning a React Node for the tab icon.",
+    "tabBarIconStyle": "Style object for the tab icon.",
+    "tabBarBadge": "String or number for a badge on the tab icon.",
+    "tabBarBadgeStyle": "Style object for the badge.",
+    "tabBarAccessibilityLabel": "Accessibility label for the tab button.",
+    "tabBarButton": "Function returning a React element for the tab button.",
+    "tabBarButtonTestID": "ID for testing the tab button.",
+    "tabBarActiveTintColor": "Color of icon and label for active tab.",
+    "tabBarInactiveTintColor": "Color of icon and label for inactive tab.",
+    "tabBarActiveBackgroundColor": "Background color for active tab.",
+    "tabBarInactiveBackgroundColor": "Background color for inactive tabs.",
+    "tabBarHideOnKeyboard": "Boolean to hide tab bar when keyboard is open (default false).",
+    "tabBarItemStyle": "Style object for tab item container.",
+    "tabBarStyle": "Style object for the tab bar itself.",
+    "tabBarBackground": "Function returning React element for tab bar background.",
+    "tabBarPosition": "'bottom', 'top', 'left', 'right' (default 'bottom').",
+    "tabBarVariant": "'uikit' (default) or 'material'. Only 'material' supports left/right positions.",
+    "header": "Function returning a custom header React element for the screen.",
+    "headerShown": "Boolean controlling visibility of the header (default true)."
+  },
+  "events": {
+    "tabPress": "Fired when the user presses the tab button. Can be prevented using event.preventDefault().",
+    "tabLongPress": "Fired when the user long-presses the tab button."
+  },
+  "hooks": {
+    "useBottomTabBarHeight": "Returns the height of the bottom tab bar for layout adjustments.",
+    "BottomTabBarHeightContext": "Context providing the tab bar height for class components or reusable components."
+  },
+  "animations": {
+    "animation": "Default transition animation when switching tabs: 'fade', 'shift', 'none' (default 'none').",
+    "transitionSpec": {
+      "animation": "'timing' or 'spring'.",
+      "config": "Options for timing or spring animations (duration, easing, stiffness, damping, mass, etc.)"
+    },
+    "sceneStyleInterpolator": "Function returning styles for screen container during transition.",
+    "preMadeConfigs": {
+      "TransitionSpecs": ["FadeSpec", "ShiftSpec"],
+      "SceneStyleInterpolators": ["forFade", "forShift"],
+      "TransitionPresets": ["FadeTransition", "ShiftTransition"]
+    }
+  },
+  "notes": [
+    "By default, screens are rendered lazily to optimize performance.",
+    "Use a custom tabBar function to implement your own tab bar design.",
+    "tabBarButton receives a navigation prop, not useNavigation hook.",
+    "Absolute positioning of tabBar requires padding adjustments using useBottomTabBarHeight."
+  ],
+  "example": {
+    "tsx": "import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';\n\nconst Tab = createBottomTabNavigator();\n\n<Tab.Navigator\n  initialRouteName='Home'\n  screenOptions={{ tabBarActiveTintColor: 'blue', tabBarInactiveTintColor: 'gray', animation: 'fade' }}\n>\n  <Tab.Screen name='Home' component={HomeScreen} />\n  <Tab.Screen name='Profile' component={ProfileScreen} />\n</Tab.Navigator>"
+  }
+}

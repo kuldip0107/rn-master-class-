@@ -1,0 +1,43 @@
+{
+  "component": "View",
+  "description": "The most fundamental component for building UI layouts. Acts as a container supporting flexbox layout, styling, touch handling, and accessibility.",
+  "categories": [
+    {
+      "title": "Accessibility Props",
+      "data": [
+        { "id": "1", "name": "accessible", "description": "Marks the view as accessible to assistive technologies." },
+        { "id": "2", "name": "accessibilityLabel", "description": "Overrides the text read by screen readers." },
+        { "id": "3", "name": "accessibilityHint", "description": "Explains what will happen when the user interacts." },
+        { "id": "4", "name": "accessibilityRole", "description": "Defines the role of the component for accessibility." },
+        { "id": "5", "name": "accessibilityState", "description": "Describes the current state like disabled or selected." }
+      ]
+    },
+    {
+      "title": "Touch & Gesture Props",
+      "data": [
+        { "id": "6", "name": "onStartShouldSetResponder", "description": "Decides if the view should respond to touch start." },
+        { "id": "7", "name": "onResponderMove", "description": "Called when the user moves their finger." },
+        { "id": "8", "name": "onResponderRelease", "description": "Called when the touch is released." },
+        { "id": "9", "name": "hitSlop", "description": "Expands the touchable area of the view." },
+        { "id": "10", "name": "pointerEvents", "description": "Controls whether the view receives touch events." }
+      ]
+    },
+    {
+      "title": "Layout & Performance Props",
+      "data": [
+        { "id": "11", "name": "style", "description": "Applies layout and visual styling." },
+        { "id": "12", "name": "collapsable", "description": "Allows layout-only views to be removed for performance." },
+        { "id": "13", "name": "removeClippedSubviews", "description": "Improves performance by clipping offscreen views." }
+      ]
+    }
+  ],
+
+  "example": {
+    "title": "Basic View Example",
+    "description": "A simple layout with two colored boxes and text inside a row.",
+    "code": {
+      "language": "tsx",
+      "snippet": "<View style={{ flexDirection: 'row', padding: 16 }}>\n  <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />\n  <View style={{ width: 50, height: 50, backgroundColor: 'blue', marginLeft: 10 }} />\n  <Text style={{ marginLeft: 10 }}>Hello View</Text>\n</View>"
+    }
+  }
+}

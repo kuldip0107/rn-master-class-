@@ -1,0 +1,80 @@
+{
+  "component": "SafeAreaView",
+  "description": "A component that renders content within the safe area boundaries of a device, preventing overlap with notches, rounded corners, status bars, and navigation bars.",
+  "status": "Recommended (use from react-native-safe-area-context)",
+  "categories": [
+    {
+      "title": "Core Props",
+      "data": [
+        {
+          "id": "1",
+          "name": "style",
+          "description": "Applies layout and visual styling. Commonly used with flex: 1."
+        },
+        {
+          "id": "2",
+          "name": "edges",
+          "description": "Specifies which screen edges to apply safe area insets (top, bottom, left, right)."
+        },
+        {
+          "id": "3",
+          "name": "mode",
+          "description": "Controls how safe area is applied (padding or margin)."
+        }
+      ]
+    },
+    {
+      "title": "Layout & Behavior",
+      "data": [
+        {
+          "id": "4",
+          "name": "children",
+          "description": "Nested components rendered inside the safe area."
+        },
+        {
+          "id": "5",
+          "name": "flex",
+          "description": "Usually set to 1 to occupy the full screen."
+        }
+      ]
+    },
+    {
+      "title": "Best Practices",
+      "data": [
+        {
+          "id": "6",
+          "name": "SafeAreaProvider",
+          "description": "Wrap the root app component with SafeAreaProvider for proper context."
+        },
+        {
+          "id": "7",
+          "name": "Avoid Padding",
+          "description": "Avoid manual padding on SafeAreaView as it may conflict with automatic insets."
+        }
+      ]
+    },
+    {
+      "title": "Common Mistakes",
+      "data": [
+        {
+          "id": "8",
+          "name": "Deprecated Import",
+          "description": "Avoid importing SafeAreaView from react-native."
+        },
+        {
+          "id": "9",
+          "name": "Missing Provider",
+          "description": "Not wrapping the app with SafeAreaProvider can cause incorrect insets."
+        }
+      ]
+    }
+  ],
+  "example": {
+    "title": "Basic SafeAreaView Example",
+    "description": "A simple layout that respects device safe areas.",
+    "code": {
+      "language": "tsx",
+      "snippet": "import { SafeAreaView } from 'react-native-safe-area-context';\n\n<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>\n  <Text>Hello Safe Area</Text>\n</SafeAreaView>"
+    }
+  }
+}

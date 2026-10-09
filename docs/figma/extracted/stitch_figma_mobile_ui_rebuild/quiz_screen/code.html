@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quiz Screen - RN Master Class</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Courier+Prime&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#00c1fd",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#e3e2e7",
+                    "surface-dim": "#dad9df",
+                    "on-tertiary-fixed": "#410001",
+                    "primary-fixed": "#d8e2ff",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-primary": "#ffffff",
+                    "on-secondary-container": "#004b65",
+                    "on-tertiary-container": "#fffbff",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#0070eb",
+                    "on-error-container": "#93000a",
+                    "secondary": "#006688",
+                    "secondary-fixed": "#c2e8ff",
+                    "on-surface-variant": "#414755",
+                    "tertiary": "#bc000a",
+                    "error-container": "#ffdad6",
+                    "inverse-on-surface": "#f1f0f5",
+                    "inverse-surface": "#2f3034",
+                    "inverse-primary": "#adc6ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#005bc1",
+                    "surface-container-low": "#f4f3f8",
+                    "outline-variant": "#c1c6d7",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#930005",
+                    "on-primary-fixed-variant": "#004493",
+                    "surface": "#faf9fe",
+                    "outline": "#717786",
+                    "on-secondary-fixed-variant": "#004d67",
+                    "surface-variant": "#e3e2e7",
+                    "secondary-fixed-dim": "#75d1ff",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#1a1b1f",
+                    "tertiary-container": "#e2241f",
+                    "surface-container": "#eeedf3",
+                    "on-secondary-fixed": "#001e2b",
+                    "surface-container-high": "#e9e7ed",
+                    "primary": "#0058bc",
+                    "on-primary-container": "#fefcff",
+                    "surface-bright": "#faf9fe",
+                    "tertiary-fixed": "#ffdad5",
+                    "tertiary-fixed-dim": "#ffb4aa",
+                    "on-background": "#1a1b1f",
+                    "background": "#faf9fe",
+                    "on-primary-fixed": "#001a41"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-horizontal": "20px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "xl": "32px",
+                    "touch-target": "44px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "headline-xl": [
+                            "Inter"
+                    ],
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "label-lg": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "code-snippet": [
+                            "courierPrime"
+                    ],
+                    "headline-lg": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "headline-xl": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.5px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-md": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "label-lg": [
+                            "13px",
+                            {
+                                    "lineHeight": "18px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "17px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-md": [
+                            "15px",
+                            {
+                                    "lineHeight": "22px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "code-snippet": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Fallback if needed, but primary relying on Tailwind classes */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-snippet {
+            font-family: 'Courier Prime', monospace;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col relative pb-[90px]">
+<!-- Progress Bar Section -->
+<div class="px-margin-horizontal pt-xl pb-md">
+<div class="w-full bg-surface-variant rounded-full h-2 mb-sm overflow-hidden">
+<div class="bg-primary-container h-2 rounded-full" style="width: 5%"></div>
+</div>
+<p class="text-label-lg font-label-lg text-on-surface-variant">Question 1 of 20</p>
+</div>
+<!-- Main Content -->
+<main class="flex-grow px-margin-horizontal flex flex-col justify-start">
+<!-- Question -->
+<div class="mb-xl">
+<h1 class="text-headline-xl font-headline-xl text-on-background">
+                What is the primary use of Drawer Navigator?
+            </h1>
+</div>
+<!-- Quiz Options -->
+<div class="space-y-md mb-xl flex-grow flex flex-col justify-center">
+<!-- Option A (Neutral) -->
+<button class="w-full flex items-center p-md bg-surface-container-low rounded-xl border border-transparent transition-all duration-200 focus:outline-none">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center mr-md flex-shrink-0">
+<span class="text-label-lg font-label-lg text-on-surface-variant">A</span>
+</div>
+<div class="text-left text-body-lg font-body-lg text-on-surface">
+                    Access system theme preference (dark/light)
+                </div>
+</button>
+<!-- Option B (Neutral) -->
+<button class="w-full flex items-center p-md bg-surface-container-low rounded-xl border border-transparent transition-all duration-200 focus:outline-none">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center mr-md flex-shrink-0">
+<span class="text-label-lg font-label-lg text-on-surface-variant">B</span>
+</div>
+<div class="text-left text-body-lg font-body-lg text-on-surface">
+                    Base implementation for FlatList &amp; SectionList
+                </div>
+</button>
+<!-- Option C (Correct - Highlighted) -->
+<button class="w-full flex items-center p-md bg-surface-container-low rounded-xl border-2 border-[#10b981] bg-[#d1fae5]/20 transition-all duration-200 focus:outline-none">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center mr-md flex-shrink-0">
+<span class="text-label-lg font-label-lg text-on-surface-variant">C</span>
+</div>
+<div class="text-left text-body-lg font-body-lg text-on-surface">
+                    Side drawer menu navigation
+                </div>
+</button>
+<!-- Option D (Incorrect - Highlighted) -->
+<button class="w-full flex items-center p-md bg-surface-container-low rounded-xl border-2 border-[#ef4444] bg-[#fee2e2]/20 transition-all duration-200 focus:outline-none">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center mr-md flex-shrink-0">
+<span class="text-label-lg font-label-lg text-on-surface-variant">D</span>
+</div>
+<div class="text-left text-body-lg font-body-lg text-on-surface">
+                    User text input field
+                </div>
+</button>
+</div>
+</main>
+<!-- Next Question Button -->
+<div class="px-margin-horizontal pb-lg mt-auto">
+<button class="w-full bg-[#007AFF] text-on-primary py-[14px] rounded-xl text-label-lg font-label-lg font-bold min-h-touch-target flex items-center justify-center shadow-sm hover:opacity-90 transition-opacity">
+            Next Question
+        </button>
+</div>
+<!-- Bottom Navigation Bar (Generated from JSON Anchor) -->
+<nav class="bg-background/80 dark:bg-background/80 backdrop-blur-md fixed bottom-0 w-full z-50 rounded-t-xl border-t border-outline-variant dark:border-outline shadow-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-[70px] px-lg pb-safe">
+<!-- Tab 1: Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low w-12 h-12 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">home</span>
+</a>
+<!-- Tab 2: Menu Book (Active based on Quiz context mapping to Code/Learn usually, but let's assume this is 'Learn' module) -->
+<a class="flex flex-col items-center justify-center text-secondary-container dark:text-secondary-fixed-dim after:content-['•'] after:text-[8px] after:mt-xs hover:bg-surface-container-low scale-90 transition-all duration-200 w-12 h-12 rounded-lg" href="#">
+<span class="material-symbols-outlined text-[24px]">menu_book</span>
+</a>
+<!-- Tab 3: Code -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low w-12 h-12 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">code</span>
+</a>
+<!-- Tab 4: Person -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low w-12 h-12 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+</a>
+</nav>
+</body></html>

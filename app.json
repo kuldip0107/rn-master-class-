@@ -1,4 +1,9 @@
 {
   "name": "Reactnative",
-  "displayName": "Reactnative"
+  "displayName": "Reactnative",
+  "android": {
+    "package": "com.reactnativeapp",
+    "packageName": "com.reactnativeapp",
+    "sourceDir": "android"
+  }
 }

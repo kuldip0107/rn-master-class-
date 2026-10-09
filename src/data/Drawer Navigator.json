@@ -1,0 +1,55 @@
+{
+  "component": "createDrawerNavigator",
+  "library": "@react-navigation/drawer",
+  "description": "A drawer navigator allows navigation between screens via a side drawer (usually from the left, sometimes right).",
+  "installation": {
+    "npm": "npm install @react-navigation/drawer",
+    "yarn": "yarn add @react-navigation/drawer",
+    "pnpm": "pnpm add @react-navigation/drawer",
+    "bun": "bun add @react-navigation/drawer"
+  },
+  "usage": {
+    "staticAPI": "createDrawerNavigator(config) returns a Drawer Navigator object with Navigator and Screen components.",
+    "dynamicAPI": "Use <Drawer.Navigator> and <Drawer.Screen> in your component tree."
+  },
+  "methods": {
+    "Navigator": "Component wrapping all drawer screens and managing navigation state.",
+    "Screen": "Component representing an individual screen in the drawer navigator."
+  },
+  "props": {
+    "initialRouteName": "Name of the first screen to display.",
+    "drawerPosition": "'left' or 'right'. Default is 'left'.",
+    "drawerType": "'front', 'back', 'slide', or 'permanent'. Controls the drawer animation and presentation style.",
+    "drawerStyle": "Style object for the drawer content (width, backgroundColor, etc.).",
+    "drawerContentOptions": "Object specifying styling for labels, active/inactive tint colors, badges, etc.",
+    "drawerContent": "Function returning a custom drawer content component.",
+    "edgeWidth": "Width of the touchable area to open drawer via swipe gesture.",
+    "minSwipeDistance": "Minimum swipe distance required to open the drawer.",
+    "hideStatusBar": "Boolean to hide the status bar when drawer opens (default false).",
+    "overlayColor": "Color of the overlay when the drawer is open.",
+    "sceneContainerStyle": "Style object for the container wrapping screen content."
+  },
+  "methodsForDrawerControl": {
+    "openDrawer": "Opens the drawer.",
+    "closeDrawer": "Closes the drawer.",
+    "toggleDrawer": "Toggles the drawer state.",
+    "dispatch": "Dispatch custom DrawerActions (openDrawer, closeDrawer, toggleDrawer)."
+  },
+  "hooks": {
+    "useDrawerStatus": "Returns the current drawer status: 'open' or 'closed'."
+  },
+  "events": {
+    "drawerOpen": "Fired when the drawer opens.",
+    "drawerClose": "Fired when the drawer closes.",
+    "drawerToggle": "Fired when the drawer is toggled."
+  },
+  "notes": [
+    "Use drawer helper methods on the navigation prop or dispatch DrawerActions manually.",
+    "Custom drawer content can be rendered using drawerContent prop.",
+    "drawerType controls the animation and presentation style for the drawer.",
+    "Use edgeWidth and minSwipeDistance to control gesture sensitivity."
+  ],
+  "example": {
+    "tsx": "import { createDrawerNavigator } from '@react-navigation/drawer';\nimport { NavigationContainer } from '@react-navigation/native';\n\nconst Drawer = createDrawerNavigator();\n\n<NavigationContainer>\n  <Drawer.Navigator initialRouteName='Home'>\n    <Drawer.Screen name='Home' component={HomeScreen} />\n    <Drawer.Screen name='Notifications' component={NotificationsScreen} />\n  </Drawer.Navigator>\n</NavigationContainer>"
+  }
+}

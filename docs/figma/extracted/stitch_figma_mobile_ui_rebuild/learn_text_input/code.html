@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RN Master Class - Learn</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Courier+Prime&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#00c1fd",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e3e2e7",
+                        "surface-dim": "#dad9df",
+                        "on-tertiary-fixed": "#410001",
+                        "primary-fixed": "#d8e2ff",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#004b65",
+                        "on-tertiary-container": "#fffbff",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#0070eb",
+                        "on-error-container": "#93000a",
+                        "secondary": "#006688",
+                        "secondary-fixed": "#c2e8ff",
+                        "on-surface-variant": "#414755",
+                        "tertiary": "#bc000a",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f1f0f5",
+                        "inverse-surface": "#2f3034",
+                        "inverse-primary": "#adc6ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#005bc1",
+                        "surface-container-low": "#f4f3f8",
+                        "outline-variant": "#c1c6d7",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#930005",
+                        "on-primary-fixed-variant": "#004493",
+                        "surface": "#faf9fe",
+                        "outline": "#717786",
+                        "on-secondary-fixed-variant": "#004d67",
+                        "surface-variant": "#e3e2e7",
+                        "secondary-fixed-dim": "#75d1ff",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#1a1b1f",
+                        "tertiary-container": "#e2241f",
+                        "surface-container": "#eeedf3",
+                        "on-secondary-fixed": "#001e2b",
+                        "surface-container-high": "#e9e7ed",
+                        "primary": "#0058bc",
+                        "on-primary-container": "#fefcff",
+                        "surface-bright": "#faf9fe",
+                        "tertiary-fixed": "#ffdad5",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "on-background": "#1a1b1f",
+                        "background": "#faf9fe",
+                        "on-primary-fixed": "#001a41"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-horizontal": "20px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "touch-target": "44px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "code-snippet": ["Courier Prime"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-lg": ["13px", { "lineHeight": "18px", "fontWeight": "600" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "code-snippet": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased pb-24">
+<!-- Top Navigation (Desktop) -->
+<header class="hidden md:flex justify-between items-center px-margin-horizontal py-md w-full bg-background docked full-width top-0 sticky z-40 flat no shadows">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a developer, stylized with modern flat colors against a light blue background. The aesthetic is clean and corporate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6XrHRWi-iuDcOaUFn4nI8dF52ovzDW01TdkLbUBQclLJGHdJntAFuMYDvX8L_uVsna-NyPcGrAEj8JqrxZT40DWNDGgDdoWSWBBe79ecl7Jv9JrVd4NLEsAhbKN4sPLXBYkeHPc9mQpFDdW-Q8811yVn3OzWoyg4FOPJT7p18rZe8v92a4CsVSg1bzPfqohpTf7-OgQptzKitvD9jojRSrSmD2qrEMLyXLjDQ0EVmliq_v_GHb9H"/>
+</div>
+<h1 class="text-headline-md font-headline-md font-bold text-primary">RN Master Class</h1>
+</div>
+<nav class="flex items-center gap-lg">
+<a class="text-on-surface-variant text-label-lg font-label-lg hover:opacity-80 flex items-center gap-xs" href="#"><span class="material-symbols-outlined text-[20px]">home</span> Home</a>
+<a class="text-primary font-bold text-label-lg font-label-lg hover:opacity-80 scale-95 transition-transform flex items-center gap-xs" href="#"><span class="material-symbols-outlined text-[20px] filled">menu_book</span> Learn</a>
+<a class="text-on-surface-variant text-label-lg font-label-lg hover:opacity-80 flex items-center gap-xs" href="#"><span class="material-symbols-outlined text-[20px]">code</span> Code</a>
+<a class="text-on-surface-variant text-label-lg font-label-lg hover:opacity-80 flex items-center gap-xs" href="#"><span class="material-symbols-outlined text-[20px]">person</span> Profile</a>
+</nav>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Mobile Header (if needed, otherwise rely on TopAppBar JSON definition which is handled above conditionally) -->
+<header class="md:hidden flex justify-between items-center px-margin-horizontal py-md w-full bg-background docked full-width top-0 sticky z-40">
+<h1 class="text-headline-xl font-headline-xl text-on-background">Learn</h1>
+</header>
+<main class="max-w-4xl mx-auto px-margin-horizontal mt-md">
+<!-- Desktop Header Title -->
+<h1 class="hidden md:block text-headline-xl font-headline-xl text-on-background mb-lg">Learn</h1>
+<!-- Search Bar -->
+<div class="relative mb-xl group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full bg-surface-container-low text-on-background rounded-xl pl-12 pr-4 py-3 min-h-[touch-target] border-none focus:ring-2 focus:ring-primary focus:bg-background transition-all placeholder:text-outline-variant text-body-lg font-body-lg" placeholder="Search components &amp; APIs..." type="text"/>
+</div>
+<!-- Text & Input Components Section -->
+<section class="mb-xl">
+<h2 class="text-headline-md font-headline-md text-on-background mb-md">Text &amp; Input Components</h2>
+<div class="flex flex-col gap-md">
+<!-- Text Component Card -->
+<a class="block bg-surface-container-low rounded-xl p-md border border-transparent hover:border-outline-variant hover:shadow-sm transition-all active:scale-[0.98]" href="#">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-on-background">Text</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mt-xs">Display text content</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</a>
+<!-- TextInput Component Card -->
+<a class="block bg-surface-container-low rounded-xl p-md border border-transparent hover:border-outline-variant hover:shadow-sm transition-all active:scale-[0.98]" href="#">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-on-background">TextInput</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mt-xs">User text input field</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</a>
+</div>
+</section>
+<!-- Buttons & Controls Section -->
+<section class="mb-xl">
+<h2 class="text-headline-md font-headline-md text-on-background mb-md">Buttons &amp; Controls</h2>
+<div class="flex flex-col gap-md">
+<!-- Button Component Card -->
+<a class="block bg-surface-container-low rounded-xl p-md border border-transparent hover:border-outline-variant hover:shadow-sm transition-all active:scale-[0.98]" href="#">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-on-background">Button</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mt-xs">Basic cross-platform button component</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</a>
+<!-- Pressable Component Card -->
+<a class="block bg-surface-container-low rounded-xl p-md border border-transparent hover:border-outline-variant hover:shadow-sm transition-all active:scale-[0.98]" href="#">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-on-background">Pressable</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mt-xs">Core component wrapper for tap &amp; touch gestures</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</a>
+<!-- Switch Component Card -->
+<a class="block bg-surface-container-low rounded-xl p-md border border-transparent hover:border-outline-variant hover:shadow-sm transition-all active:scale-[0.98]" href="#">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-on-background">Switch</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mt-xs">Boolean toggle input component</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</a>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-[70px] px-lg pb-safe bg-background/90 backdrop-blur-md rounded-t-xl border-t border-surface-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant text-label-md font-label-md w-[touch-target] h-[touch-target]" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary text-label-md font-label-md w-[touch-target] h-[touch-target] after:content-['\2022'] after:text-[8px] after:mt-xs" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 filled scale-110 transition-transform">menu_book</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant text-label-md font-label-md w-[touch-target] h-[touch-target]" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">code</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant text-label-md font-label-md w-[touch-target] h-[touch-target]" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">person</span>
+</a>
+</nav>
+</body></html>

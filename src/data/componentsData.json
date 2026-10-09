@@ -1,0 +1,66 @@
+[
+  {
+    "title": "View & Layout Components",
+    "data": [
+      {
+        "id": "1",
+        "name": "View",
+        "description": "Basic building block for UI layout",
+        "componentData": "view.json"
+      },
+      {
+        "id": "2",
+        "name": "SafeAreaView",
+        "description": "Renders content within safe area boundaries",
+        "componentData": "safearea view.json"
+      },
+      {
+        "id": "3",
+        "name": "KeyboardAvoidingView",
+        "description": "Adjusts UI when keyboard appears",
+        "componentData": "keyboardavoiding.json"
+      },
+      {
+        "id": "4",
+        "name": "ScrollView",
+        "description": "Scrollable container for content",
+        "componentData": "scrollview.json"
+      },
+      {
+        "id": "5",
+        "name": "FlatList",
+        "description": "Efficient list rendering for large data",
+        "componentData": "flatelist.json"
+      },
+      {
+        "id": "6",
+        "name": "SectionList",
+        "description": "List with section headers",
+        "componentData": "sectionlist.json"
+      },
+      {
+        "id": "7",
+        "name": "VirtualizedList",
+        "description": "Base implementation for FlatList & SectionList",
+        "componentData": "virtualizedlist.json"
+      }
+    ]
+  },
+  {
+    "title": "Text Components",
+    "data": [
+      {
+        "id": "8",
+        "name": "Text",
+        "description": "Display text content",
+        "componentData": "text.json"
+      },
+      {
+        "id": "9",
+        "name": "TextInput",
+        "description": "User text input field",
+        "componentData": "textinput.json"
+      }
+    ]
+  }
+]

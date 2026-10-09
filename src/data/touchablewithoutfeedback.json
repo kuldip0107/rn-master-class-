@@ -1,0 +1,112 @@
+{
+  "component": "TouchableWithoutFeedback",
+  "type": "Core Component",
+  "description": "A wrapper that responds to touches without providing visual feedback. Use only if you have a very specific reason. All touchable elements should ideally provide feedback to the user.",
+  "basicExample": {
+    "tsx": "function MyComponent(props) {\n  return (\n    <View {...props} style={{flex: 1, backgroundColor: '#fff'}}>\n      <Text>My Component</Text>\n    </View>\n  );\n}\n\n<TouchableWithoutFeedback onPress={() => alert('Pressed!')}>\n  <MyComponent />\n</TouchableWithoutFeedback>"
+  },
+  "usageNotes": [
+    "Supports only one child; for multiple children, wrap them in a View",
+    "Works by cloning its child and passing responder props; intermediary components must forward these props",
+    "Better to use Pressable for modern touch handling with feedback"
+  ],
+  "props": {
+    "delayLongPress": {
+      "type": "number",
+      "description": "Duration (ms) from onPressIn before onLongPress is called"
+    },
+    "delayPressIn": {
+      "type": "number",
+      "description": "Duration (ms) from the start of touch before onPressIn is called"
+    },
+    "delayPressOut": {
+      "type": "number",
+      "description": "Duration (ms) from touch release before onPressOut is called"
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "If true, disables all interactions"
+    },
+    "hitSlop": {
+      "type": "Rect or number",
+      "description": "Defines how far touch can start away from the button"
+    },
+    "pressRetentionOffset": {
+      "type": "Rect or number",
+      "description": "Distance off the button touch may move before deactivating (e.g., when ScrollView is disabled)"
+    },
+    "onPress": {
+      "type": "function",
+      "description": "Called when touch is released (not if cancelled)"
+    },
+    "onLongPress": {
+      "type": "function",
+      "description": "Called if touch lasts longer than delayLongPress"
+    },
+    "onPressIn": {
+      "type": "function",
+      "description": "Called immediately when touch starts"
+    },
+    "onPressOut": {
+      "type": "function",
+      "description": "Called immediately when touch is released"
+    },
+    "onFocus": {
+      "type": "function",
+      "description": "Called when the element receives focus"
+    },
+    "onBlur": {
+      "type": "function",
+      "description": "Called when the element loses focus"
+    },
+    "onLayout": {
+      "type": "function",
+      "description": "Called on mount and layout changes"
+    },
+    "nativeID": {
+      "type": "string",
+      "description": "Used to locate this view from native code"
+    },
+    "id": {
+      "type": "string",
+      "description": "Alternative identifier with precedence over nativeID"
+    },
+    "testID": {
+      "type": "string",
+      "description": "Used for end-to-end tests"
+    },
+    "touchSoundDisabled": {
+      "type": "boolean",
+      "description": "Android only: disables system sound on touch"
+    },
+    "accessibilityProps": {
+      "accessible": {"type": "boolean"},
+      "accessibilityLabel": {"type": "string"},
+      "accessibilityHint": {"type": "string"},
+      "accessibilityLanguage": {"type": "string"},
+      "accessibilityRole": {"type": "string"},
+      "accessibilityState": {"type": "object"},
+      "accessibilityActions": {"type": "array"},
+      "accessibilityValue": {"type": "object"},
+      "aria-busy": {"type": "boolean", "default": false},
+      "aria-checked": {"type": "boolean or 'mixed'", "default": false},
+      "aria-disabled": {"type": "boolean", "default": false},
+      "aria-expanded": {"type": "boolean", "default": false},
+      "aria-hidden": {"type": "boolean", "default": false},
+      "aria-label": {"type": "string"},
+      "aria-live": {"type": "enum('assertive','off','polite')", "default": "off"},
+      "aria-modal": {"type": "boolean", "default": false},
+      "aria-selected": {"type": "boolean"},
+      "aria-valuemax": {"type": "number"},
+      "aria-valuemin": {"type": "number"},
+      "aria-valuenow": {"type": "number"},
+      "aria-valuetext": {"type": "string"},
+      "onAccessibilityAction": {"type": "function"}
+    }
+  },
+  "notes": [
+    "TouchableWithoutFeedback is mostly used for dismissing keyboards or other invisible touches",
+    "All touchable elements should ideally provide visual feedback",
+    "Better to migrate to Pressable for modern React Native projects"
+  ]
+}

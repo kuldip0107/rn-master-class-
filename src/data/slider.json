@@ -1,0 +1,47 @@
+{
+  "component": "Slider",
+  "library": "@react-native-community/slider",
+  "description": "A customizable slider component for React Native that supports iOS, Android, Web, and Windows. Allows users to select a value from a range, supports step markers, custom thumb, track images, and programmatic control.",
+  "basicExample": {
+    "tsx": "import Slider from '@react-native-community/slider';\n\n<Slider\n  style={{width: 200, height: 40}}\n  minimumValue={0}\n  maximumValue={1}\n  minimumTrackTintColor=\"#FFFFFF\"\n  maximumTrackTintColor=\"#000000\"\n/>"
+  },
+  "props": {
+    "style": { "type": "View.style", "optional": true, "description": "Custom styles for the slider container." },
+    "disabled": { "type": "bool", "default": false, "description": "If true, disables user interaction with the slider." },
+    "minimumValue": { "type": "number", "default": 0, "description": "Minimum value of the slider." },
+    "maximumValue": { "type": "number", "default": 1, "description": "Maximum value of the slider." },
+    "lowerLimit": { "type": "number", "optional": true, "description": "Minimum limit user can slide to (Android, iOS, Web)." },
+    "upperLimit": { "type": "number", "optional": true, "description": "Maximum limit user can slide to (Android, iOS, Web)." },
+    "step": { "type": "number", "default": 0, "description": "Step increment of the slider. On Windows, default is 1% of slider range." },
+    "minimumTrackTintColor": { "type": "color", "optional": true, "description": "Color of the track to the left of the thumb." },
+    "maximumTrackTintColor": { "type": "color", "optional": true, "description": "Color of the track to the right of the thumb." },
+    "thumbTintColor": { "type": "color", "optional": true, "platform": "Android", "description": "Color of the slider thumb on Android." },
+    "value": { "type": "number", "default": 0, "optional": true, "description": "Initial value of the slider. Not a controlled component." },
+    "tapToSeek": { "type": "bool", "default": false, "platform": "iOS", "description": "Allows tapping on track to move thumb." },
+    "inverted": { "type": "bool", "default": false, "description": "Reverses direction of the slider." },
+    "vertical": { "type": "bool", "default": false, "platform": "Windows", "description": "Displays the slider vertically." },
+    "maximumTrackImage": { "type": "Image", "optional": true, "description": "Static image for maximum track." },
+    "minimumTrackImage": { "type": "Image", "optional": true, "description": "Static image for minimum track." },
+    "thumbImage": { "type": "Image", "optional": true, "description": "Static image for thumb." },
+    "trackImage": { "type": "Image", "optional": true, "platform": "iOS", "description": "Static image for track." },
+    "renderStepNumber": { "type": "bool", "optional": true, "platform": ["iOS", "Android", "Windows"], "description": "Display numbers under steps." },
+    "StepMarker": { "type": "FC<MarkerProps>", "optional": true, "platform": ["iOS", "Android", "Windows"], "description": "Custom component for each step on the slider." },
+    "onSlidingStart": { "type": "function(value)", "optional": true, "description": "Called when user starts dragging the thumb." },
+    "onValueChange": { "type": "function(value)", "optional": true, "description": "Called continuously while dragging the thumb." },
+    "onSlidingComplete": { "type": "function(value)", "optional": true, "description": "Called when user releases the thumb." },
+    "ref": { "type": "MutableRefObject", "optional": true, "platform": "Web", "description": "Reference to the slider element." }
+  },
+  "StepMarkerProps": {
+    "stepMarked": { "type": "bool", "description": "True if thumb is currently at this step." },
+    "currentValue": { "type": "number", "description": "Current value of the slider." },
+    "index": { "type": "number", "description": "Index of the step along the slider." },
+    "min": { "type": "number", "description": "Minimum value of the slider." },
+    "max": { "type": "number", "description": "Maximum value of the slider." }
+  },
+  "notes": [
+    "Not a controlled component by default; value can be set initially or programmatically.",
+    "Supports custom step markers and step numbers.",
+    "Supports images for track and thumb.",
+    "Programmatic control via ref is available for Web."
+  ]
+}

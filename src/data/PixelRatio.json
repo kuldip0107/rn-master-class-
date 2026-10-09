@@ -1,0 +1,49 @@
+{
+  "module": "PixelRatio",
+  "library": "react-native",
+  "description": "Provides access to the device's pixel density and font scale, and helps calculate pixel-perfect sizes for images, layouts, and fonts.",
+  "methods": {
+    "get": {
+      "description": "Returns the device pixel density (DPI ratio).",
+      "signature": "get(): number",
+      "returns": "Device pixel density as a number (e.g., 1, 1.5, 2, 3, 3.5)",
+      "examples": [
+        "PixelRatio.get() === 1 // mdpi Android devices",
+        "PixelRatio.get() === 2 // iPhone SE, iPhone XR, xhdpi Android devices",
+        "PixelRatio.get() === 3 // iPhone X, XS, XS Max, xxhdpi Android devices"
+      ]
+    },
+    "getFontScale": {
+      "description": "Returns the font scale factor applied by the user.",
+      "signature": "getFontScale(): number",
+      "returns": "Scaling factor for fonts; defaults to device pixel ratio if not set.",
+      "notes": [
+        "On Android: reflects Settings > Display > Font size",
+        "On iOS: reflects Settings > Display & Brightness > Text Size or Accessibility > Larger Text"
+      ]
+    },
+    "getPixelSizeForLayoutSize": {
+      "description": "Converts a layout size in dp to a pixel size in px, guaranteed to return an integer.",
+      "signature": "getPixelSizeForLayoutSize(layoutSize: number): number",
+      "parameters": {
+        "layoutSize": { "type": "number", "required": true, "description": "Size in layout units (dp)" }
+      }
+    },
+    "roundToNearestPixel": {
+      "description": "Rounds a layout size to the nearest layout size that corresponds to an integer number of pixels.",
+      "signature": "roundToNearestPixel(layoutSize: number): number",
+      "parameters": {
+        "layoutSize": { "type": "number", "required": true, "description": "Size in layout units (dp)" }
+      },
+      "example": "PixelRatio.roundToNearestPixel(8.4) // returns 8.33 on a device with PixelRatio 3"
+    }
+  },
+  "usage_tips": [
+    "Use getPixelSizeForLayoutSize when fetching higher resolution images for high-density devices.",
+    "Use roundToNearestPixel to avoid blurry borders or layout issues due to fractional pixels.",
+    "PixelRatio.getFontScale is useful when doing custom font calculations that respect user settings."
+  ],
+  "example": {
+    "tsx": "import { PixelRatio, Image } from 'react-native';\n\nconst image = getImage({\n  width: PixelRatio.getPixelSizeForLayoutSize(200),\n  height: PixelRatio.getPixelSizeForLayoutSize(100)\n});\n\n<Image source={image} style={{ width: 200, height: 100 }} />;"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "component": "CheckBox",
+  "library": "react-native-check-box",
+  "description": "A customizable checkbox component for React Native. Supports text labels, custom images, colors, and click handling.",
+  "basicExample": {
+    "tsx": "import React, { Component } from 'react';\nimport { View } from 'react-native';\nimport CheckBox from 'react-native-check-box';\n\nexport default class MyComponent extends Component {\n  state = { isChecked: false };\n\n  render() {\n    return (\n      <View>\n        <CheckBox\n          style={{ flex: 1, padding: 10 }}\n          onClick={() => {\n            this.setState({ isChecked: !this.state.isChecked });\n          }}\n          isChecked={this.state.isChecked}\n          leftText={'CheckBox'}\n        />\n      </View>\n    );\n  }\n}"
+  },
+  "customExample": {
+    "description": "Render a checkbox with custom checked and unchecked images.",
+    "tsx": "renderCheckBox(data) {\n  return (\n    <CheckBox\n      style={{ flex: 1, padding: 10 }}\n      onClick={() => {\n        this.setState({ isChecked: !this.state.isChecked });\n      }}\n      isChecked={this.state.isChecked}\n      checkedImage={<Image source={require('../../page/my/img/ic_check_box.png')} style={this.props.theme.styles.tabBarSelectedIcon} />}\n      unCheckedImage={<Image source={require('../../page/my/img/ic_check_box_outline_blank.png')} style={this.props.theme.styles.tabBarSelectedIcon} />}\n    />\n  );\n}"
+  },
+  "props": {
+    "style": { "type": "ViewPropTypes.style", "optional": true, "description": "Custom style for the checkbox container." },
+    "leftText": { "type": "string", "optional": true, "description": "Text label to the left of the checkbox." },
+    "leftTextStyle": { "type": "Text.propTypes.style", "optional": true, "description": "Custom style for the left text label." },
+    "rightText": { "type": "string", "optional": true, "description": "Text label to the right of the checkbox." },
+    "rightTextView": { "type": "element", "optional": true, "description": "Custom React element to display on the right side." },
+    "rightTextStyle": { "type": "Text.propTypes.style", "optional": true, "description": "Custom style for the right text label." },
+    "checkedImage": { "type": "element", "optional": true, "description": "Custom image to display when the checkbox is checked." },
+    "unCheckedImage": { "type": "element", "optional": true, "description": "Custom image to display when the checkbox is unchecked." },
+    "isChecked": { "type": "bool", "optional": false, "default": false, "description": "Current checked state of the checkbox." },
+    "onClick": { "type": "func", "required": true, "description": "Callback function invoked when the checkbox is clicked." },
+    "disabled": { "type": "bool", "optional": true, "default": false, "description": "If true, disables the checkbox." },
+    "checkBoxColor": { "type": "string", "optional": true, "description": "Tint color applied to the checkbox image in both checked and unchecked state." },
+    "checkedCheckBoxColor": { "type": "string", "optional": true, "description": "Tint color applied only to the checked state. Overrides checkBoxColor for checked state." },
+    "uncheckedCheckBoxColor": { "type": "string", "optional": true, "description": "Tint color applied only to the unchecked state. Overrides checkBoxColor for unchecked state." }
+  },
+  "notes": [
+    "Requires a state variable for `isChecked` to manage the checkbox state.",
+    "Custom images can be used for checked and unchecked states.",
+    "Supports left and right text labels or custom right elements.",
+    "`onClick` callback is required to handle state updates."
+  ]
+}

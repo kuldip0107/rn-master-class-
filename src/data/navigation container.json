@@ -1,0 +1,59 @@
+{
+  "component": "NavigationContainer",
+  "library": "@react-navigation/native",
+  "description": "Manages app navigation state and links the top-level navigator to the app environment. Handles platform-specific integration, deep links, Android back button, and state persistence.",
+  "usage": {
+    "staticAPI": "createStaticNavigation(Stack) returns a NavigationContainer-like component.",
+    "dynamicAPI": "Use <NavigationContainer> directly in your component tree."
+  },
+  "refMethods": {
+    "navigate": "Navigate to a screen by name with optional params.",
+    "goBack": "Navigate back to the previous screen.",
+    "isReady": "Returns true if the navigation tree is ready (at least one navigator mounted).",
+    "resetRoot": "Resets the navigation state of the root navigator.",
+    "getRootState": "Returns the current state object of all navigators.",
+    "getCurrentRoute": "Returns the route object of the currently focused screen.",
+    "getCurrentOptions": "Returns the options of the currently focused screen.",
+    "addListener": {
+      "ready": "Fires when the navigation tree is mounted.",
+      "state": "Fires whenever the navigation state changes.",
+      "options": "Fires whenever the options change for the currently focused screen."
+    }
+  },
+  "props": {
+    "initialState": "Provide initial state for deep linking, state persistence, etc.",
+    "onStateChange": "Callback triggered every time the navigation state changes.",
+    "onReady": "Callback triggered after the container and children finish mounting.",
+    "onUnhandledAction": "Callback for actions not handled by any navigator.",
+    "linking": {
+      "description": "Configuration for deep links and URL integration.",
+      "prefixes": "Array of URL prefixes to handle.",
+      "config": "Structure of navigators for parsing paths.",
+      "enabled": "Enable/disable linking integration (default true).",
+      "getInitialURL": "Custom function to return initial URL (async supported).",
+      "subscribe": "Custom function to handle incoming URLs with listener.",
+      "getStateFromPath": "Override how paths are parsed into navigation state.",
+      "getPathFromState": "Override how navigation state is serialized to path.",
+      "getActionFromState": "Override how navigation state is converted to actions."
+    },
+    "fallback": "React element to render while resolving deep links (default null).",
+    "documentTitle": {
+      "enabled": "Boolean to enable automatic title updates on Web (default true).",
+      "formatter": "Custom function to format title based on options and route."
+    },
+    "theme": "Custom theme for headers, tab bars, etc.",
+    "direction": "Text direction: 'ltr' or 'rtl'. Defaults based on I18nManager.",
+    "navigationInChildEnabled": "Backward compatibility for nested navigation (deprecated).",
+    "independent": "Wrap with NavigationIndependentTree for multiple independent navigation trees."
+  },
+  "notes": [
+    "Use ref for dispatching navigation actions outside a screen.",
+    "isReady ensures safe dispatch of actions before navigation tree mounts.",
+    "Avoid nesting multiple NavigationContainers unless using NavigationIndependentTree.",
+    "linking integration works with deep links, Firebase notifications, and web URLs.",
+    "onStateChange is called with new navigation state; consider state as internal and subject to change."
+  ],
+  "example": {
+    "tsx": "const navigationRef = useNavigationContainerRef();\n\n<NavigationContainer\n  ref={navigationRef}\n  linking={{ prefixes: ['https://example.com', 'example://'] }}\n  onReady={() => console.log('Navigation ready')}\n  fallback={<Text>Loading...</Text>}\n>\n  <Stack.Navigator>\n    <Stack.Screen name='Home' component={HomeScreen} />\n  </Stack.Navigator>\n</NavigationContainer>"
+  }
+}

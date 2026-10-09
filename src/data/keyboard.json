@@ -1,0 +1,72 @@
+{
+  "module": "Keyboard",
+  "library": "react-native",
+  "description": "Keyboard module allows listening to native keyboard events, dismissing the keyboard, and syncing UI with keyboard movements.",
+  "methods": {
+    "addListener": {
+      "description": "Connects a JS function to a native keyboard event and returns a reference to the listener.",
+      "signature": "addListener(eventName: KeyboardEventName, callback: KeyboardEventListener) => EmitterSubscription",
+      "parameters": {
+        "eventName": {
+          "type": "string",
+          "required": true,
+          "description": "Name of the keyboard event to listen for.",
+          "values": [
+            "keyboardWillShow",
+            "keyboardDidShow",
+            "keyboardWillHide",
+            "keyboardDidHide",
+            "keyboardWillChangeFrame",
+            "keyboardDidChangeFrame"
+          ],
+          "note": "Only 'keyboardDidShow' and 'keyboardDidHide' are available on Android. Events may not fire on Android 10 or below if windowSoftInputMode is set to adjustResize or adjustNothing."
+        },
+        "callback": {
+          "type": "function",
+          "required": true,
+          "description": "Function to execute when the event fires."
+        }
+      },
+      "returns": "EmitterSubscription reference to the listener."
+    },
+    "dismiss": {
+      "description": "Dismisses the active keyboard and removes focus from the current input.",
+      "signature": "dismiss()",
+      "parameters": null,
+      "returns": "void"
+    },
+    "scheduleLayoutAnimation": {
+      "description": "Syncs UI layout (e.g., TextInput or keyboard accessory views) with keyboard movements.",
+      "signature": "scheduleLayoutAnimation(event: KeyboardEvent)",
+      "parameters": {
+        "event": {
+          "type": "KeyboardEvent",
+          "required": true,
+          "description": "The keyboard event object containing metrics and layout info."
+        }
+      },
+      "returns": "void"
+    },
+    "isVisible": {
+      "description": "Returns whether the keyboard is currently visible.",
+      "signature": "isVisible() => boolean",
+      "parameters": null,
+      "returns": "boolean indicating keyboard visibility."
+    },
+    "metrics": {
+      "description": "Returns metrics of the soft keyboard if visible.",
+      "signature": "metrics() => KeyboardMetrics | undefined",
+      "parameters": null,
+      "returns": "KeyboardMetrics object or undefined."
+    }
+  },
+  "notes": [
+    "Useful for controlling UI adjustments when the keyboard appears or disappears.",
+    "addListener is the primary method for reacting to keyboard events.",
+    "Dismiss the keyboard when tapping outside of TextInput to improve UX.",
+    "scheduleLayoutAnimation helps animate input fields along with the keyboard."
+  ],
+  "example": {
+    "tsx": "import { Keyboard, TextInput, View } from 'react-native';\nimport React, { useEffect } from 'react';\n\nexport default function App() {\n  useEffect(() => {\n    const showSub = Keyboard.addListener('keyboardDidShow', () => console.log('Keyboard shown'));\n    const hideSub = Keyboard.addListener('keyboardDidHide', () => console.log('Keyboard hidden'));\n\n    return () => {\n      showSub.remove();\n      hideSub.remove();\n    };\n  }, []);\n\n  return (\n    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>\n      <TextInput placeholder='Type here...' style={{ borderWidth: 1, width: 200, padding: 10 }} />\n    </View>\n  );\n}"
+  }
+}

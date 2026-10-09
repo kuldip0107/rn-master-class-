@@ -1,0 +1,35 @@
+{
+  "module": "useWindowDimensions",
+  "library": "react-native",
+  "description": "A React hook that provides and automatically updates the current window's dimensions and font scale. Useful for responsive layouts and adapting UI to device orientation or screen changes.",
+  "usage": "import { useWindowDimensions } from 'react-native';\n\nconst { height, width, scale, fontScale } = useWindowDimensions();",
+  "properties": {
+    "width": {
+      "type": "number",
+      "description": "The width in pixels of the window or screen the app currently occupies."
+    },
+    "height": {
+      "type": "number",
+      "description": "The height in pixels of the window or screen the app currently occupies."
+    },
+    "scale": {
+      "type": "number",
+      "description": "The device pixel ratio. Values are typically 1 (standard), 2 or 3 (high-density / Retina displays)."
+    },
+    "fontScale": {
+      "type": "number",
+      "description": "The current font scaling factor applied by the user. Reflects accessibility or system-wide font size settings."
+    }
+  },
+  "example": [
+    {
+      "description": "Get current window dimensions and font scale",
+      "code": "import { useWindowDimensions } from 'react-native';\n\nfunction MyComponent() {\n  const { height, width, scale, fontScale } = useWindowDimensions();\n\n  return (\n    <View style={{ width, height }}>\n      <Text>Window width: {width}</Text>\n      <Text>Window height: {height}</Text>\n      <Text>Device scale: {scale}</Text>\n      <Text>Font scale: {fontScale}</Text>\n    </View>\n  );\n}"
+    }
+  ],
+  "notes": [
+    "Automatically updates on screen rotation or font scaling changes.",
+    "Preferred over the static `Dimensions.get('window')` API for React components.",
+    "Values can be used directly in inline styles for responsive layouts."
+  ]
+}

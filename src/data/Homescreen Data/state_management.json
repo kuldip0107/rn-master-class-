@@ -1,0 +1,55 @@
+{
+  "component": "State Management",
+  "library": "react-native",
+  "description": "State management controls how data flows and updates in a React Native application.",
+  "properties": {
+    "useState": {
+        "description": "Local state hook for functional components. Returns a stateful value and a function to update it.",
+        "usage": "const [count, setCount] = useState(0);"
+    },
+    "useReducer": {
+        "description": "Alternative to useState for complex state logic involving multiple sub-values or when the next state depends on the previous one.",
+        "usage": "const [state, dispatch] = useReducer(reducer, initialState);"
+    },
+    "useContext": {
+        "description": "Accepts a context object and returns the current context value for that context. Used for global state.",
+        "usage": "const value = useContext(MyContext);"
+    },
+    "Props Drilling": {
+        "description": "Passing data from parent to child through multiple layers of components.",
+        "note": "Avoid excessive props drilling; use Context or State Libraries instead."
+    },
+    "Context API": {
+        "description": "Built-in React API to share values like themes or auth status between components without explicitly passing a prop."
+    },
+    "Redux / Zustand": {
+        "description": "External libraries for managing global state in larger applications.",
+        "note": "Useful when state logic becomes too complex for Context API."
+    }
+  },
+  "coreConcepts": {
+     "Immutability": {
+         "description": "State should never be modified directly. Always use the setter function provided by the hook.",
+         "values": [
+             "Wrong: state.value = 1",
+             "Right: setState({ ...state, value: 1 })"
+         ]
+     },
+     "Asynchronous Updates": {
+         "description": "State updates may not happen immediately. React batches updates for performance."
+     },
+     "Unidirectional Data Flow": {
+         "description": "Data flows down from parent to child via props.",
+         "values": ["Parent -> Child"]
+     }
+  },
+  "bestPractices": [
+    "Keep state as local as possible. Lift state up only when necessary.",
+    "Use multiple useState hooks for independent variables instead of one large object.",
+    "Use Context for truly global data (Auth, Theme, Language).",
+    "Avoid storing derived state. Calculate it on the fly or use useMemo."
+  ],
+  "example": {
+      "code": "import React, { useState } from 'react';\nimport { View, Text, Button, StyleSheet } from 'react-native';\n\nconst Counter = () => {\n  const [count, setCount] = useState(0);\n\n  return (\n    <View style={styles.container}>\n      <Text style={styles.text}>Count: {count}</Text>\n      <Button \n        title=\"Increment\" \n        onPress={() => setCount(prev => prev + 1)} \n      />\n    </View>\n  );\n};\n\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    justifyContent: 'center',\n    alignItems: 'center',\n  },\n  text: {\n    fontSize: 24,\n    marginBottom: 20,\n  },\n});"
+  }
+}

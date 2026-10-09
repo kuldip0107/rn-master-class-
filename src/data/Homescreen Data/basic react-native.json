@@ -1,0 +1,109 @@
+{
+  "courseId": "RN_BASIC_001",
+  "component": "Basic React-Native Components",
+  "courseTitle": "Learn the Basics of React Native",
+  "library": "react-native",
+  "description": "Learn the core fundamentals of React Native: native components (View, Text, Image), JSX syntax, Components, Props and State.",
+  "sections": [
+    {
+      "id": 1,
+      "title": "Introduction",
+      "description": "React Native is like React, but it uses native components instead of web components. To understand React Native, you must learn JSX, components, props, and state.",
+      "keyPoints": [
+        "Uses native components",
+        "Based on React concepts",
+        "Supports JSX and ES6",
+        "Works for beginners and React developers"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Hello World",
+      "description": "The first React Native app displays a simple 'Hello World' text using core components.",
+      "code": {
+        "language": "javascript",
+        "example": "import React from 'react';\nimport { View, Text } from 'react-native';\n\nconst HelloWorldApp = () => (\n  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>\n    <Text>Hello, world!</Text>\n  </View>\n);\n\nexport default HelloWorldApp;"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Core Components",
+      "description": "React Native provides core components that map to native UI elements.",
+      "components": [
+        {
+          "name": "View",
+          "purpose": "Acts as a container like div"
+        },
+        {
+          "name": "Text",
+          "purpose": "Displays text content"
+        },
+        {
+          "name": "Image",
+          "purpose": "Displays images"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "JSX and ES6",
+      "description": "JSX allows writing UI code inside JavaScript. React Native supports ES6 features out of the box.",
+      "features": [
+        "JSX syntax",
+        "import / export",
+        "const and let",
+        "Arrow functions"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Components",
+      "description": "Everything visible on the screen in React Native is a component.",
+      "types": [
+        "Function Components",
+        "Class Components"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Props",
+      "description": "Props are read-only values passed from parent to child components.",
+      "example": {
+        "language": "javascript",
+        "code": "const Greeting = (props) => (\n  <Text>Hello {props.name}!</Text>\n);"
+      }
+    },
+    {
+      "id": 7,
+      "title": "State",
+      "description": "State allows components to change data over time in response to user actions.",
+      "comparison": {
+        "props": "Read-only, passed from parent",
+        "state": "Managed inside component"
+      }
+    },
+    {
+      "id": 8,
+      "title": "React vs React Native State",
+      "description": "State management is the same in React and React Native using hooks or class components."
+    },
+    {
+      "id": 9,
+      "title": "Counter Example (React)",
+      "platform": "web",
+      "code": {
+        "language": "javascript",
+        "example": "const [count, setCount] = useState(0);"
+      }
+    },
+    {
+      "id": 10,
+      "title": "Counter Example (React Native)",
+      "platform": "mobile",
+      "code": {
+        "language": "javascript",
+        "example": "const [count, setCount] = useState(0);\n\n<Button title=\"Click me\" onPress={() => setCount(count + 1)} />"
+      }
+    }
+  ]
+}

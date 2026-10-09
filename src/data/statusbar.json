@@ -1,0 +1,132 @@
+{
+  "component": "StatusBar",
+  "library": "react-native",
+  "description": "Component to control the app's status bar. Displays current time, network info, battery, and other status icons. Supports multiple mounted instances and a stack-based imperative API.",
+  "constants": {
+    "currentHeight": {
+      "platform": "Android",
+      "description": "Height of the status bar including notch if present."
+    }
+  },
+  "props": {
+    "animated": {
+      "type": "boolean",
+      "default": false,
+      "description": "Animate transitions between status bar property changes."
+    },
+    "backgroundColor": {
+      "type": "color",
+      "platform": "Android",
+      "description": "Background color of the status bar. Deprecated in Android 15+.",
+      "default": "system default or black if undefined"
+    },
+    "barStyle": {
+      "type": "enum('default','light-content','dark-content')",
+      "default": "default",
+      "description": "Color of the status bar text. On Android, affects API 23+."
+    },
+    "hidden": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the status bar is hidden."
+    },
+    "networkActivityIndicatorVisible": {
+      "type": "boolean",
+      "platform": "iOS",
+      "default": false,
+      "description": "Shows or hides the network activity indicator."
+    },
+    "showHideTransition": {
+      "type": "enum('fade','slide','none')",
+      "platform": "iOS",
+      "default": "fade",
+      "description": "Transition effect when showing or hiding the status bar."
+    },
+    "translucent": {
+      "type": "boolean",
+      "platform": "Android",
+      "default": false,
+      "description": "Makes the status bar translucent. Deprecated in Android 15+."
+    }
+  },
+  "methods": {
+    "popStackEntry": {
+      "type": "function",
+      "params": {
+        "entry": "StatusBarProps"
+      },
+      "description": "Get and remove the last StatusBar entry from the stack."
+    },
+    "pushStackEntry": {
+      "type": "function",
+      "params": {
+        "props": "StatusBarProps"
+      },
+      "description": "Push a StatusBar entry onto the stack."
+    },
+    "replaceStackEntry": {
+      "type": "function",
+      "params": {
+        "entry": "StatusBarProps",
+        "props": "StatusBarProps"
+      },
+      "description": "Replace an existing StatusBar stack entry with new props."
+    },
+    "setBackgroundColor": {
+      "type": "function",
+      "params": {
+        "color": "string",
+        "animated": "boolean (optional)"
+      },
+      "platform": "Android",
+      "description": "Set the status bar background color. Deprecated in Android 15+."
+    },
+    "setBarStyle": {
+      "type": "function",
+      "params": {
+        "style": "StatusBarStyle",
+        "animated": "boolean (optional)"
+      },
+      "description": "Set the status bar text/icon style."
+    },
+    "setHidden": {
+      "type": "function",
+      "params": {
+        "hidden": "boolean",
+        "animation": "StatusBarAnimation (iOS only)"
+      },
+      "description": "Show or hide the status bar."
+    },
+    "setNetworkActivityIndicatorVisible": {
+      "type": "function",
+      "params": {
+        "visible": "boolean"
+      },
+      "platform": "iOS",
+      "description": "Control visibility of network activity indicator."
+    },
+    "setTranslucent": {
+      "type": "function",
+      "params": {
+        "translucent": "boolean"
+      },
+      "platform": "Android",
+      "description": "Control translucency of the status bar. Deprecated in Android 15+."
+    }
+  },
+  "typeDefinitions": {
+    "StatusBarAnimation": {
+      "type": "enum",
+      "values": ["fade", "slide", "none"],
+      "description": "iOS animation type when showing/hiding the status bar."
+    },
+    "StatusBarStyle": {
+      "type": "enum",
+      "values": ["default", "light-content", "dark-content"],
+      "description": "Text and icon color style of the status bar."
+    }
+  },
+  "example": {
+    "tsx": "import React from 'react';\nimport { StatusBar, View, Text } from 'react-native';\n\nexport default function App() {\n  return (\n    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>\n      <StatusBar barStyle=\"light-content\" backgroundColor=\"#6a51ae\" />\n      <Text>StatusBar Example</Text>\n    </View>\n  );\n}"
+  }
+}

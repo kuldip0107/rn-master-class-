@@ -1,0 +1,67 @@
+{
+  "component": "TouchableNativeFeedback",
+  "type": "Core Component (Android only)",
+  "description": "A wrapper for making views respond properly to touches on Android. Uses native state drawable for touch feedback. Only supports a single View child. Background drawable can be customized.",
+  "basicExample": {
+    "tsx": "import { TouchableNativeFeedback, View, Text } from 'react-native';\n\n<TouchableNativeFeedback\n  onPress={() => alert('Pressed!')}\n  background={TouchableNativeFeedback.SelectableBackground()}>\n  <View style={{ padding: 20, backgroundColor: '#eee' }}>\n    <Text>Press Me</Text>\n  </View>\n</TouchableNativeFeedback>"
+  },
+  "usageNotes": [
+    "Only supports one child View.",
+    "Use useForeground for ripple on the foreground (Android 6.0+).",
+    "For multiple children, wrap them in a View.",
+    "For future-proof touch handling with visual feedback, Pressable is recommended."
+  ],
+  "props": {
+    "background": {
+      "type": "backgroundPropType",
+      "description": "Specifies the type of background drawable for feedback. Use static methods to generate."
+    },
+    "useForeground": {
+      "type": "boolean",
+      "description": "Adds ripple to the foreground instead of background (Android 6.0+)."
+    },
+    "hasTVPreferredFocus": {
+      "type": "boolean",
+      "description": "TV preferred focus (Android TV)."
+    },
+    "nextFocusDown": {"type": "number", "description": "TV next focus down"},
+    "nextFocusForward": {"type": "number", "description": "TV next focus forward"},
+    "nextFocusLeft": {"type": "number", "description": "TV next focus left"},
+    "nextFocusRight": {"type": "number", "description": "TV next focus right"},
+    "nextFocusUp": {"type": "number", "description": "TV next focus up"}
+  },
+  "methods": {
+    "SelectableBackground": {
+      "type": "static",
+      "description": "Creates default android selectable background (?android:attr/selectableItemBackground).",
+      "parameters": {
+        "rippleRadius": {"type": "number|null", "description": "Controls ripple radius"}
+      }
+    },
+    "SelectableBackgroundBorderless": {
+      "type": "static",
+      "description": "Default background for borderless selectable elements (?android:attr/selectableItemBackgroundBorderless, API 21+).",
+      "parameters": {
+        "rippleRadius": {"type": "number|null", "description": "Controls ripple radius"}
+      }
+    },
+    "Ripple": {
+      "type": "static",
+      "description": "Creates a ripple drawable with specified color and options (API 21+).",
+      "parameters": {
+        "color": {"type": "string", "required": true, "description": "Ripple color"},
+        "borderless": {"type": "boolean", "required": true, "description": "Ripple can render outside view bounds"},
+        "rippleRadius": {"type": "number|null", "required": false, "description": "Controls ripple radius"}
+      }
+    },
+    "canUseNativeForeground": {
+      "type": "static",
+      "description": "Returns boolean indicating if native foreground is supported (Android 6.0+)."
+    }
+  },
+  "notes": [
+    "Only for Android.",
+    "Better to use Pressable for cross-platform touch handling.",
+    "Supports ripple and selectable background effects using static methods."
+  ]
+}

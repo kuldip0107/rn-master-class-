@@ -1,0 +1,55 @@
+{
+  "module": "Dimensions",
+  "library": "react-native",
+  "description": "Provides information about the screen and window dimensions. Allows listening to changes in dimensions (e.g., device rotation or foldable devices). useWindowDimensions is preferred in functional components.",
+  "methods": {
+    "get": {
+      "description": "Returns the current dimensions of the window or screen.",
+      "signature": "get(dim: 'window' | 'screen') => ScaledSize",
+      "parameters": {
+        "dim": { "type": "string", "required": true, "description": "Name of the dimension: 'window' or 'screen'" }
+      },
+      "returns": {
+        "type": "ScaledSize",
+        "description": "Object containing width, height, scale, and fontScale"
+      },
+      "example": "const { width, height } = Dimensions.get('window');"
+    },
+    "addEventListener": {
+      "description": "Adds an event listener for dimension changes.",
+      "signature": "addEventListener(type: 'change', handler: (event: DimensionsValue) => void) => EmitterSubscription",
+      "parameters": {
+        "type": { "type": "string", "required": true, "description": "'change' event fires when dimensions change" },
+        "handler": { "type": "function", "required": true, "description": "Callback function called with a DimensionsValue object" }
+      },
+      "returns": "EmitterSubscription object for removing the listener"
+    }
+  },
+  "types": {
+    "DimensionsValue": {
+      "description": "Object passed to dimension change event listeners.",
+      "properties": {
+        "window": { "type": "ScaledSize", "description": "Size of the visible application window" },
+        "screen": { "type": "ScaledSize", "description": "Size of the device's screen" }
+      }
+    },
+    "ScaledSize": {
+      "description": "Represents a dimension with width, height, and scale factors.",
+      "properties": {
+        "width": { "type": "number", "description": "Width of the window or screen in pixels" },
+        "height": { "type": "number", "description": "Height of the window or screen in pixels" },
+        "scale": { "type": "number", "description": "Pixel density of the screen" },
+        "fontScale": { "type": "number", "description": "Scale factor for fonts" }
+      }
+    }
+  },
+  "notes": [
+    "Dimensions.get() values may change after initial rendering due to rotation or device folding.",
+    "For Android, window dimensions exclude the status bar (if not translucent) and navigation bar.",
+    "Do not cache dimensions; call get() on every render if needed, or use inline styles.",
+    "useWindowDimensions hook is recommended for functional components for automatic updates."
+  ],
+  "example": {
+    "tsx": "import { Dimensions } from 'react-native';\n\nconst { width, height } = Dimensions.get('window');\nconsole.log('Window width:', width, 'height:', height);\n\nDimensions.addEventListener('change', ({ window, screen }) => {\n  console.log('Window changed:', window.width, window.height);\n});"
+  }
+}
