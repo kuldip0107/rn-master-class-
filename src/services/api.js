@@ -136,6 +136,8 @@ export const saveUserSession = async (user) => {
     if (user.profileImage) await AsyncStorage.setItem('profileImage', user.profileImage);
     else if (user.photoUrl) await AsyncStorage.setItem('profileImage', user.photoUrl);
     if (user.streak != null) await AsyncStorage.setItem('streak', String(user.streak));
+    const todayStr = new Date().toISOString().split('T')[0];
+    await AsyncStorage.setItem('lastActiveDate', user.lastActiveDate || todayStr);
     await AsyncStorage.setItem('isLoggedIn', 'true');
     await AsyncStorage.setItem('userObject', JSON.stringify(user));
   } catch (e) {
@@ -250,6 +252,19 @@ export const userAPI = {
   updateProgress: (userId, payload) =>
     apiRequest(`/api/user/progress/${userId}`, {
       method: 'PUT',
+      body: payload,
+    }),
+
+  // GET /api/user/streak/:userId
+  getStreak: (userId) =>
+    apiRequest(`/api/user/streak/${userId}`, {
+      method: 'GET',
+    }),
+
+  // POST /api/user/streak/:userId
+  syncStreak: (userId, payload = {}) =>
+    apiRequest(`/api/user/streak/${userId}`, {
+      method: 'POST',
       body: payload,
     }),
 };

@@ -1,8 +1,25 @@
-import notifee, { TriggerType, RepeatFrequency } from '@notifee/react-native';
+import notifee, { TriggerType, RepeatFrequency, AndroidImportance } from '@notifee/react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const notificationService = {
   async requestPermission() {
     try {
+      if (Platform.OS === 'android' && Platform.Version >= 33) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+          {
+            title: 'Daily Streak Reminders',
+            message: 'Allow notifications so you never lose your daily learning streak!',
+            buttonNeutral: 'Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'Allow',
+          }
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Android POST_NOTIFICATIONS permission not granted');
+        }
+      }
       const settings = await notifee.requestPermission();
       return settings.authorizationStatus >= 1;
     } catch (e) {
@@ -15,11 +32,14 @@ export const notificationService = {
     try {
       await this.requestPermission();
 
-      // Create high-importance channel for Android
+      // Create high-importance channel with sound and vibration
       const channelId = await notifee.createChannel({
         id: 'daily_streak_reminder',
         name: 'Daily Streak Reminders',
-        importance: 4, // High
+        importance: AndroidImportance.HIGH,
+        sound: 'default',
+        vibration: true,
+        vibrationPattern: [300, 500],
       });
 
       // Calculate next trigger time (e.g. 7:00 PM)
@@ -37,6 +57,9 @@ export const notificationService = {
         type: TriggerType.TIMESTAMP,
         timestamp: date.getTime(),
         repeatFrequency: RepeatFrequency.DAILY,
+        alarmManager: {
+          allowWhileIdle: true,
+        },
       };
 
       // Cancel existing reminder if any before creating a new one
@@ -45,14 +68,16 @@ export const notificationService = {
       await notifee.createTriggerNotification(
         {
           id: 'daily_streak_notification',
-          title: '🔥 Don\'t break your learning streak!',
-          body: 'You are doing great! Complete today\'s quick lesson or quiz to keep your streak alive. 🚀',
+          title: "🔥 Don't break your learning streak!",
+          body: "You are doing great! Complete today's quick lesson or quiz to keep your streak alive. 🚀",
           android: {
             channelId,
             pressAction: {
               id: 'default',
             },
             smallIcon: 'ic_launcher',
+            sound: 'default',
+            vibrationPattern: [300, 500],
           },
           ios: {
             sound: 'default',
@@ -82,24 +107,50 @@ export const notificationService = {
 
   async triggerInstantTestNotification() {
     try {
+      await this.requestPermission();
+
       const channelId = await notifee.createChannel({
-        id: 'test_notification',
-        name: 'Test Notifications',
-        importance: 4,
+        id: 'daily_streak_reminder',
+        name: 'Daily Streak Reminders',
+        importance: AndroidImportance.HIGH,
+        sound: 'default',
+        vibration: true,
+        vibrationPattern: [300, 500],
       });
 
       await notifee.displayNotification({
-        title: '🔥 Streak Protected!',
-        body: 'Awesome job! Your daily reminder is actively set to keep you on track. 🚀',
+        id: 'streak_activated_test',
+        title: '🔥 Daily Streak Reminder Activated!',
+        body: 'Scheduled daily at 7:00 PM. Keep your streak alive and never miss a lesson! 🚀',
         android: {
           channelId,
           smallIcon: 'ic_launcher',
+          pressAction: {
+            id: 'default',
+          },
+          sound: 'default',
+          vibrationPattern: [300, 500],
+        },
+        ios: {
+          sound: 'default',
         },
       });
     } catch (e) {
-      console.error(e);
+      console.error('Instant notification error:', e);
     }
   },
+
+  async initDailyReminderIfEnabled() {
+    try {
+      const enabled = await AsyncStorage.getItem('daily_reminder_enabled');
+      if (enabled === 'true') {
+        await this.scheduleDailyReminder(19, 0);
+      }
+    } catch (e) {
+      console.log('Error initializing daily reminder:', e);
+    }
+  },
+
 
   /**
    * Sync FCM / Device Push token with backend

@@ -17,6 +17,7 @@ class MainApplication : Application(), ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           add(com.reactnative.googleauth.GoogleAuthPackage())
           add(com.reactnative.filedownload.FileDownloadPackage())
+          add(com.reactnative.sound.SoundPackage())
         },
     )
   }

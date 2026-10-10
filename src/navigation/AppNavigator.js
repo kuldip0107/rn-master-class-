@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { theme } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { ROUTES } from './routes';
 import TabNavigator from './TabNavigator';
 
@@ -43,13 +43,15 @@ import {
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
+  const { theme: currentTheme } = useTheme();
+
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={ROUTES.SPLASH}
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: theme.colors.background },
+          contentStyle: { backgroundColor: currentTheme.colors.background },
           animation: 'slide_from_right',
         }}
       >

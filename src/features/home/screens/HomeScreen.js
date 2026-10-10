@@ -95,6 +95,7 @@ const HomeScreen = ({ navigation }) => {
         let newStreak = 1;
 
         if (lastDate === todayStr) {
+          // Same day app open
           newStreak = currentStreak ? parseInt(currentStreak, 10) : 1;
         } else if (lastDate) {
           const yesterday = new Date();
@@ -102,10 +103,15 @@ const HomeScreen = ({ navigation }) => {
           const yesterdayStr = yesterday.toISOString().split('T')[0];
 
           if (lastDate === yesterdayStr) {
+            // Consecutive day login: increment streak
             newStreak = currentStreak ? parseInt(currentStreak, 10) + 1 : 2;
           } else {
+            // Missed a day: reset streak
             newStreak = 1;
           }
+        } else if (currentStreak) {
+          // Logged in previously (e.g. yesterday) without lastActiveDate cached
+          newStreak = parseInt(currentStreak, 10) + 1;
         }
 
         setStreak(newStreak);
@@ -131,13 +137,29 @@ const HomeScreen = ({ navigation }) => {
                 setProfileImage(u.profileImage);
                 await AsyncStorage.setItem('profileImage', u.profileImage);
               }
+              if (u.streak != null) {
+                const effectiveStreak = Math.max(newStreak, u.streak);
+                setStreak(effectiveStreak);
+                await AsyncStorage.setItem('streak', String(effectiveStreak));
+              }
             }
 
             if (progressRes.status === 'fulfilled' && progressRes.value?.progress) {
               const p = progressRes.value.progress;
               if (p.streak != null) {
-                setStreak(p.streak);
-                await AsyncStorage.setItem('streak', String(p.streak));
+                const effectiveStreak = Math.max(newStreak, p.streak);
+                setStreak(effectiveStreak);
+                await AsyncStorage.setItem('streak', String(effectiveStreak));
+                if (p.lastActiveDate) {
+                  await AsyncStorage.setItem('lastActiveDate', p.lastActiveDate);
+                }
+                // If client has higher streak, sync with server
+                if (effectiveStreak > p.streak) {
+                  userAPI.updateProgress(storedId, {
+                    streak: effectiveStreak,
+                    lastActiveDate: todayStr,
+                  }).catch(() => {});
+                }
               }
             }
           } catch (syncErr) {

@@ -43,6 +43,12 @@ export const useUser = () => {
           const res = await userAPI.getProfile(storedId);
           if (res?.user) {
             const u = res.user;
+            if (u.streak != null) {
+              await AsyncStorage.setItem('streak', String(u.streak));
+            }
+            if (u.lastActiveDate) {
+              await AsyncStorage.setItem('lastActiveDate', String(u.lastActiveDate));
+            }
             setUser((prev) => ({
               ...prev,
               name: u.name || prev.name,

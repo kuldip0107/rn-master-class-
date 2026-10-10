@@ -16,6 +16,8 @@ import CustomText from '../../../components/common/CustomText';
 import Button from '../../../components/common/Button';
 import Icon from '../../../components/common/Icon';
 import { useQuiz } from '../../../context/QuizContext';
+import { soundService } from '../../../services/soundService';
+import { hapticService } from '../../../services/hapticService';
 import reactNativeComponents from '../../../data/componentsData';
 
 const QUESTIONS_COUNT = 12;
@@ -135,16 +137,21 @@ const PracticalScreen = ({ navigation }) => {
     if (selectedOption) return;
     setSelectedOption(option);
     if (option === questions[currentQuestionIndex].correctAnswer) {
+      soundService.playSuccess();
       setScore((prev) => prev + 1);
+    } else {
+      soundService.playError();
     }
   };
 
   const handleNext = () => {
+    soundService.playClick();
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedOption(null);
     } else {
       setShowResult(true);
+      soundService.playChime();
       addQuizResult(score, questions.length);
     }
   };

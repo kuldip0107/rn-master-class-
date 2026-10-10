@@ -18,6 +18,8 @@ import { CustomAlert } from '../../../context/AlertContext';
 import CustomText from '../../../components/common/CustomText';
 import { icons } from '../../../constants/assets';
 import { notificationService } from '../../../services/notificationService';
+import { soundService } from '../../../services/soundService';
+import { hapticService } from '../../../services/hapticService';
 import { systemAPI, getBaseUrl } from '../../../services/api';
 import packageJson from '../../../../package.json';
 
@@ -37,7 +39,14 @@ const SettingItem = ({
       styles.settingItem,
       isDark ? styles.borderDark : styles.borderLight,
     ]}
-    onPress={type === 'navigate' || type === 'action' ? onPress : null}
+    onPress={
+      type === 'navigate' || type === 'action'
+        ? () => {
+            hapticService.selection();
+            onPress && onPress();
+          }
+        : null
+    }
     activeOpacity={type === 'navigate' || type === 'action' ? 0.7 : 1}
     disabled={type === 'toggle'}
   >
@@ -103,7 +112,10 @@ const SettingItem = ({
           true: '#007AFF',
         }}
         thumbColor="#FFFFFF"
-        onValueChange={onValueChange}
+        onValueChange={(val) => {
+          hapticService.light();
+          onValueChange && onValueChange(val);
+        }}
         value={value}
       />
     )}
@@ -131,36 +143,70 @@ const SettingsScreen = ({ navigation }) => {
   ];
 
   useEffect(() => {
-    const loadNotificationSetting = async () => {
+    const loadSettings = async () => {
       try {
-        const saved = await AsyncStorage.getItem('daily_reminder_enabled');
-        if (saved !== null) {
-          setNotificationsEnabled(saved === 'true');
+        const [savedNotif, savedSound, savedHaptic] = await Promise.all([
+          AsyncStorage.getItem('daily_reminder_enabled'),
+          AsyncStorage.getItem('sound_effects_enabled'),
+          AsyncStorage.getItem('haptic_feedback_enabled'),
+        ]);
+        if (savedNotif !== null) {
+          setNotificationsEnabled(savedNotif === 'true');
+        }
+        if (savedSound !== null) {
+          setSoundsEnabled(savedSound === 'true');
+        }
+        if (savedHaptic !== null) {
+          setHapticEnabled(savedHaptic === 'true');
         }
       } catch (e) {
-        console.error(e);
+        console.error('Failed loading settings', e);
       }
     };
-    loadNotificationSetting();
+    loadSettings();
   }, []);
 
   const handleToggleNotification = async (enabled) => {
     setNotificationsEnabled(enabled);
     await AsyncStorage.setItem('daily_reminder_enabled', String(enabled));
     if (enabled) {
+      soundService.playSuccess();
       await notificationService.scheduleDailyReminder(19, 0); // 7:00 PM daily
       await notificationService.triggerInstantTestNotification();
       if (Platform.OS === 'android') {
         ToastAndroid.show(
-          'Daily streak reminder set for 7:00 PM 🔥',
+          'Daily streak reminder active for 7:00 PM 🔥',
           ToastAndroid.SHORT
         );
       }
     } else {
+      soundService.playClick();
       await notificationService.cancelDailyReminder();
       if (Platform.OS === 'android') {
         ToastAndroid.show('Daily reminders disabled', ToastAndroid.SHORT);
       }
+    }
+  };
+
+  const handleToggleSound = async (enabled) => {
+    setSoundsEnabled(enabled);
+    await soundService.setEnabled(enabled);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(
+        enabled ? 'Sound effects enabled 🔊' : 'Sound effects muted 🔇',
+        ToastAndroid.SHORT
+      );
+    }
+  };
+
+  const handleToggleHaptic = async (enabled) => {
+    setHapticEnabled(enabled);
+    await hapticService.setEnabled(enabled);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(
+        enabled ? 'Haptic feedback enabled 📳' : 'Haptic feedback disabled',
+        ToastAndroid.SHORT
+      );
     }
   };
 
@@ -330,18 +376,20 @@ const SettingsScreen = ({ navigation }) => {
           <SettingItem
             icon={icons.play}
             title={t('settings.sound_effects') || 'Sound Effects'}
+            subtitle={soundsEnabled ? 'Interactive audio enabled' : 'Muted'}
             type="toggle"
             value={soundsEnabled}
-            onValueChange={setSoundsEnabled}
+            onValueChange={handleToggleSound}
             theme={theme}
             isDark={isDark}
           />
           <SettingItem
             icon={icons.check}
             title={t('settings.haptic_feedback') || 'Haptic Feedback'}
+            subtitle={hapticEnabled ? 'Tactile vibration enabled' : 'Vibration disabled'}
             type="toggle"
             value={hapticEnabled}
-            onValueChange={setHapticEnabled}
+            onValueChange={handleToggleHaptic}
             theme={theme}
             isDark={isDark}
           />
