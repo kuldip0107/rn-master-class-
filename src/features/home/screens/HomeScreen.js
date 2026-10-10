@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '../../../context/ThemeContext';
@@ -16,6 +17,8 @@ import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
 
 import { userAPI } from '../../../services/api';
+import { lessonProgressService } from '../../../services/lessonProgressService';
+import { appUsageService } from '../../../services/appUsageService';
 
 import flexboxData from '../../../data/Homescreen Data/flexbox.json';
 import stateManagementData from '../../../data/Homescreen Data/state_management.json';
@@ -27,6 +30,38 @@ const HomeScreen = ({ navigation }) => {
   const [streak, setStreak] = useState(1);
   const [avatarColor, setAvatarColor] = useState('#007AFF');
   const [profileImage, setProfileImage] = useState(null);
+  const [lessonProgress, setLessonProgress] = useState({
+    flexbox: 0,
+    state_management: 0,
+    basic_rn: 0,
+  });
+  const [usageStats, setUsageStats] = useState({
+    totalSeconds: 0,
+    todaySeconds: 0,
+    formattedTotal: '0s',
+    formattedToday: '0s',
+  });
+
+  useEffect(() => {
+    const unsubscribeUsage = appUsageService.subscribe((stats) => {
+      setUsageStats(stats);
+    });
+    return unsubscribeUsage;
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      let isMounted = true;
+      lessonProgressService.getAllProgress().then((progress) => {
+        if (isMounted) {
+          setLessonProgress(progress);
+        }
+      });
+      return () => {
+        isMounted = false;
+      };
+    }, [])
+  );
 
   useEffect(() => {
     const initializeData = async () => {
@@ -283,6 +318,83 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 
+  // Real-Time Persistent In-App Time Tracker Card
+  const renderTimeSpentCard = () => (
+    <View style={styles.timeSpentCardWrapper}>
+      <View style={[styles.timeSpentCard, isDark ? styles.timeCardDark : styles.timeCardLight]}>
+        {/* Top Header Row */}
+        <View style={styles.timeHeaderRow}>
+          <View style={styles.timeBadge}>
+            <View style={styles.livePulseDot} />
+            <CustomText variant="caption" weight="heavy" style={styles.timeBadgeText}>
+              TOTAL SCREEN TIME
+            </CustomText>
+          </View>
+          <View style={styles.liveActiveIndicator}>
+            <View style={styles.livePulseDotGreen} />
+            <CustomText variant="caption" weight="bold" style={styles.liveActiveText}>
+              LIVE
+            </CustomText>
+          </View>
+        </View>
+
+        {/* Counter Content */}
+        <View style={styles.timeContentRow}>
+          <View style={styles.timeTextCol}>
+            <CustomText
+              variant="headlineXl"
+              weight="heavy"
+              style={[
+                styles.timeMainText,
+                isDark ? styles.timeMainTextDark : styles.timeMainTextLight,
+              ]}
+            >
+              {usageStats.formattedTotal || '0s'}
+            </CustomText>
+            <CustomText
+              variant="small"
+              style={[styles.timeSubtext, isDark ? styles.textSecondaryDark : styles.textSecondaryLight]}
+            >
+              Total time spent in app • Resumes across all sessions
+            </CustomText>
+          </View>
+
+          {/* Clock Emblem */}
+          <LinearGradient
+            colors={isDark ? ['#0070EB', '#00C1FD'] : ['#E0F2FE', '#BAE6FD']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.timeIconCircle}
+          >
+            <Icon name="schedule" size={26} color={isDark ? '#FFFFFF' : '#0070EB'} />
+          </LinearGradient>
+        </View>
+
+        {/* Stats Divider & Session Details */}
+        <View style={[styles.timeDivider, isDark ? styles.timeDividerDark : styles.timeDividerLight]} />
+        <View style={styles.timeFooterRow}>
+          <View style={styles.timeFooterItem}>
+            <CustomText variant="caption" style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}>
+              Today's Session:
+            </CustomText>
+            <CustomText variant="small" weight="bold" style={styles.todayValueText}>
+              {usageStats.formattedToday || '0s'}
+            </CustomText>
+          </View>
+
+          <View style={styles.timeFooterItem}>
+            <CustomText variant="caption" style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}>
+              Status:
+            </CustomText>
+            <CustomText variant="small" weight="bold" style={styles.statusActiveValue}>
+              ● Active Now
+            </CustomText>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+
   // Figma 2x2 Explore Paths Grid
   const renderExplorePaths = () => (
     <View style={styles.section}>
@@ -393,74 +505,101 @@ const HomeScreen = ({ navigation }) => {
           {
             title: 'Introduction to Flexbox',
             duration: '15 min',
-            percent: 70,
             id: 'flexbox',
             data: flexboxData,
           },
           {
             title: 'State Management with Context',
             duration: '20 min',
-            percent: 40,
             id: 'state_management',
             data: stateManagementData,
           },
           {
             title: 'Basic React-Native Components',
             duration: '25 min',
-            percent: 85,
             id: 'basic_rn',
             data: basicRnData,
           },
-        ].map((item, idx) => (
-          <TouchableOpacity
-            key={idx}
-            style={[styles.continueCard, isDark ? styles.cardDark : styles.cardLight]}
-            activeOpacity={0.8}
-            onPress={() => {
-              if (item.data) {
-                navigation.navigate('ComponentDetail', {
-                  componentData: item.data,
-                });
-              } else {
-                navigation.navigate('MainTabs', { screen: 'Lessons' });
-              }
-            }}
-          >
-            {/* Play Circle */}
-            <View style={[styles.playCircle, isDark ? styles.playCircleDark : styles.playCircleLight]}>
-              <CustomText style={{ fontSize: 16 }}>▶️</CustomText>
-            </View>
+        ].map((item, idx) => {
+          const percent = lessonProgress[item.id] || 0;
+          const isCompleted = percent >= 100;
 
-            {/* Info */}
-            <View style={styles.continueInfo}>
-              <CustomText
-                variant="body"
-                weight="bold"
-                style={[styles.continueTitle, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}
-                numberOfLines={1}
+          return (
+            <TouchableOpacity
+              key={idx}
+              style={[
+                styles.continueCard,
+                isDark ? styles.cardDark : styles.cardLight,
+                isCompleted && (isDark ? styles.cardCompletedDark : styles.cardCompletedLight),
+              ]}
+              activeOpacity={0.8}
+              onPress={() => {
+                if (item.data) {
+                  navigation.navigate('ComponentDetail', {
+                    componentData: item.data,
+                    lessonId: item.id,
+                  });
+                } else {
+                  navigation.navigate('MainTabs', { screen: 'Lessons' });
+                }
+              }}
+            >
+              {/* Play / Completed Circle */}
+              <View
+                style={[
+                  styles.playCircle,
+                  isCompleted
+                    ? styles.playCircleCompleted
+                    : isDark
+                    ? styles.playCircleDark
+                    : styles.playCircleLight,
+                ]}
               >
-                {item.title}
-              </CustomText>
-
-              {/* Progress Bar */}
-              <View style={[styles.progressBarBg, isDark ? styles.progressTrackDark : styles.progressTrackLight]}>
-                <View
-                  style={[styles.progressBarFill, { width: `${item.percent}%` }]}
-                />
+                <CustomText style={{ fontSize: 16 }}>{isCompleted ? '✅' : '▶️'}</CustomText>
               </View>
 
-              <CustomText
-                variant="small"
-                style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}
-              >
-                {item.duration} • {item.percent}% Complete
-              </CustomText>
-            </View>
+              {/* Info */}
+              <View style={styles.continueInfo}>
+                <CustomText
+                  variant="body"
+                  weight="bold"
+                  style={[styles.continueTitle, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}
+                  numberOfLines={1}
+                >
+                  {item.title}
+                </CustomText>
 
-            {/* Chevron */}
-            <CustomText style={{ fontSize: 20, color: isDark ? '#64748B' : '#C1C6D7' }}>›</CustomText>
-          </TouchableOpacity>
-        ))}
+                {/* Progress Bar */}
+                <View style={[styles.progressBarBg, isDark ? styles.progressTrackDark : styles.progressTrackLight]}>
+                  <View
+                    style={[
+                      styles.progressBarFill,
+                      {
+                        width: `${Math.max(4, percent)}%`,
+                        backgroundColor: isCompleted ? '#10B981' : '#00C1FD',
+                      },
+                    ]}
+                  />
+                </View>
+
+                <CustomText
+                  variant="small"
+                  style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}
+                >
+                  {item.duration} •{' '}
+                  {isCompleted
+                    ? 'Completed (100%)'
+                    : percent > 0
+                    ? `${percent}% Complete`
+                    : 'Not Started (0%)'}
+                </CustomText>
+              </View>
+
+              {/* Chevron */}
+              <CustomText style={{ fontSize: 20, color: isDark ? '#64748B' : '#C1C6D7' }}>›</CustomText>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </View>
   );
@@ -478,6 +617,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.topSection}>
           {renderHeader()}
           {renderStreakCard()}
+          {renderTimeSpentCard()}
         </View>
         {renderExplorePaths()}
         {renderContinueLearning()}
@@ -788,6 +928,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F3F8',
     borderColor: '#E3E2E7',
   },
+  playCircleCompleted: {
+    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+    borderColor: '#10B981',
+  },
+  cardCompletedDark: {
+    borderColor: 'rgba(16, 185, 129, 0.35)',
+  },
+  cardCompletedLight: {
+    borderColor: 'rgba(16, 185, 129, 0.45)',
+  },
   playIcon: {
     width: 18,
     height: 18,
@@ -824,6 +974,133 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     transform: [{ rotate: '-90deg' }],
+  },
+  timeSpentCardWrapper: {
+    marginBottom: 20,
+  },
+  timeSpentCard: {
+    borderRadius: 20,
+    padding: 18,
+    borderWidth: 1,
+  },
+  timeCardDark: {
+    backgroundColor: '#0F111A',
+    borderColor: 'rgba(0, 193, 253, 0.22)',
+    shadowColor: '#00C1FD',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  timeCardLight: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#E3E2E7',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  timeHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  timeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 193, 253, 0.12)',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    gap: 6,
+  },
+  livePulseDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#00C1FD',
+  },
+  timeBadgeText: {
+    color: '#00C1FD',
+    fontSize: 10,
+    letterSpacing: 0.8,
+  },
+  liveActiveIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  livePulseDotGreen: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#10B981',
+  },
+  liveActiveText: {
+    color: '#10B981',
+    fontSize: 11,
+    letterSpacing: 0.5,
+  },
+  timeContentRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  timeTextCol: {
+    flex: 1,
+    paddingRight: 12,
+  },
+  timeMainText: {
+    fontSize: 26,
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  timeMainTextDark: {
+    color: '#F8FAFC',
+  },
+  timeMainTextLight: {
+    color: '#1A1B1F',
+  },
+  timeSubtext: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  timeIconCircle: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 3,
+  },
+  timeDivider: {
+    height: 1,
+    marginTop: 14,
+    marginBottom: 10,
+  },
+  timeDividerDark: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  timeDividerLight: {
+    backgroundColor: '#EEEDF3',
+  },
+  timeFooterRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  timeFooterItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  todayValueText: {
+    color: '#007AFF',
+  },
+  statusActiveValue: {
+    color: '#10B981',
   },
 });
 

@@ -4,6 +4,7 @@ import { StatusBar } from 'react-native';
 import { AppNavigator } from './src/navigation';
 import { ThemeProvider, useTheme, AlertProvider, QuizProvider } from './src/context';
 import { notificationService } from './src/services/notificationService';
+import { appUsageService } from './src/services/appUsageService';
 import './src/i18n';
 
 const MainApp = () => {
@@ -27,6 +28,7 @@ const MainApp = () => {
 const App = () => {
   useEffect(() => {
     notificationService.initDailyReminderIfEnabled();
+    appUsageService.initialize();
   }, []);
 
   return (

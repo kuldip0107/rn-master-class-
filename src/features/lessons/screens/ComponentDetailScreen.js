@@ -19,6 +19,9 @@ import Container from '../../../components/common/Container';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
 import { userAPI } from '../../../services/api';
+import { lessonProgressService } from '../../../services/lessonProgressService';
+import { soundService } from '../../../services/soundService';
+import { hapticService } from '../../../services/hapticService';
 
 const ComponentDetailScreen = ({ route, navigation }) => {
   const { isDark } = useTheme();
@@ -31,7 +34,59 @@ const ComponentDetailScreen = ({ route, navigation }) => {
       ? rawTarget.componentData
       : rawTarget;
 
+  const lessonId =
+    route.params?.lessonId ||
+    lessonProgressService.resolveLessonId(rawData);
+
   const [copied, setCopied] = useState(false);
+  const [readingProgress, setReadingProgress] = useState(0);
+
+  useEffect(() => {
+    if (lessonId) {
+      lessonProgressService.getProgress(lessonId).then((val) => {
+        if (val !== undefined && val !== null) {
+          setReadingProgress(val);
+        }
+      });
+    }
+  }, [lessonId]);
+
+  const handleScroll = (event) => {
+    if (!lessonId) return;
+    const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+    const scrollableHeight = contentSize.height - layoutMeasurement.height;
+    if (scrollableHeight > 30) {
+      const scrollPercent = Math.min(
+        100,
+        Math.max(10, Math.round(((contentOffset.y + layoutMeasurement.height * 0.4) / scrollableHeight) * 100))
+      );
+      if (scrollPercent > readingProgress) {
+        setReadingProgress(scrollPercent);
+        lessonProgressService.updateProgress(lessonId, scrollPercent);
+      }
+    }
+  };
+
+  const handleToggleComplete = async () => {
+    if (!lessonId) return;
+    if (readingProgress >= 100) {
+      await lessonProgressService.updateProgress(lessonId, 0);
+      setReadingProgress(0);
+      soundService.playClick();
+      hapticService.light();
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Progress reset for this lesson', ToastAndroid.SHORT);
+      }
+    } else {
+      await lessonProgressService.updateProgress(lessonId, 100);
+      setReadingProgress(100);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('🎉 Lesson completed! 100% saved.', ToastAndroid.SHORT);
+      } else {
+        CustomAlert.success('Complete!', 'Lesson marked as 100% complete.');
+      }
+    }
+  };
 
   useEffect(() => {
     const markComponentCompleted = async () => {
@@ -604,6 +659,62 @@ const ComponentDetailScreen = ({ route, navigation }) => {
     </View>
   );
 
+  const renderFooter = () => {
+    if (!lessonId) return null;
+    const isCompleted = readingProgress >= 100;
+
+    return (
+      <View style={[styles.lessonFooterCard, isDark ? styles.lessonFooterDark : styles.lessonFooterLight]}>
+        <View style={styles.lessonFooterRow}>
+          <View style={styles.lessonFooterInfo}>
+            <CustomText
+              variant="headlineMd"
+              weight="bold"
+              style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}
+            >
+              {isCompleted ? '🎉 Lesson Completed!' : '📖 Reading Progress'}
+            </CustomText>
+            <CustomText
+              variant="small"
+              style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}
+            >
+              {isCompleted
+                ? 'Great job! This topic is 100% finished.'
+                : `Scroll or mark done • ${readingProgress}% completed`}
+            </CustomText>
+          </View>
+          <View
+            style={[
+              styles.percentPill,
+              { backgroundColor: isCompleted ? 'rgba(16, 185, 129, 0.15)' : 'rgba(0, 193, 253, 0.15)' },
+            ]}
+          >
+            <CustomText
+              variant="small"
+              weight="bold"
+              style={{ color: isCompleted ? '#10B981' : '#00C1FD' }}
+            >
+              {readingProgress}%
+            </CustomText>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          style={[
+            styles.completeButton,
+            isCompleted ? styles.completeButtonDone : styles.completeButtonActive,
+          ]}
+          onPress={handleToggleComplete}
+          activeOpacity={0.8}
+        >
+          <CustomText weight="bold" style={styles.completeButtonText}>
+            {isCompleted ? '✅ Mark Incomplete (Reset)' : 'Mark as Complete (100%) 🔥'}
+          </CustomText>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
@@ -629,6 +740,20 @@ const ComponentDetailScreen = ({ route, navigation }) => {
         <View style={styles.headerSpacer} />
       </View>
 
+      {lessonId && (
+        <View style={[styles.topProgressBarTrack, isDark ? styles.topTrackDark : styles.topTrackLight]}>
+          <View
+            style={[
+              styles.topProgressBarFill,
+              {
+                width: `${Math.max(readingProgress > 0 ? 5 : 0, readingProgress)}%`,
+                backgroundColor: readingProgress >= 100 ? '#10B981' : '#00C1FD',
+              },
+            ]}
+          />
+        </View>
+      )}
+
       {sections.length > 0 ? (
         <SectionList
           sections={sections}
@@ -636,6 +761,9 @@ const ComponentDetailScreen = ({ route, navigation }) => {
           renderItem={renderItem}
           renderSectionHeader={renderSectionHeader}
           ListHeaderComponent={renderHeader}
+          ListFooterComponent={renderFooter}
+          onScroll={handleScroll}
+          scrollEventThrottle={32}
           contentContainerStyle={styles.listContent}
           stickySectionHeadersEnabled={false}
           showsVerticalScrollIndicator={false}
@@ -644,8 +772,11 @@ const ComponentDetailScreen = ({ route, navigation }) => {
         <ScrollView
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={32}
         >
           {renderHeader()}
+          {renderFooter()}
         </ScrollView>
       )}
     </View>
@@ -841,6 +972,67 @@ const styles = StyleSheet.create({
   propDescLight: { color: '#414755' },
   topBarTitle: { color: '#1A1B1F' },
   emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  topProgressBarTrack: {
+    height: 4,
+    width: '100%',
+  },
+  topTrackDark: {
+    backgroundColor: '#1E202E',
+  },
+  topTrackLight: {
+    backgroundColor: '#E3E2E7',
+  },
+  topProgressBarFill: {
+    height: '100%',
+    borderRadius: 2,
+  },
+  lessonFooterCard: {
+    marginTop: 24,
+    marginBottom: 40,
+    marginHorizontal: 16,
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+  },
+  lessonFooterDark: {
+    backgroundColor: '#0F111A',
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  lessonFooterLight: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#E3E2E7',
+  },
+  lessonFooterRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  lessonFooterInfo: {
+    flex: 1,
+    paddingRight: 10,
+  },
+  percentPill: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 12,
+  },
+  completeButton: {
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  completeButtonActive: {
+    backgroundColor: '#007AFF',
+  },
+  completeButtonDone: {
+    backgroundColor: '#10B981',
+  },
+  completeButtonText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+  },
 });
 
 export default ComponentDetailScreen;
