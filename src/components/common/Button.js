@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { theme } from '../../theme/theme';
+import { colors, theme } from '../../theme/theme';
 import CustomText from './CustomText';
 
 const ButtonContent = ({
@@ -50,19 +50,19 @@ const Button = ({
 }) => {
   const getBackgroundColor = () => {
     if (disabled) return '#A0A0A0';
-    if (variant === 'primary') return '#007AFF';
+    if (variant === 'primary') return colors.brand.primary;
     if (variant === 'secondary') return theme.colors.surfaceLow || '#F2F2F7';
     if (variant === 'outline' || variant === 'ghost') return 'transparent';
     if (variant === 'danger') return theme.colors.error;
-    return '#007AFF';
+    return colors.brand.primary;
   };
 
   const getTextColor = () => {
-    if (disabled) return '#FFFFFF';
-    if (variant === 'outline' || variant === 'ghost') return '#007AFF';
+    if (disabled) return colors.brand.white;
+    if (variant === 'outline' || variant === 'ghost') return colors.brand.primary;
     if (variant === 'secondary') return theme.colors.text.primary;
-    if (variant === 'danger') return '#FFFFFF';
-    return '#FFFFFF';
+    if (variant === 'danger') return colors.brand.white;
+    return colors.brand.white;
   };
 
   const isGradient = variant === 'gradient' && !disabled;
@@ -85,7 +85,7 @@ const Button = ({
         {...props}
       >
         <LinearGradient
-          colors={['#007AFF', '#00C1FD']}
+          colors={[colors.brand.primary, colors.brand.accent]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={[styles.container, getSizeStyle()]}
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   outlineVariant: {
-    borderColor: '#007AFF',
+    borderColor: colors.brand.primary,
     borderWidth: 1.5,
   },
   sizeSmall: {

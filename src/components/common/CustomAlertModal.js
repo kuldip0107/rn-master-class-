@@ -11,51 +11,53 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '../../context/ThemeContext';
 import CustomText from './CustomText';
+import Icon from './Icon';
+import { colors } from '../../theme/theme';
 
 const ALERT_TYPES = {
   success: {
-    primaryColor: '#10B981',
-    gradient: ['#10B981', '#00C1FD'],
+    primaryColor: colors.brand.success,
+    gradient: [colors.brand.success, colors.brand.accent],
     badgeBg: 'rgba(16, 185, 129, 0.12)',
     badgeBorder: 'rgba(16, 185, 129, 0.3)',
-    badgeShadow: '#10B981',
-    iconSymbol: '✓',
+    badgeShadow: colors.brand.success,
+    iconName: 'check',
     defaultTitle: 'Success',
   },
   error: {
-    primaryColor: '#EF4444',
-    gradient: ['#EF4444', '#DC2626'],
+    primaryColor: colors.brand.error,
+    gradient: [colors.brand.error, '#DC2626'],
     badgeBg: 'rgba(239, 68, 68, 0.12)',
     badgeBorder: 'rgba(239, 68, 68, 0.3)',
-    badgeShadow: '#EF4444',
-    iconSymbol: '✕',
+    badgeShadow: colors.brand.error,
+    iconName: 'close',
     defaultTitle: 'Error',
   },
   warning: {
-    primaryColor: '#F59E0B',
-    gradient: ['#F59E0B', '#D97706'],
+    primaryColor: colors.brand.warning,
+    gradient: [colors.brand.warning, '#D97706'],
     badgeBg: 'rgba(245, 158, 11, 0.12)',
     badgeBorder: 'rgba(245, 158, 11, 0.3)',
-    badgeShadow: '#F59E0B',
-    iconSymbol: '!',
+    badgeShadow: colors.brand.warning,
+    iconName: 'priority-high',
     defaultTitle: 'Warning',
   },
   info: {
-    primaryColor: '#007AFF',
-    gradient: ['#007AFF', '#00C1FD'],
+    primaryColor: colors.brand.primary,
+    gradient: [colors.brand.primary, colors.brand.accent],
     badgeBg: 'rgba(0, 122, 255, 0.12)',
     badgeBorder: 'rgba(0, 122, 255, 0.3)',
-    badgeShadow: '#007AFF',
-    iconSymbol: 'i',
+    badgeShadow: colors.brand.primary,
+    iconName: 'info',
     defaultTitle: 'Information',
   },
   confirm: {
-    primaryColor: '#007AFF',
-    gradient: ['#007AFF', '#00C1FD'],
+    primaryColor: colors.brand.primary,
+    gradient: [colors.brand.primary, colors.brand.accent],
     badgeBg: 'rgba(0, 122, 255, 0.12)',
     badgeBorder: 'rgba(0, 122, 255, 0.3)',
-    badgeShadow: '#007AFF',
-    iconSymbol: '?',
+    badgeShadow: colors.brand.primary,
+    iconName: 'help-outline',
     defaultTitle: 'Confirm',
   },
 };
@@ -198,9 +200,7 @@ const CustomAlertModal = ({ visible, config, onClose }) => {
                     {icon ? (
                       icon
                     ) : (
-                      <CustomText weight="heavy" style={styles.badgeText}>
-                        {typeConfig.iconSymbol}
-                      </CustomText>
+                      <Icon name={typeConfig.iconName} size={26} color={colors.brand.white} />
                     )}
                   </LinearGradient>
                 </View>
@@ -266,7 +266,7 @@ const CustomAlertModal = ({ visible, config, onClose }) => {
                   }
 
                   const buttonGradient = destructiveBtn
-                    ? ['#EF4444', '#DC2626']
+                    ? [colors.brand.error, '#DC2626']
                     : typeConfig.gradient;
 
                   return (
@@ -340,12 +340,12 @@ const styles = StyleSheet.create({
     }),
   },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   topAccentBar: {
     position: 'absolute',
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   badgeText: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontSize: 22,
     lineHeight: 24,
   },
@@ -391,16 +391,16 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   textPrimaryDark: {
-    color: '#F8FAFC',
+    color: colors.dark.text,
   },
   textPrimaryLight: {
-    color: '#1A1B1F',
+    color: colors.light.text,
   },
   textSecondaryDark: {
-    color: '#94A3B8',
+    color: colors.dark.textSecondary,
   },
   textSecondaryLight: {
-    color: '#414755',
+    color: colors.light.textSecondary,
   },
   message: {
     fontSize: 14,
@@ -428,12 +428,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   cancelButtonDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cancelButtonLight: {
-    backgroundColor: '#F4F3F8',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.light.elevated,
+    borderColor: colors.light.border,
   },
   actionButtonWrapper: {
     minHeight: 48,
@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   actionButtonText: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontSize: 14,
     letterSpacing: 0.3,
   },

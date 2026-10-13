@@ -10,6 +10,7 @@ import { HomeScreen } from '../features/home';
 import { LessonScreen } from '../features/lessons';
 import { PracticalScreen } from '../features/practice';
 import { ProfileScreen } from '../features/profile';
+import { colors } from '../theme/theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +25,7 @@ const TabBarIcon = ({ routeName, focused, color }) => {
       <Icon
         name={iconName}
         size={focused ? 24 : 22}
-        color={focused ? '#00C1FD' : color}
+        color={focused ? colors.brand.accent : color}
       />
       {focused && <View style={styles.activeDot} />}
     </View>
@@ -54,8 +55,8 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#00C1FD',
-        tabBarInactiveTintColor: isDark ? '#64748B' : '#717786',
+        tabBarActiveTintColor: colors.brand.accent,
+        tabBarInactiveTintColor: isDark ? colors.dark.textMuted : colors.light.textSecondary,
         tabBarStyle: [
           styles.tabBar,
           isDark ? styles.tabBarDark : styles.tabBarLight,
@@ -123,8 +124,8 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(255, 255, 255, 0.08)',
   },
   tabBarLight: {
-    backgroundColor: '#FFFFFF',
-    borderTopColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderTopColor: colors.light.border,
   },
   iconContainer: {
     alignItems: 'center',
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     height: 4,
     borderRadius: 2,
     marginTop: 2,
-    backgroundColor: '#00C1FD',
+    backgroundColor: colors.brand.accent,
   },
 });
 

@@ -15,15 +15,18 @@ import Container from '../../../components/common/Container';
 import CustomText from '../../../components/common/CustomText';
 import Button from '../../../components/common/Button';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import { useQuiz } from '../../../context/QuizContext';
 import { soundService } from '../../../services/soundService';
 import { hapticService } from '../../../services/hapticService';
 import reactNativeComponents from '../../../data/componentsData';
+import { colors } from '../../../theme/theme';
 
 const QUESTIONS_COUNT = 12;
 
 const PracticalScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
   const { addQuizResult } = useQuiz();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -175,13 +178,13 @@ const PracticalScreen = ({ navigation }) => {
       <Container noPadding style={isDark ? styles.containerDark : styles.containerLight}>
         <StatusBar
           barStyle={isDark ? 'light-content' : 'dark-content'}
-          backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+          backgroundColor={isDark ? colors.dark.background : colors.light.background}
         />
         <View style={styles.resultContainer}>
           <Icon
             name={isPassing ? 'emoji-events' : 'adjust'}
             size={48}
-            color={isPassing ? '#F59E0B' : '#007AFF'}
+            color={isPassing ? colors.brand.warning : colors.brand.primary}
             style={{ marginBottom: 12 }}
           />
           {/* Circular Score Badge */}
@@ -260,17 +263,17 @@ const PracticalScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Top Bar with Back Icon */}
-      <View style={styles.headerBar}>
+      <View style={[styles.headerBar, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={handleExitQuiz}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={{ fontSize: 18, color: isDark ? '#F8FAFC' : '#1A1B1F' }}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <CustomText
           variant="headlineMd"
@@ -344,13 +347,19 @@ const PracticalScreen = ({ navigation }) => {
                 disabled={!!selectedOption}
               >
                 <View style={[styles.letterCircle, isDark ? styles.letterCircleDark : styles.letterCircleLight]}>
-                  <CustomText
-                    variant="caption"
-                    weight="bold"
-                    style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}
-                  >
-                    {selectedOption && isCorrect ? '✅' : selectedOption && isSelected ? '❌' : letter}
-                  </CustomText>
+                  {selectedOption && isCorrect ? (
+                    <Icon name="check" size={18} color={colors.brand.success} />
+                  ) : selectedOption && isSelected ? (
+                    <Icon name="close" size={18} color={colors.brand.error} />
+                  ) : (
+                    <CustomText
+                      variant="caption"
+                      weight="bold"
+                      style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}
+                    >
+                      {letter}
+                    </CustomText>
+                  )}
                 </View>
 
                 <CustomText
@@ -386,18 +395,18 @@ const PracticalScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#717786' },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
-  scorePassingBg: { borderColor: '#10B981', backgroundColor: 'rgba(16, 185, 129, 0.1)' },
-  scoreFailBg: { borderColor: '#007AFF', backgroundColor: 'rgba(0, 122, 255, 0.1)' },
-  scorePassingText: { color: '#10B981' },
-  scoreFailText: { color: '#007AFF' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
+  scorePassingBg: { borderColor: colors.brand.success, backgroundColor: 'rgba(16, 185, 129, 0.1)' },
+  scoreFailBg: { borderColor: colors.brand.primary, backgroundColor: 'rgba(0, 122, 255, 0.1)' },
+  scorePassingText: { color: colors.brand.success },
+  scoreFailText: { color: colors.brand.primary },
   actionButtonMargin: { marginBottom: 12 },
   headerSpacer: { width: 36 },
   footerPlaceholder: { height: 52 },
@@ -418,12 +427,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backIcon: { width: 16, height: 16, transform: [{ rotate: '90deg' }] },
   progressSection: {
@@ -439,11 +448,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   progressTrackDark: { backgroundColor: 'rgba(255, 255, 255, 0.1)' },
-  progressTrackLight: { backgroundColor: '#E3E2E7' },
+  progressTrackLight: { backgroundColor: colors.light.border },
   progressBarFill: {
     height: '100%',
     borderRadius: 4,
-    backgroundColor: '#0070EB',
+    backgroundColor: colors.brand.primary,
   },
   scrollContent: {
     paddingHorizontal: 20,
@@ -467,33 +476,33 @@ const styles = StyleSheet.create({
     minHeight: 64,
   },
   optionCardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.06)',
     borderWidth: 1,
   },
   optionCardLight: {
-    backgroundColor: '#F4F3F8',
+    backgroundColor: colors.light.elevated,
     borderColor: 'transparent',
     borderWidth: 1,
   },
   optionCardCorrectDark: {
     backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    borderColor: '#10B981',
+    borderColor: colors.brand.success,
     borderWidth: 2,
   },
   optionCardCorrectLight: {
     backgroundColor: '#D1FAE5',
-    borderColor: '#10B981',
+    borderColor: colors.brand.success,
     borderWidth: 2,
   },
   optionCardIncorrectDark: {
     backgroundColor: 'rgba(239, 68, 68, 0.15)',
-    borderColor: '#EF4444',
+    borderColor: colors.brand.error,
     borderWidth: 2,
   },
   optionCardIncorrectLight: {
     backgroundColor: '#FEE2E2',
-    borderColor: '#EF4444',
+    borderColor: colors.brand.error,
     borderWidth: 2,
   },
   letterCircle: {
@@ -508,7 +517,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
   },
   letterCircleLight: {
-    backgroundColor: '#E3E2E7',
+    backgroundColor: colors.light.border,
   },
   optionText: {
     flex: 1,

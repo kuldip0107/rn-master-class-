@@ -13,10 +13,13 @@ import { useTheme } from '../../../context/ThemeContext';
 import Container from '../../../components/common/Container';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import setupData from '../../../data/Homescreen Data/android setup.json';
+import { colors } from '../../../theme/theme';
 
 const AndroidSetupScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
   const [copiedText, setCopiedText] = useState(null);
 
   const handleCopy = (text, label) => {
@@ -35,17 +38,17 @@ const AndroidSetupScreen = ({ navigation }) => {
     <Container noPadding safeArea={false} style={isDark ? styles.containerDark : styles.containerLight}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header Bar */}
-      <View style={[styles.header, isDark ? styles.headerBorderDark : styles.headerBorderLight]}>
+      <View style={[styles.header, isDark ? styles.headerBorderDark : styles.headerBorderLight, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={{ fontSize: 18, color: isDark ? '#F8FAFC' : '#1A1B1F' }}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <View style={styles.headerInfo}>
           <CustomText
@@ -73,7 +76,7 @@ const AndroidSetupScreen = ({ navigation }) => {
         <View style={[styles.heroCard, isDark ? styles.heroCardDark : styles.heroCardLight]}>
           <View style={styles.heroHeader}>
             <View style={styles.heroIconBox}>
-              <Icon name="android" size={32} color="#007AFF" />
+              <Icon name="android" size={32} color={colors.brand.success} />
             </View>
             <View style={styles.heroHeaderText}>
               <CustomText variant="headlineLg" weight="heavy" style={styles.heroTitle}>
@@ -141,7 +144,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                 {section.steps.map((step) => (
                   <View key={step.id} style={[styles.stepItem, isDark ? styles.innerBoxDark : styles.innerBoxLight]}>
                     <View style={styles.stepItemHeader}>
-                      <Icon name="label" size={14} color="#007AFF" style={{ marginRight: 6 }} />
+                      <Icon name="label" size={14} color={colors.brand.accent} style={{ marginRight: 6 }} />
                       <CustomText weight="bold" style={[styles.stepName, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}>
                         {step.name}
                       </CustomText>
@@ -160,7 +163,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                             <Icon
                               name={copiedText === step.verify ? 'check-circle' : 'content-copy'}
                               size={13}
-                              color={copiedText === step.verify ? '#10B981' : '#94A3B8'}
+                              color={copiedText === step.verify ? colors.brand.success : colors.dark.textSecondary}
                             />
                             <CustomText style={styles.copyBtnText}>
                               {copiedText === step.verify ? ' Copied' : ' Copy'}
@@ -182,7 +185,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                 </CustomText>
                 {section.sdkPlatforms.map((plat, pIdx) => (
                   <View key={pIdx} style={styles.bulletRow}>
-                    <Icon name="check-circle" size={16} color="#10B981" style={{ marginRight: 8 }} />
+                    <Icon name="check-circle" size={16} color={colors.brand.success} style={{ marginRight: 8 }} />
                     <CustomText variant="body" style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}>
                       {plat}
                     </CustomText>
@@ -198,7 +201,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                 </CustomText>
                 {section.sdkTools.map((tool, tIdx) => (
                   <View key={tIdx} style={styles.bulletRow}>
-                    <Icon name="widgets" size={16} color="#007AFF" style={{ marginRight: 8 }} />
+                    <Icon name="widgets" size={16} color={colors.brand.accent} style={{ marginRight: 8 }} />
                     <CustomText variant="body" style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}>
                       {tool}
                     </CustomText>
@@ -228,7 +231,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                           <Icon
                             name={copiedText === v.valueExample ? 'check-circle' : 'content-copy'}
                             size={16}
-                            color={copiedText === v.valueExample ? '#10B981' : '#94A3B8'}
+                            color={copiedText === v.valueExample ? colors.brand.success : colors.dark.textSecondary}
                           />
                         </TouchableOpacity>
                       </View>
@@ -254,7 +257,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                       <Icon
                         name={copiedText === pathItem ? 'check-circle' : 'content-copy'}
                         size={16}
-                        color={copiedText === pathItem ? '#10B981' : '#94A3B8'}
+                        color={copiedText === pathItem ? colors.brand.success : colors.dark.textSecondary}
                       />
                     </TouchableOpacity>
                   </View>
@@ -276,7 +279,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                         <Icon
                               name={copiedText === cmd ? 'check-circle' : 'content-copy'}
                               size={13}
-                              color={copiedText === cmd ? '#10B981' : '#94A3B8'}
+                              color={copiedText === cmd ? colors.brand.success : colors.dark.textSecondary}
                             />
                             <CustomText style={styles.copyBtnText}>
                               {copiedText === cmd ? ' Copied' : ' Copy'}
@@ -297,7 +300,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                       <Icon
                         name={method.type === 'Emulator' ? 'desktop-windows' : 'smartphone'}
                         size={16}
-                        color={isDark ? '#F8FAFC' : '#1A1B1F'}
+                        color={isDark ? colors.dark.text : colors.light.text}
                         style={{ marginRight: 6 }}
                       />
                       <CustomText weight="bold" style={[styles.methodType, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}>
@@ -306,7 +309,7 @@ const AndroidSetupScreen = ({ navigation }) => {
                     </View>
                     {method.steps.map((mStep, sIdx) => (
                       <View key={sIdx} style={styles.bulletRow}>
-                        <CustomText style={styles.stepDot}>➔</CustomText>
+                        <Icon name="chevron-right" size={16} color={isDark ? colors.dark.textSecondary : colors.light.textSecondary} />
                         <CustomText variant="body" style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}>
                           {mStep}
                         </CustomText>
@@ -329,8 +332,13 @@ const AndroidSetupScreen = ({ navigation }) => {
                     onPress={() => handleCopy(section.path, 'Path')}
                     style={styles.copyBtn}
                   >
+                    <Icon
+                      name={copiedText === section.path ? 'check' : 'content-copy'}
+                      size={14}
+                      color="#38BDF8"
+                    />
                     <CustomText style={styles.copyBtnText}>
-                      {copiedText === section.path ? '✅ Copied' : '📋 Copy'}
+                      {copiedText === section.path ? 'Copied' : 'Copy'}
                     </CustomText>
                   </TouchableOpacity>
                 </View>
@@ -343,14 +351,21 @@ const AndroidSetupScreen = ({ navigation }) => {
                 {section.issues.map((iss, iIdx) => (
                   <View key={iIdx} style={[styles.issueBox, isDark ? styles.issueBoxDark : styles.issueBoxLight]}>
                     <View style={styles.issueHeader}>
-                      <CustomText style={{ fontSize: 16 }}>⚠️</CustomText>
+                      <Icon name="warning" size={18} color={colors.brand.warning} />
                       <CustomText weight="bold" style={styles.issueProblem}>
                         {iss.problem}
                       </CustomText>
                     </View>
-                    <CustomText variant="body" style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}>
-                      💡 <CustomText weight="bold">Fix: </CustomText>{iss.solution}
-                    </CustomText>
+                    <View style={styles.fixRow}>
+                      <Icon name="lightbulb-outline" size={16} color={colors.brand.warning} />
+                      <CustomText
+                        variant="body"
+                        style={[styles.fixText, isDark ? styles.textSecondaryDark : styles.textSecondaryLight]}
+                      >
+                        <CustomText weight="bold">Fix: </CustomText>
+                        {iss.solution}
+                      </CustomText>
+                    </View>
                   </View>
                 ))}
               </View>
@@ -363,8 +378,8 @@ const AndroidSetupScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -374,7 +389,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   headerBorderDark: { borderBottomColor: 'rgba(255, 255, 255, 0.08)' },
-  headerBorderLight: { borderBottomColor: '#E3E2E7' },
+  headerBorderLight: { borderBottomColor: colors.light.border },
   backButton: {
     width: 38,
     height: 38,
@@ -382,17 +397,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backButtonDark: { backgroundColor: '#161823' },
+  backButtonDark: { backgroundColor: colors.dark.elevated },
   backButtonLight: { backgroundColor: '#EDEAF5' },
   headerInfo: {
     flex: 1,
     marginLeft: 14,
   },
   headerSpacer: { width: 38 },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#717786' },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
   scrollContent: {
     paddingHorizontal: 18,
     paddingTop: 18,
@@ -405,7 +420,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   heroCardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(56, 189, 248, 0.25)',
   },
   heroCardLight: {
@@ -454,14 +469,14 @@ const styles = StyleSheet.create({
   },
   badgeGreenText: {
     fontSize: 11,
-    color: '#10B981',
+    color: colors.brand.success,
   },
   badgeSky: {
     backgroundColor: 'rgba(14, 165, 233, 0.12)',
   },
   badgeSkyText: {
     fontSize: 11,
-    color: '#0EA5E9',
+    color: colors.category.sky,
   },
   heroDesc: {
     fontSize: 13,
@@ -474,12 +489,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   sectionHeaderRow: {
     flexDirection: 'row',
@@ -490,13 +505,13 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
   sectionNumberText: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontSize: 14,
   },
   sectionHeaderTitleCol: {
@@ -514,10 +529,10 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   innerBoxDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
   },
   innerBoxLight: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.dark.text,
   },
   stepItemHeader: {
     flexDirection: 'row',
@@ -560,7 +575,7 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   copyBtnText: {
-    color: '#F8FAFC',
+    color: colors.dark.text,
     fontSize: 11,
     fontWeight: 'bold',
   },
@@ -587,7 +602,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   varName: {
-    color: '#007AFF',
+    color: colors.brand.primary,
     fontSize: 13,
     marginBottom: 4,
   },
@@ -598,7 +613,7 @@ const styles = StyleSheet.create({
     paddingLeft: 6,
   },
   pathBullet: {
-    color: '#007AFF',
+    color: colors.brand.primary,
     fontSize: 16,
     marginRight: 8,
   },
@@ -629,7 +644,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   stepDot: {
-    color: '#007AFF',
+    color: colors.brand.primary,
     fontSize: 12,
     marginRight: 8,
   },
@@ -656,8 +671,17 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   issueProblem: {
-    color: '#EF4444',
+    color: colors.brand.error,
     fontSize: 13.5,
+    flex: 1,
+  },
+  fixRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 6,
+  },
+  fixText: {
+    flex: 1,
   },
 });
 

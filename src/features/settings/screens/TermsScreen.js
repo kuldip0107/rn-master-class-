@@ -12,12 +12,15 @@ import { useTheme } from '../../../context/ThemeContext';
 import { icons } from '../../../constants/assets';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
+import { colors } from '../../../theme/theme';
 
 const TermsScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
 
   const handleOpenOnlinePrivacy = () => {
-    Linking.openURL('https://rnmasterclass.pages.dev/privacy-policy').catch(
+    Linking.openURL('https://rn-masterclass-backend.onrender.com/privacy-policy').catch(
       (err) => {
         console.log('Error opening privacy policy URL', err);
       }
@@ -28,17 +31,17 @@ const TermsScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header */}
-      <View style={[styles.header, isDark ? styles.headerBorderDark : styles.headerBorderLight]}>
+      <View style={[styles.header, isDark ? styles.headerBorderDark : styles.headerBorderLight, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={{ fontSize: 18, color: isDark ? '#F8FAFC' : '#1A1B1F' }}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <View style={styles.headerInfo}>
           <CustomText
@@ -52,7 +55,7 @@ const TermsScreen = ({ navigation }) => {
             variant="small"
             style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}
           >
-            Last updated: January 2026
+            Last updated: October 2026
           </CustomText>
         </View>
       </View>
@@ -101,7 +104,7 @@ const TermsScreen = ({ navigation }) => {
             variant="body"
             style={[styles.text, isDark ? styles.textSecondaryDark : styles.textSecondaryLight]}
           >
-            Your learning progress, quiz scores, and settings preferences are stored locally on your device to ensure maximum performance and data privacy.
+            Your name, email, password, profile photo, learning progress, streak, quiz scores, app usage time, and support messages are sent to our server so your account can stay in sync. Theme, language, and sound settings stay on this device. You can delete your account from Settings, which removes the account and the data stored for it on the server.
           </CustomText>
 
           <TouchableOpacity
@@ -110,7 +113,7 @@ const TermsScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Icon name="language" size={16} color="#007AFF" style={{ marginRight: 6 }} />
+              <Icon name="language" size={16} color={colors.brand.primary} style={{ marginRight: 6 }} />
               <CustomText weight="bold" style={styles.privacyLinkText}>
                 View Online Privacy Policy (Web)
               </CustomText>
@@ -138,14 +141,14 @@ const TermsScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   headerBorderDark: { borderBottomColor: 'rgba(255, 255, 255, 0.08)' },
-  headerBorderLight: { borderBottomColor: '#E3E2E7' },
+  headerBorderLight: { borderBottomColor: colors.light.border },
   backButton: {
     width: 36,
     height: 36,
@@ -165,12 +168,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backIcon: { width: 16, height: 16, transform: [{ rotate: '90deg' }] },
   headerInfo: { flex: 1, marginLeft: 14 },
@@ -185,15 +188,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   sectionTitle: {
-    color: '#007AFF',
+    color: colors.brand.primary,
     fontSize: 16,
     marginTop: 16,
     marginBottom: 8,

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userAPI } from '../services/api';
+import { colors } from '../theme/theme';
 
 /**
  * Custom hook to manage current user profile state with local cache fallback
@@ -11,7 +12,7 @@ export const useUser = () => {
     name: 'Alex',
     email: '',
     userTitle: 'React Native Developer',
-    avatarColor: '#007AFF',
+    avatarColor: colors.brand.primary,
     profileImage: null,
     streak: 1,
   });

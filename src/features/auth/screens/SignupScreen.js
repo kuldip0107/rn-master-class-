@@ -17,10 +17,13 @@ import CustomText from '../../../components/common/CustomText';
 import AppTextInput from '../../../components/common/AppTextInput';
 import Button from '../../../components/common/Button';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import GoogleSignInModal from '../../../components/common/GoogleSignInModal';
 import { signInWithGoogle } from '../../../services/googleAuth';
+import { colors } from '../../../theme/theme';
 
 const SignupScreen = ({ navigation }) => {
+  const topInset = useTopInset();
   const { theme, isDark } = useTheme();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -123,10 +126,10 @@ const SignupScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#050510' : '#FAF9FE' }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? colors.dark.background : colors.light.background }]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       <KeyboardAvoidingView
@@ -134,7 +137,7 @@ const SignupScreen = ({ navigation }) => {
         style={styles.flexContainer}
       >
         <ScrollView
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[styles.scrollContent, { paddingTop: topInset + 16 }]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
@@ -146,7 +149,7 @@ const SignupScreen = ({ navigation }) => {
                 { backgroundColor: isDark ? 'rgba(0, 122, 255, 0.12)' : 'rgba(0, 122, 255, 0.08)' },
               ]}
             >
-              <Icon name="school" size={36} color="#007AFF" />
+              <Icon name="school" size={36} color={colors.brand.primary} />
             </View>
           </View>
 
@@ -155,13 +158,13 @@ const SignupScreen = ({ navigation }) => {
             <CustomText
               variant="headlineXl"
               weight="bold"
-              style={[styles.mainTitle, { color: isDark ? '#F8FAFC' : '#1A1B1F' }]}
+              style={[styles.mainTitle, { color: isDark ? colors.dark.text : colors.light.text }]}
             >
               Create Account
             </CustomText>
             <CustomText
               variant="body"
-              style={[styles.subtitle, { color: isDark ? '#94A3B8' : '#414755' }]}
+              style={[styles.subtitle, { color: isDark ? colors.dark.textSecondary : colors.light.textSecondary }]}
             >
               Join our community and start mastering React Native.
             </CustomText>
@@ -224,28 +227,26 @@ const SignupScreen = ({ navigation }) => {
                 style={[
                   styles.checkbox,
                   {
-                    borderColor: isDark ? 'rgba(255,255,255,0.2)' : '#C1C6D7',
+                    borderColor: isDark ? 'rgba(255,255,255,0.2)' : colors.light.chevron,
                     backgroundColor: agreeTerms
-                      ? '#007AFF'
+                      ? colors.brand.primary
                       : isDark
-                      ? '#161823'
+                      ? colors.dark.elevated
                       : '#F2F2F7',
                   },
                 ]}
               >
-                {agreeTerms && (
-                  <CustomText style={{ fontSize: 13, color: '#FFFFFF' }}>✓</CustomText>
-                )}
+                {agreeTerms && <Icon name="check" size={14} color={colors.brand.white} />}
               </View>
               <CustomText
                 variant="caption"
-                style={[styles.checkboxText, { color: isDark ? '#94A3B8' : '#414755' }]}
+                style={[styles.checkboxText, { color: isDark ? colors.dark.textSecondary : colors.light.textSecondary }]}
               >
                 I agree to the{' '}
                 <CustomText
                   variant="caption"
                   weight="bold"
-                  style={{ color: isDark ? '#F8FAFC' : '#1A1B1F' }}
+                  style={{ color: isDark ? colors.dark.text : colors.light.text }}
                 >
                   Terms of Service
                 </CustomText>{' '}
@@ -253,7 +254,7 @@ const SignupScreen = ({ navigation }) => {
                 <CustomText
                   variant="caption"
                   weight="bold"
-                  style={{ color: isDark ? '#F8FAFC' : '#1A1B1F' }}
+                  style={{ color: isDark ? colors.dark.text : colors.light.text }}
                 >
                   Privacy Policy
                 </CustomText>
@@ -283,20 +284,20 @@ const SignupScreen = ({ navigation }) => {
               <View
                 style={[
                   styles.dividerLine,
-                  { backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#E3E2E7' },
+                  { backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : colors.light.border },
                 ]}
               />
               <CustomText
                 variant="small"
                 weight="bold"
-                style={[styles.dividerText, { color: isDark ? '#64748B' : '#717786' }]}
+                style={[styles.dividerText, { color: isDark ? colors.dark.textMuted : colors.light.textSecondary }]}
               >
                 OR CONTINUE WITH
               </CustomText>
               <View
                 style={[
                   styles.dividerLine,
-                  { backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#E3E2E7' },
+                  { backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : colors.light.border },
                 ]}
               />
             </View>
@@ -312,7 +313,7 @@ const SignupScreen = ({ navigation }) => {
               disabled={googleLoading || loading}
             >
               {googleLoading ? (
-                <ActivityIndicator size="small" color="#007AFF" />
+                <ActivityIndicator size="small" color={colors.brand.primary} />
               ) : (
                 <>
                   <View style={styles.googleGWrapper}>
@@ -334,7 +335,7 @@ const SignupScreen = ({ navigation }) => {
           <View style={styles.footerRow}>
             <CustomText
               variant="body"
-              style={{ color: isDark ? '#94A3B8' : '#414755' }}
+              style={{ color: isDark ? colors.dark.textSecondary : colors.light.textSecondary }}
             >
               Already have an account?{' '}
             </CustomText>
@@ -342,7 +343,7 @@ const SignupScreen = ({ navigation }) => {
               <CustomText
                 variant="body"
                 weight="bold"
-                style={{ color: '#007AFF' }}
+                style={{ color: colors.brand.primary }}
               >
                 Login
               </CustomText>
@@ -430,7 +431,7 @@ const styles = StyleSheet.create({
   checkMark: {
     width: 12,
     height: 12,
-    tintColor: '#FFFFFF',
+    tintColor: colors.brand.white,
   },
   checkboxText: {
     flex: 1,
@@ -470,18 +471,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   googleButtonDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   googleButtonLight: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     borderColor: '#E2E8F0',
   },
   googleGWrapper: {
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
@@ -495,8 +496,8 @@ const styles = StyleSheet.create({
   googleButtonText: {
     letterSpacing: 0.5,
   },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
   footerRow: {
     flexDirection: 'row',
     justifyContent: 'center',

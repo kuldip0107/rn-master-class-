@@ -21,8 +21,10 @@ import Container from '../../../components/common/Container';
 import CustomText from '../../../components/common/CustomText';
 import Button from '../../../components/common/Button';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 
 import { userAPI, clearUserSession } from '../../../services/api';
+import { colors } from '../../../theme/theme';
 import {
   saveToDownloads,
   openDownloadedFile,
@@ -34,10 +36,11 @@ const TOTAL_COMPONENTS = 47;
 const ProfileScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const { isDark } = useTheme();
+  const topInset = useTopInset();
 
   const [userName, setUserName] = useState('');
   const [userTitle, setUserTitle] = useState('React Native Developer');
-  const [avatarColor, setAvatarColor] = useState('#007AFF');
+  const [avatarColor, setAvatarColor] = useState(colors.brand.primary);
   const [profileImage, setProfileImage] = useState(null);
   const [completedCount, setCompletedCount] = useState(0);
   const [showCertModal, setShowCertModal] = useState(false);
@@ -556,7 +559,7 @@ const ProfileScreen = ({ navigation }) => {
       }
 
       CustomAlert.show({
-        title: 'Certificate Downloaded! 🎉',
+        title: 'Certificate downloaded',
         message: publicDownloadSuccess
           ? `Your Certificate has been saved directly to your device's Downloads folder:\n\n📁 ${finalPath}\n\nYou can view it in your "Files" or "Downloads" app.`
           : `Certificate PDF created successfully!\n\nSaved to: ${file.filePath}`,
@@ -592,49 +595,49 @@ const ProfileScreen = ({ navigation }) => {
       iconName: 'edit',
       label: t('profile.edit_profile') || 'Edit Profile',
       screen: 'EditProfile',
-      color: '#007AFF',
+      color: colors.brand.primary,
     },
     {
       id: 'interview',
       iconName: 'code',
       label: 'Interview Q&A & Cheats',
       screen: 'InterviewPrep',
-      color: '#00C1FD',
+      color: colors.brand.accent,
     },
     {
       id: 'achievements',
       iconName: 'emoji-events',
       label: t('profile.achievements') || 'Achievements',
       screen: 'Achievements',
-      color: '#8B5CF6',
+      color: colors.category.purple,
     },
     {
       id: 'settings',
       iconName: 'settings',
       label: t('profile.settings') || 'Settings',
       screen: 'Settings',
-      color: '#717786',
+      color: colors.light.textSecondary,
     },
     {
       id: 'help',
       iconName: 'help-outline',
       label: t('profile.help_support') || 'Help & Support',
       screen: 'HelpSupport',
-      color: '#3B82F6',
+      color: colors.brand.info,
     },
     {
       id: 'about',
       iconName: 'info-outline',
       label: t('profile.about_app') || 'About App',
       screen: 'AboutApp',
-      color: '#10B981',
+      color: colors.brand.success,
     },
     {
       id: 'terms',
       iconName: 'gavel',
       label: t('profile.terms_conditions') || 'Terms & Privacy',
       screen: 'Terms',
-      color: '#F59E0B',
+      color: colors.brand.warning,
     },
   ];
 
@@ -642,13 +645,13 @@ const ProfileScreen = ({ navigation }) => {
     <Container noPadding safeArea={false} style={isDark ? styles.containerDark : styles.containerLight}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Top Header */}
-      <View style={styles.topHeader}>
+      <View style={[styles.topHeader, { paddingTop: topInset + 12 }]}>
         <View style={styles.brandRow}>
-          <Icon name="code" size={22} color="#007AFF" style={styles.brandIcon} />
+          <Icon name="code" size={22} color={colors.brand.primary} style={styles.brandIcon} />
           <CustomText
             variant="headlineMd"
             weight="bold"
@@ -661,7 +664,7 @@ const ProfileScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('Settings')}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Icon name="settings" size={22} color={isDark ? '#94A3B8' : '#717786'} />
+          <Icon name="settings" size={22} color={isDark ? colors.dark.textSecondary : colors.light.textSecondary} />
         </TouchableOpacity>
       </View>
 
@@ -689,7 +692,7 @@ const ProfileScreen = ({ navigation }) => {
               )}
             </View>
             <View style={[styles.editDot, { backgroundColor: avatarColor }]}>
-              <Icon name="photo-camera" size={12} color="#FFFFFF" />
+              <Icon name="photo-camera" size={12} color={colors.brand.white} />
             </View>
           </TouchableOpacity>
 
@@ -710,7 +713,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
 
           <View style={[styles.xpBadge, isDark ? styles.xpBadgeDark : styles.xpBadgeLight]}>
-            <Icon name="emoji-events" size={16} color="#00C1FD" style={styles.xpIcon} />
+            <Icon name="emoji-events" size={16} color={colors.brand.accent} style={styles.xpIcon} />
             <CustomText
               variant="small"
               weight="bold"
@@ -728,7 +731,7 @@ const ProfileScreen = ({ navigation }) => {
           onPress={() => setShowCertModal(true)}
         >
           <LinearGradient
-            colors={['#0070EB', '#00C1FD']}
+            colors={[colors.brand.primary, colors.brand.accent]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.promoCard}
@@ -741,7 +744,7 @@ const ProfileScreen = ({ navigation }) => {
                 {progressPercent}% completed • Tap to view & download official certificate
               </CustomText>
             </View>
-            <Icon name="emoji-events" size={42} color="#FFFFFF" style={styles.promoIcon} />
+            <Icon name="emoji-events" size={42} color={colors.brand.white} style={styles.promoIcon} />
           </LinearGradient>
         </TouchableOpacity>
 
@@ -775,7 +778,7 @@ const ProfileScreen = ({ navigation }) => {
                 </CustomText>
               </View>
 
-              <Icon name="chevron-right" size={20} color={isDark ? '#64748B' : '#C1C6D7'} />
+              <Icon name="chevron-right" size={20} color={isDark ? colors.dark.textMuted : colors.light.chevron} />
             </TouchableOpacity>
           ))}
         </View>
@@ -787,7 +790,7 @@ const ProfileScreen = ({ navigation }) => {
           onPress={handleLogout}
         >
           <View style={styles.logoutIconBox}>
-            <Icon name="exit-to-app" size={20} color="#EF4444" />
+            <Icon name="exit-to-app" size={20} color={colors.brand.error} />
           </View>
           <CustomText weight="bold" style={styles.logoutText}>
             Logout
@@ -805,17 +808,17 @@ const ProfileScreen = ({ navigation }) => {
         <View style={[styles.certFullScreenContainer, isDark ? styles.containerDark : styles.certFullScreenBgLight]}>
           <StatusBar
             barStyle={isDark ? 'light-content' : 'dark-content'}
-            backgroundColor={isDark ? '#050510' : '#F1F5F9'}
+            backgroundColor={isDark ? colors.dark.background : '#F1F5F9'}
           />
 
           {/* Full Screen Header Bar */}
-          <View style={[styles.certFullScreenHeader, isDark ? styles.headerBorderDark : styles.headerBorderLight]}>
+          <View style={[styles.certFullScreenHeader, isDark ? styles.headerBorderDark : styles.headerBorderLight, { paddingTop: topInset + 12 }]}>
             <TouchableOpacity
               onPress={() => setShowCertModal(false)}
               style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <Icon name="arrow-back" size={22} color={isDark ? '#F8FAFC' : '#1A1B1F'} />
+              <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
             </TouchableOpacity>
 
             <View style={styles.certHeaderCenter}>
@@ -836,7 +839,7 @@ const ProfileScreen = ({ navigation }) => {
               style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <Icon name="get-app" size={22} color={isDark ? '#F8FAFC' : '#1A1B1F'} />
+              <Icon name="get-app" size={22} color={isDark ? colors.dark.text : colors.light.text} />
             </TouchableOpacity>
           </View>
 
@@ -981,7 +984,7 @@ const ProfileScreen = ({ navigation }) => {
 
             {/* Verification & Security Badge */}
             <View style={[styles.certVerifyBox, isDark ? styles.cardDark : styles.cardLight]}>
-              <Icon name="security" size={20} color="#007AFF" style={styles.certVerifyIcon} />
+              <Icon name="security" size={20} color={colors.brand.primary} style={styles.certVerifyIcon} />
               <View style={styles.certVerifyContent}>
                 <CustomText variant="caption" weight="bold" style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}>
                   Verified Accreditation • ID: RNMC-2026-90812
@@ -1000,7 +1003,7 @@ const ProfileScreen = ({ navigation }) => {
             />
 
             <Button
-              title="← BACK TO PROFILE"
+              title="Back to profile"
               variant="secondary"
               onPress={() => setShowCertModal(false)}
               style={styles.fullCertCloseBtn}
@@ -1015,8 +1018,8 @@ const ProfileScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   topHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -1033,19 +1036,19 @@ const styles = StyleSheet.create({
   brandIcon: {
     marginRight: 8,
   },
-  brandTint: { tintColor: '#007AFF' },
-  brandColor: { color: '#007AFF' },
-  cyanTint: { tintColor: '#00C1FD' },
-  cyanColor: { color: '#00C1FD' },
-  dangerTint: { tintColor: '#EF4444' },
-  iconSecondaryDark: { tintColor: '#94A3B8' },
-  iconSecondaryLight: { tintColor: '#717786' },
-  chevronDark: { tintColor: '#64748B' },
-  chevronLight: { tintColor: '#C1C6D7' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#717786' },
+  brandTint: { tintColor: colors.brand.primary },
+  brandColor: { color: colors.brand.primary },
+  cyanTint: { tintColor: colors.brand.accent },
+  cyanColor: { color: colors.brand.accent },
+  dangerTint: { tintColor: colors.brand.error },
+  iconSecondaryDark: { tintColor: colors.dark.textSecondary },
+  iconSecondaryLight: { tintColor: colors.light.textSecondary },
+  chevronDark: { tintColor: colors.dark.textMuted },
+  chevronLight: { tintColor: colors.light.chevron },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
   settingsIcon: {
     width: 22,
     height: 22,
@@ -1063,12 +1066,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   avatarWrapper: {
     position: 'relative',
@@ -1101,7 +1104,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1.5,
-    borderColor: '#FFFFFF',
+    borderColor: colors.brand.white,
   },
   editDotEmoji: { fontSize: 10 },
   profileDetails: {
@@ -1116,8 +1119,8 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     gap: 4,
   },
-  xpBadgeDark: { backgroundColor: '#161823' },
-  xpBadgeLight: { backgroundColor: '#F4F3F8' },
+  xpBadgeDark: { backgroundColor: colors.dark.elevated },
+  xpBadgeLight: { backgroundColor: colors.light.elevated },
   xpIcon: {
     marginRight: 4,
   },
@@ -1140,7 +1143,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   promoTitle: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontSize: 18,
     marginBottom: 4,
   },
@@ -1151,7 +1154,7 @@ const styles = StyleSheet.create({
   promoWatermark: {
     width: 60,
     height: 60,
-    tintColor: '#FFFFFF',
+    tintColor: colors.brand.white,
     opacity: 0.25,
   },
   menuListCard: {
@@ -1217,12 +1220,12 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
-  logoutText: { color: '#EF4444', fontSize: 15 },
+  logoutText: { color: colors.brand.error, fontSize: 15 },
   certFullScreenContainer: {
     flex: 1,
   },
   certFullScreenBgLight: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.dark.text,
   },
   certFullScreenHeader: {
     flexDirection: 'row',
@@ -1248,7 +1251,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   certCanvasLuxuryFull: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     borderRadius: 16,
     padding: 8,
     width: '100%',
@@ -1451,7 +1454,7 @@ const styles = StyleSheet.create({
   },
   luxuryPresentedToFull: {
     fontSize: 9.5,
-    color: '#64748B',
+    color: colors.dark.textMuted,
     letterSpacing: 1.8,
     textAlign: 'center',
     marginBottom: 4,
@@ -1532,7 +1535,7 @@ const styles = StyleSheet.create({
     width: '80%',
     maxWidth: 90,
     height: 1.2,
-    backgroundColor: '#94A3B8',
+    backgroundColor: colors.dark.textSecondary,
     marginBottom: 4,
   },
   signatoryNameText: {
@@ -1542,7 +1545,7 @@ const styles = StyleSheet.create({
   },
   signatoryRoleText: {
     fontSize: 8,
-    color: '#64748B',
+    color: colors.dark.textMuted,
     textAlign: 'center',
   },
   signatureSealCol: {
@@ -1625,9 +1628,9 @@ const styles = StyleSheet.create({
   },
   colorBubbleSelected: {
     borderWidth: 2.5,
-    borderColor: '#FFFFFF',
+    borderColor: colors.brand.white,
   },
-  checkmarkIcon: { color: '#FFFFFF', fontSize: 13 },
+  checkmarkIcon: { color: colors.brand.white, fontSize: 13 },
   editInput: {
     height: 48,
     borderRadius: 10,
@@ -1636,13 +1639,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   editInputDark: {
-    backgroundColor: '#161823',
-    color: '#F8FAFC',
+    backgroundColor: colors.dark.elevated,
+    color: colors.dark.text,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   editInputLight: {
     backgroundColor: '#F2F2F7',
-    color: '#1A1B1F',
+    color: colors.light.text,
     borderColor: 'transparent',
   },
   promoIcon: {

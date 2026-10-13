@@ -14,13 +14,16 @@ import CustomText from '../../../components/common/CustomText';
 import AppTextInput from '../../../components/common/AppTextInput';
 import Button from '../../../components/common/Button';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import { icons } from '../../../constants/assets';
 import { CustomAlert } from '../../../context/AlertContext';
 
 import { authAPI, getCurrentUser } from '../../../services/api';
+import { colors } from '../../../theme/theme';
 
 const ChangePasswordScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -88,17 +91,17 @@ const ChangePasswordScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={{ fontSize: 18, color: isDark ? '#F8FAFC' : '#1A1B1F' }}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <CustomText
           variant="headlineMd"
@@ -177,8 +180,8 @@ const ChangePasswordScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -196,19 +199,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backIcon: { width: 16, height: 16, transform: [{ rotate: '90deg' }] },
   headerSpacer: { width: 36 },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
   flexContainer: { flex: 1 },
   content: {
     paddingHorizontal: 20,
@@ -224,12 +227,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   formCardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   formCardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   saveButton: {
     marginTop: 8,

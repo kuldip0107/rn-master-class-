@@ -9,6 +9,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomText from '../../../components/common/CustomText';
+import { colors } from '../../../theme/theme';
 
 const { width } = Dimensions.get('window');
 
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 28,
-    shadowColor: '#00C1FD',
+    shadowColor: colors.brand.accent,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.35,
     shadowRadius: 24,
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
   },
   logoCodeText: {
     fontSize: 44,
-    color: '#00C1FD',
+    color: colors.brand.accent,
     letterSpacing: 2,
     textAlign: 'center',
     lineHeight: 48,
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     marginBottom: 36,
   },
   title: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontSize: 30,
     letterSpacing: -0.5,
     marginBottom: 8,
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 16,
   },
   subtitle: {
-    color: '#C1C6D7',
+    color: colors.light.chevron,
     fontSize: 12,
     letterSpacing: 3,
     textAlign: 'center',
@@ -224,9 +225,9 @@ const styles = StyleSheet.create({
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#00C1FD',
+    backgroundColor: colors.brand.accent,
     borderRadius: 2,
-    shadowColor: '#00C1FD',
+    shadowColor: colors.brand.accent,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 10,

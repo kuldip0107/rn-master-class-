@@ -19,6 +19,8 @@ import { CustomAlert } from '../../../context/AlertContext';
 import { supportAPI } from '../../../services/api';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
+import { colors } from '../../../theme/theme';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -75,7 +77,7 @@ const FAQItem = ({ item, isDark }) => {
         <Icon
           name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
           size={22}
-          color={isDark ? '#94A3B8' : '#717786'}
+          color={isDark ? colors.dark.textSecondary : colors.light.textSecondary}
         />
       </View>
       {expanded && (
@@ -94,6 +96,7 @@ const FAQItem = ({ item, isDark }) => {
 
 const HelpSupportScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedbackSubject, setFeedbackSubject] = useState('');
   const [feedbackMessage, setFeedbackMessage] = useState('');
@@ -144,17 +147,17 @@ const HelpSupportScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <Icon name="arrow-back" size={20} color={isDark ? '#F8FAFC' : '#1A1B1F'} />
+          <Icon name="arrow-back" size={20} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <CustomText
           variant="headlineMd"
@@ -185,7 +188,7 @@ const HelpSupportScreen = ({ navigation }) => {
             onPress={handleEmailSupport}
           >
             <View style={[styles.actionIconCircle, isDark ? styles.actionIconCircleDark : styles.actionIconCircleLight]}>
-              <Icon name="mail-outline" size={24} color="#007AFF" />
+              <Icon name="mail-outline" size={24} color={isDark ? colors.dark.textSecondary : colors.light.textSecondary} />
             </View>
             <CustomText
               weight="bold"
@@ -207,7 +210,7 @@ const HelpSupportScreen = ({ navigation }) => {
             onPress={() => setShowFeedbackModal(true)}
           >
             <View style={[styles.actionIconCircle, isDark ? styles.actionIconCircleDark : styles.actionIconCircleLight]}>
-              <Icon name="feedback" size={24} color="#10B981" />
+              <Icon name="feedback" size={24} color={colors.brand.primary} />
             </View>
             <CustomText
               weight="bold"
@@ -240,7 +243,7 @@ const HelpSupportScreen = ({ navigation }) => {
               <CustomText variant="caption" style={[styles.inputLabel, isDark ? styles.textSecondaryDark : styles.textSecondaryLight]}>Subject</CustomText>
               <TextInput
                 placeholder="e.g. Question about Animations"
-                placeholderTextColor={isDark ? '#64748B' : '#94A3B8'}
+                placeholderTextColor={isDark ? colors.dark.textMuted : colors.dark.textSecondary}
                 value={feedbackSubject}
                 onChangeText={setFeedbackSubject}
                 style={[styles.subjectInput, isDark ? styles.inputDark : styles.inputLight]}
@@ -249,7 +252,7 @@ const HelpSupportScreen = ({ navigation }) => {
               <CustomText variant="caption" style={[styles.inputLabel, isDark ? styles.textSecondaryDark : styles.textSecondaryLight]}>Your Message</CustomText>
               <TextInput
                 placeholder="Write your feedback or suggestion..."
-                placeholderTextColor={isDark ? '#64748B' : '#94A3B8'}
+                placeholderTextColor={isDark ? colors.dark.textMuted : colors.dark.textSecondary}
                 value={feedbackMessage}
                 onChangeText={setFeedbackMessage}
                 multiline
@@ -271,7 +274,7 @@ const HelpSupportScreen = ({ navigation }) => {
                   disabled={submitting}
                 >
                   {submitting ? (
-                    <ActivityIndicator size="small" color="#FFF" />
+                    <ActivityIndicator size="small" color={colors.brand.white} />
                   ) : (
                     <CustomText style={styles.modalBtnSubmitText}>Submit</CustomText>
                   )}
@@ -308,8 +311,8 @@ const HelpSupportScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -327,28 +330,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backIcon: { width: 16, height: 16, transform: [{ rotate: '90deg' }] },
   headerSpacer: { width: 36 },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
-  iconSecondaryDark: { tintColor: '#94A3B8' },
-  iconSecondaryLight: { tintColor: '#717786' },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
+  iconSecondaryDark: { tintColor: colors.dark.textSecondary },
+  iconSecondaryLight: { tintColor: colors.light.textSecondary },
   arrowExpanded: { transform: [{ rotate: '-90deg' }] },
-  brandTint: { tintColor: '#007AFF' },
-  brandText: { color: '#007AFF', marginTop: 2 },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
-  textMutedDark: { color: '#64748B' },
-  textMutedLight: { color: '#717786' },
+  brandTint: { tintColor: colors.brand.primary },
+  brandText: { color: colors.brand.primary, marginTop: 2 },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
+  textMutedDark: { color: colors.dark.textMuted },
+  textMutedLight: { color: colors.light.textSecondary },
   content: { paddingHorizontal: 20, paddingBottom: 60 },
   sectionTitle: { letterSpacing: 1, fontSize: 11, marginTop: 16, marginBottom: 12, marginLeft: 4 },
   sectionTitleFaq: { letterSpacing: 1, fontSize: 11, marginTop: 24, marginBottom: 12, marginLeft: 4 },
@@ -361,12 +364,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   actionIconCircle: {
     width: 44,
@@ -416,7 +419,7 @@ const styles = StyleSheet.create({
     borderColor: '#1F2438',
   },
   modalCardLight: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     borderColor: '#E2E8F0',
   },
   modalTitle: {
@@ -441,11 +444,11 @@ const styles = StyleSheet.create({
   },
   inputDark: {
     backgroundColor: '#0A0C14',
-    color: '#FFFFFF',
+    color: colors.brand.white,
     borderColor: '#1F2438',
   },
   inputLight: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.dark.text,
     color: '#0F172A',
     borderColor: '#CBD5E1',
   },
@@ -473,11 +476,11 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
     marginLeft: 8,
   },
   modalBtnSubmitText: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontWeight: 'bold',
   },
 });

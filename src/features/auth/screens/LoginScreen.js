@@ -17,11 +17,15 @@ import { authAPI, saveUserSession } from '../../../services/api';
 import CustomText from '../../../components/common/CustomText';
 import AppTextInput from '../../../components/common/AppTextInput';
 import Button from '../../../components/common/Button';
+import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import GoogleSignInModal from '../../../components/common/GoogleSignInModal';
 import { signInWithGoogle } from '../../../services/googleAuth';
+import { colors } from '../../../theme/theme';
 
 const LoginScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
@@ -124,7 +128,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       <KeyboardAvoidingView
@@ -132,14 +136,14 @@ const LoginScreen = ({ navigation }) => {
         style={styles.flexContainer}
       >
         <ScrollView
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[styles.scrollContent, { paddingTop: topInset + 16 }]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
           {/* Logo Area */}
           <View style={styles.logoContainer}>
             <View style={[styles.logoIconCircle, isDark ? styles.logoCircleDark : styles.logoCircleLight]}>
-              <CustomText style={styles.emojiIcon}>⚛️</CustomText>
+              <Icon name="code" size={32} color={isDark ? colors.brand.accent : colors.brand.primary} />
             </View>
           </View>
 
@@ -239,7 +243,7 @@ const LoginScreen = ({ navigation }) => {
               disabled={googleLoading || loading}
             >
               {googleLoading ? (
-                <ActivityIndicator size="small" color="#007AFF" />
+                <ActivityIndicator size="small" color={colors.brand.primary} />
               ) : (
                 <>
                   <View style={styles.googleGWrapper}>
@@ -293,20 +297,20 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   flexContainer: { flex: 1 },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
-  textMutedDark: { color: '#64748B' },
-  textMutedLight: { color: '#717786' },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
-  brandTint: { tintColor: '#007AFF' },
-  forgotPasswordText: { color: '#007AFF' },
-  signUpLinkText: { color: '#007AFF' },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
+  textMutedDark: { color: colors.dark.textMuted },
+  textMutedLight: { color: colors.light.textSecondary },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
+  brandTint: { tintColor: colors.brand.primary },
+  forgotPasswordText: { color: colors.brand.primary },
+  signUpLinkText: { color: colors.brand.primary },
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 20,
@@ -376,7 +380,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.08)',
   },
   dividerLight: {
-    backgroundColor: '#E3E2E7',
+    backgroundColor: colors.light.border,
   },
   dividerText: {
     marginHorizontal: 12,
@@ -394,18 +398,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   googleButtonDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   googleButtonLight: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     borderColor: '#E2E8F0',
   },
   googleGWrapper: {
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,

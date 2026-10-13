@@ -10,11 +10,14 @@ import {
 } from 'react-native';
 import { useTheme } from '../../../context/ThemeContext';
 import CustomText from '../../../components/common/CustomText';
-import { icons } from '../../../constants/assets';
+import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import packageJson from '../../../../package.json';
+import { colors } from '../../../theme/theme';
 
 const AboutAppScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
 
   const handleEmailPress = () => {
     Linking.openURL(
@@ -26,17 +29,17 @@ const AboutAppScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={{ fontSize: 18, color: isDark ? '#F8FAFC' : '#1A1B1F' }}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <CustomText
           variant="headlineMd"
@@ -55,7 +58,7 @@ const AboutAppScreen = ({ navigation }) => {
         {/* App Hero Badge */}
         <View style={styles.logoSection}>
           <View style={[styles.logoBox, isDark ? styles.logoBoxDark : styles.logoBoxLight]}>
-            <CustomText style={{ fontSize: 36 }}>💻</CustomText>
+            <Icon name="code" size={34} color={isDark ? colors.brand.accent : colors.brand.primary} />
           </View>
           <CustomText
             variant="headlineXl"
@@ -79,7 +82,7 @@ const AboutAppScreen = ({ navigation }) => {
         <View style={[styles.managedCard, isDark ? styles.managedCardDark : styles.managedCardLight]}>
           <View style={styles.managedHeader}>
             <View style={[styles.companyIconBox, isDark ? styles.companyIconBoxDark : styles.companyIconBoxLight]}>
-              <CustomText style={styles.emojiText}>🏢</CustomText>
+              <Icon name="apartment" size={22} color={isDark ? colors.brand.accent : colors.brand.primary} />
             </View>
             <View style={styles.flexOne}>
               <CustomText
@@ -110,7 +113,7 @@ const AboutAppScreen = ({ navigation }) => {
             onPress={handleEmailPress}
             activeOpacity={0.8}
           >
-            <CustomText style={{ fontSize: 18, marginRight: 8 }}>✉️</CustomText>
+            <Icon name="email" size={18} color={colors.brand.primary} style={{ marginRight: 8 }} />
             <CustomText
               weight="bold"
               style={styles.emailText}
@@ -162,7 +165,7 @@ const AboutAppScreen = ({ navigation }) => {
           ].map((feature, idx) => (
             <View key={idx} style={styles.featureItem}>
               <View style={[styles.featureBullet, isDark ? styles.featureBulletDark : styles.featureBulletLight]}>
-                <CustomText style={{ fontSize: 13, color: '#10B981' }}>✓</CustomText>
+                <Icon name="check" size={14} color={colors.brand.success} />
               </View>
               <CustomText
                 variant="body"
@@ -196,8 +199,8 @@ const AboutAppScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -215,24 +218,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backIcon: { width: 16, height: 16, transform: [{ rotate: '90deg' }] },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
-  brandTint: { tintColor: '#007AFF' },
-  successTint: { tintColor: '#10B981' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
-  textMutedDark: { color: '#64748B' },
-  textMutedLight: { color: '#717786' },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
+  brandTint: { tintColor: colors.brand.primary },
+  successTint: { tintColor: colors.brand.success },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
+  textMutedDark: { color: colors.dark.textMuted },
+  textMutedLight: { color: colors.light.textSecondary },
   headerSpacer: { width: 36 },
   content: { paddingHorizontal: 20, paddingBottom: 60 },
   logoSection: { alignItems: 'center', marginVertical: 20 },
@@ -246,12 +249,12 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   logoBoxDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(0, 193, 253, 0.3)',
   },
   logoBoxLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   appLogo: { width: 38, height: 38 },
   appName: { fontSize: 24, marginBottom: 8 },
@@ -275,13 +278,13 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     padding: 20,
     marginBottom: 16,
-    borderColor: '#007AFF',
+    borderColor: colors.brand.primary,
   },
   managedCardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
   },
   managedCardLight: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
   },
   managedHeader: {
     flexDirection: 'row',
@@ -303,7 +306,7 @@ const styles = StyleSheet.create({
   },
   emojiText: { fontSize: 22 },
   flexOne: { flex: 1 },
-  managedByCaption: { color: '#007AFF', letterSpacing: 1 },
+  managedByCaption: { color: colors.brand.primary, letterSpacing: 1 },
   managedDesc: { marginTop: 10, lineHeight: 20 },
   emailButton: {
     flexDirection: 'row',
@@ -319,10 +322,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 122, 255, 0.12)',
   },
   emailButtonLight: {
-    backgroundColor: '#F4F3F8',
+    backgroundColor: colors.light.elevated,
   },
   emailIcon: { width: 16, height: 16 },
-  emailText: { color: '#007AFF', fontSize: 13 },
+  emailText: { color: colors.brand.primary, fontSize: 13 },
   card: {
     borderRadius: 16,
     padding: 20,
@@ -330,12 +333,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   cardTitle: { fontSize: 17, marginBottom: 12 },
   overviewText: { lineHeight: 22 },

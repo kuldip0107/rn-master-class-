@@ -1,32 +1,27 @@
 export const icons = {
-    // Tab Bar
-    home: '🏠',
-    book: '📚',
-    code: '💻',
-    profile: '👤',
-    student: '👨‍🎓',
-    trophy: '🏆',
+  home: 'home',
+  book: 'menu-book',
+  code: 'code',
+  profile: 'person',
+  student: 'school',
+  trophy: 'emoji-events',
 
-    // Common
-    back: '←',
-    next: '→',
-    search: '🔍',
-    settings: '⚙️',
-    notification: '🔔',
-    whatshapp: '💬',
-    android: '🤖',
-    
-    // Profile Menu
-    help: '❓',
-    info: 'ℹ️',
-    logout: '🚪',
-    privacy: '🔒',
-    terms: '📜',
-    
-    // Misc
-    check: '✅',
-    uncheck: '⬜',
-    play: '▶️', 
-    circleProfile: '👤',
+  back: 'arrow-back',
+  next: 'arrow-forward',
+  search: 'search',
+  settings: 'settings',
+  notification: 'notifications',
+  whatshapp: 'chat',
+  android: 'android',
+
+  help: 'help-outline',
+  info: 'info-outline',
+  logout: 'logout',
+  privacy: 'lock',
+  terms: 'gavel',
+
+  check: 'check',
+  uncheck: 'check-box-outline-blank',
+  play: 'play-arrow',
+  circleProfile: 'account-circle',
 };
-

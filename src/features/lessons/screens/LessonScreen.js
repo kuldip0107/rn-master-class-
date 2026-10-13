@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
-  Image,
   TextInput,
   SectionList,
   Platform,
@@ -12,11 +11,29 @@ import {
 import { useTheme } from '../../../context/ThemeContext';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
-import { icons } from '../../../constants/assets';
+import { useTopInset } from '../../../hooks/useTopInset';
 import reactNativeComponents from '../../../data/componentsData';
+import { colors } from '../../../theme/theme';
+
+const SECTION_LOOK = {
+  'View & Layout Components': { icon: 'dashboard', color: colors.brand.primary },
+  'Text & Input Components': { icon: 'text-fields', color: colors.category.purple },
+  'Buttons & Controls': { icon: 'smart-button', color: colors.brand.warning },
+  Touchables: { icon: 'touch-app', color: colors.category.pink },
+  'Media & Feedback': { icon: 'perm-media', color: colors.brand.success },
+  'System & Dialogs': { icon: 'phonelink', color: colors.category.sky },
+  'Animations & Gestures': { icon: 'gesture', color: colors.category.orange },
+  'APIs & Utilities': { icon: 'extension', color: colors.category.indigo },
+  Navigation: { icon: 'explore', color: colors.category.teal },
+};
+
+const FALLBACK_LOOK = { icon: 'menu-book', color: colors.brand.primary };
+
+const lookForSection = (title) => SECTION_LOOK[title] || FALLBACK_LOOK;
 
 const LessonScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter the data based on searchQuery
@@ -41,13 +58,19 @@ const LessonScreen = ({ navigation }) => {
       >
         Learn
       </CustomText>
+      <CustomText
+        variant="body"
+        style={[styles.headerSubtitle, isDark ? styles.textSecondaryDark : styles.textSecondaryLight]}
+      >
+        {reactNativeComponents.reduce((sum, section) => sum + section.data.length, 0)} components, grouped by topic
+      </CustomText>
 
       {/* Figma Search Bar */}
       <View style={[styles.searchBar, isDark ? styles.searchBarDark : styles.searchBarLight]}>
-        <Icon name="search" size={18} color={isDark ? '#64748B' : '#717786'} style={{ marginRight: 8 }} />
+        <Icon name="search" size={18} color={isDark ? colors.dark.textMuted : colors.light.textSecondary} style={{ marginRight: 8 }} />
         <TextInput
           placeholder="Search components & APIs..."
-          placeholderTextColor={isDark ? '#64748B' : '#717786'}
+          placeholderTextColor={isDark ? colors.dark.textMuted : colors.light.textSecondary}
           style={[styles.searchInput, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -58,9 +81,7 @@ const LessonScreen = ({ navigation }) => {
             activeOpacity={0.7}
             style={styles.clearButton}
           >
-            <CustomText style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}>
-              ✕
-            </CustomText>
+            <Icon name="close" size={16} color={isDark ? colors.dark.textSecondary : colors.light.textSecondary} />
           </TouchableOpacity>
         )}
       </View>
@@ -68,59 +89,62 @@ const LessonScreen = ({ navigation }) => {
   );
 
   const renderSectionHeader = ({ section }) => {
+    const look = lookForSection(section.title);
     return (
-      <View style={[styles.sectionHeader, isDark ? styles.sectionHeaderDark : styles.sectionHeaderLight]}>
-        <View style={styles.sectionHeaderLeft}>
-          <View style={styles.sectionDot} />
-          <CustomText
-            variant="headlineMd"
-            weight="bold"
-            style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}
-          >
-            {section.title}
-          </CustomText>
+      <View style={styles.sectionHeader}>
+        <View style={[styles.sectionIcon, { backgroundColor: `${look.color}18` }]}>
+          <Icon name={look.icon} size={16} color={look.color} />
         </View>
         <CustomText
-          variant="small"
+          variant="body"
           weight="bold"
-          style={isDark ? styles.textMutedDark : styles.textMutedLight}
+          style={[styles.sectionTitle, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}
+          numberOfLines={1}
         >
-          {section.data.length} ITEMS
+          {section.title}
         </CustomText>
+        <View style={[styles.countPill, { backgroundColor: `${look.color}18` }]}>
+          <CustomText variant="small" weight="bold" style={{ color: look.color }}>
+            {section.data.length}
+          </CustomText>
+        </View>
       </View>
     );
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, section }) => {
     const title = item.title || item.name;
     const desc = item.desc || item.description;
+    const look = lookForSection(section.title);
 
     return (
       <TouchableOpacity
         style={[styles.card, isDark ? styles.cardDark : styles.cardLight]}
-        activeOpacity={0.8}
+        activeOpacity={0.85}
         onPress={() => navigation.navigate('ComponentDetail', { component: item })}
       >
-        <View style={styles.cardContent}>
-          <View style={styles.cardInfo}>
-            <CustomText
-              variant="headlineMd"
-              weight="bold"
-              style={[styles.itemTitle, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}
-            >
-              {title}
-            </CustomText>
-            <CustomText
-              variant="body"
-              style={[styles.itemDesc, isDark ? styles.textSecondaryDark : styles.textSecondaryLight]}
-              numberOfLines={2}
-            >
-              {desc}
-            </CustomText>
-          </View>
-
-          <CustomText style={{ fontSize: 20, color: isDark ? '#64748B' : '#C1C6D7' }}>›</CustomText>
+        <View style={[styles.cardAccent, { backgroundColor: look.color }]} />
+        <View style={[styles.itemIcon, { backgroundColor: `${look.color}16` }]}>
+          <Icon name={look.icon} size={18} color={look.color} />
         </View>
+        <View style={styles.cardInfo}>
+          <CustomText
+            variant="body"
+            weight="bold"
+            style={[styles.itemTitle, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}
+            numberOfLines={1}
+          >
+            {title}
+          </CustomText>
+          <CustomText
+            variant="small"
+            style={[styles.itemDesc, isDark ? styles.textSecondaryDark : styles.textSecondaryLight]}
+            numberOfLines={2}
+          >
+            {desc}
+          </CustomText>
+        </View>
+        <Icon name="chevron-right" size={22} color={isDark ? colors.dark.textMuted : colors.light.chevron} />
       </TouchableOpacity>
     );
   };
@@ -129,7 +153,7 @@ const LessonScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       <SectionList
@@ -138,7 +162,7 @@ const LessonScreen = ({ navigation }) => {
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         ListHeaderComponent={renderHeader}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, { paddingTop: topInset + 12 }]}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled={false}
       />
@@ -148,25 +172,26 @@ const LessonScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
-  textMutedDark: { color: '#64748B', letterSpacing: 0.5 },
-  textMutedLight: { color: '#717786', letterSpacing: 0.5 },
-  iconSecondaryDark: { tintColor: '#64748B' },
-  iconSecondaryLight: { tintColor: '#717786' },
-  chevronDark: { tintColor: '#64748B' },
-  chevronLight: { tintColor: '#C1C6D7' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
+  textMutedDark: { color: colors.dark.textMuted, letterSpacing: 0.5 },
+  textMutedLight: { color: colors.light.textSecondary, letterSpacing: 0.5 },
+  iconSecondaryDark: { tintColor: colors.dark.textMuted },
+  iconSecondaryLight: { tintColor: colors.light.textSecondary },
+  chevronDark: { tintColor: colors.dark.textMuted },
+  chevronLight: { tintColor: colors.light.chevron },
   listContent: {
     paddingHorizontal: 20,
     paddingTop: Platform.OS === 'ios' ? 60 : 48,
     paddingBottom: 90,
   },
   headerContainer: { marginBottom: 20 },
-  headerTitle: { fontSize: 30, marginBottom: 16 },
+  headerTitle: { fontSize: 30, marginBottom: 4 },
+  headerSubtitle: { fontSize: 14, marginBottom: 16 },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -176,11 +201,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   searchBarDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   searchBarLight: {
-    backgroundColor: '#F4F3F8',
+    backgroundColor: colors.light.elevated,
     borderColor: 'transparent',
   },
   searchIcon: {
@@ -197,57 +222,72 @@ const styles = StyleSheet.create({
   clearButton: { padding: 6 },
   sectionHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: 10,
-    marginTop: 22,
-    marginBottom: 12,
-    borderBottomWidth: 1,
-  },
-  sectionHeaderDark: {
-    borderBottomColor: 'rgba(255, 255, 255, 0.08)',
-  },
-  sectionHeaderLight: {
-    borderBottomColor: '#E3E2E7',
-  },
-  sectionHeaderLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginTop: 18,
+    marginBottom: 10,
     gap: 8,
   },
-  sectionDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#00C1FD',
+  sectionIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sectionTitle: {
+    flex: 1,
+    fontSize: 15,
+  },
+  countPill: {
+    minWidth: 26,
+    height: 22,
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
   },
   card: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderRadius: 16,
-    padding: 16,
+    paddingVertical: 12,
+    paddingRight: 12,
+    paddingLeft: 14,
     marginBottom: 10,
     borderWidth: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 2,
+    overflow: 'hidden',
   },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
+    shadowColor: colors.light.text,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
   },
-  cardContent: {
-    flexDirection: 'row',
+  cardAccent: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 3,
+  },
+  itemIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    marginRight: 12,
   },
-  cardInfo: { flex: 1, marginRight: 12 },
-  itemTitle: { fontSize: 17, marginBottom: 4 },
-  itemDesc: { fontSize: 14, lineHeight: 20 },
+  cardInfo: { flex: 1, marginRight: 8 },
+  itemTitle: { fontSize: 15, marginBottom: 2 },
+  itemDesc: { fontSize: 12, lineHeight: 16 },
   arrowIcon: {
     width: 16,
     height: 16,

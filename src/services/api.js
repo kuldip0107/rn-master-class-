@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
+import { APP_CONFIG } from '../config';
 
 /**
  * Default Base URL:
@@ -7,18 +7,21 @@ import { Platform } from 'react-native';
  * - iOS Simulator / Web uses localhost
  * - Can be overridden dynamically via AsyncStorage key 'custom_api_base_url'
  */
-const DEFAULT_BASE_URL = 'http://localhost:5000';
+const trimUrl = (url) => url.trim().replace(/\/+$/, '');
 
 export const getBaseUrl = async () => {
   try {
     const customUrl = await AsyncStorage.getItem('custom_api_base_url');
     if (customUrl && customUrl.trim()) {
-      return customUrl.trim().replace(/\/+$/, '');
+      return trimUrl(customUrl);
     }
   } catch (e) {
     // ignore
   }
-  return DEFAULT_BASE_URL;
+  if (APP_CONFIG.PRODUCTION_BASE_URL) {
+    return trimUrl(APP_CONFIG.PRODUCTION_BASE_URL);
+  }
+  return APP_CONFIG.DEFAULT_BASE_URL;
 };
 
 export const setBaseUrl = async (url) => {
@@ -86,12 +89,12 @@ const apiRequest = async (endpoint, options = {}) => {
   } catch (error) {
     clearTimeout(timeoutId);
     if (error.name === 'AbortError') {
-      const timeoutErr = new Error('Connection timed out. Please check if your backend server is running on port 5000.');
+      const timeoutErr = new Error('Connection timed out. Please check your internet connection.');
       timeoutErr.isNetworkError = true;
       throw timeoutErr;
     }
     if (!error.status) {
-      const netErr = new Error(`Cannot connect to server at ${baseUrl}. Ensure backend is running!`);
+      const netErr = new Error('Cannot connect to server. Please check your internet connection.');
       netErr.isNetworkError = true;
       throw netErr;
     }
@@ -266,6 +269,24 @@ export const userAPI = {
     apiRequest(`/api/user/streak/${userId}`, {
       method: 'POST',
       body: payload,
+    }),
+
+  // POST /api/user/sync-time
+  syncScreenTime: (payload) =>
+    apiRequest('/api/user/sync-time', {
+      method: 'POST',
+      body: payload,
+    }),
+
+  // GET /api/user/sync-time/:userId
+  getScreenTime: (userId) =>
+    apiRequest(`/api/user/sync-time/${userId}`, {
+      method: 'GET',
+    }),
+
+  deleteAccount: (userId) =>
+    apiRequest(`/api/user/profile/${userId}`, {
+      method: 'DELETE',
     }),
 };
 

@@ -16,12 +16,15 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../../context/ThemeContext';
 import { CustomAlert } from '../../../context/AlertContext';
 import CustomText from '../../../components/common/CustomText';
+import Icon from '../../../components/common/Icon';
 import { icons } from '../../../constants/assets';
+import { useTopInset } from '../../../hooks/useTopInset';
 import { notificationService } from '../../../services/notificationService';
 import { soundService } from '../../../services/soundService';
 import { hapticService } from '../../../services/hapticService';
-import { systemAPI, getBaseUrl } from '../../../services/api';
+import { userAPI } from '../../../services/api';
 import packageJson from '../../../../package.json';
+import { colors } from '../../../theme/theme';
 
 const SettingItem = ({
   icon,
@@ -63,7 +66,11 @@ const SettingItem = ({
       ]}
     >
       {typeof icon === 'string' ? (
-        <CustomText style={styles.emojiIconText}>{icon}</CustomText>
+        <Icon
+          name={icon}
+          size={20}
+          color={danger ? colors.brand.error : isDark ? colors.brand.accent : colors.brand.primary}
+        />
       ) : (
         <Image
           source={icon}
@@ -108,10 +115,10 @@ const SettingItem = ({
     {type === 'toggle' && (
       <Switch
         trackColor={{
-          false: isDark ? '#2A2D3D' : '#E3E2E7',
-          true: '#007AFF',
+          false: isDark ? '#2A2D3D' : colors.light.border,
+          true: colors.brand.primary,
         }}
-        thumbColor="#FFFFFF"
+       thumbColor={colors.brand.white}
         onValueChange={(val) => {
           hapticService.light();
           onValueChange && onValueChange(val);
@@ -121,13 +128,14 @@ const SettingItem = ({
     )}
 
     {type === 'navigate' && (
-      <CustomText style={[styles.chevronText, isDark ? styles.textMutedDark : styles.chevronLight]}>›</CustomText>
+      <Icon name="chevron-right" size={22} color={isDark ? colors.dark.textMuted : colors.light.chevron} />
     )}
   </TouchableOpacity>
 );
 
 const SettingsScreen = ({ navigation }) => {
   const { t, i18n } = useTranslation();
+  const topInset = useTopInset();
   const { theme, isDark, toggleTheme } = useTheme();
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -175,7 +183,7 @@ const SettingsScreen = ({ navigation }) => {
       await notificationService.triggerInstantTestNotification();
       if (Platform.OS === 'android') {
         ToastAndroid.show(
-          'Daily streak reminder active for 7:00 PM 🔥',
+          'Daily streak reminder active for 7:00 PM',
           ToastAndroid.SHORT
         );
       }
@@ -193,7 +201,7 @@ const SettingsScreen = ({ navigation }) => {
     await soundService.setEnabled(enabled);
     if (Platform.OS === 'android') {
       ToastAndroid.show(
-        enabled ? 'Sound effects enabled 🔊' : 'Sound effects muted 🔇',
+        enabled ? 'Sound effects enabled' : 'Sound effects muted',
         ToastAndroid.SHORT
       );
     }
@@ -204,7 +212,7 @@ const SettingsScreen = ({ navigation }) => {
     await hapticService.setEnabled(enabled);
     if (Platform.OS === 'android') {
       ToastAndroid.show(
-        enabled ? 'Haptic feedback enabled 📳' : 'Haptic feedback disabled',
+        enabled ? 'Haptic feedback enabled' : 'Haptic feedback disabled',
         ToastAndroid.SHORT
       );
     }
@@ -252,6 +260,23 @@ const SettingsScreen = ({ navigation }) => {
           style: 'destructive',
           onPress: async () => {
             try {
+              let userId = await AsyncStorage.getItem('userId');
+              if (!userId) {
+                const userObj = await AsyncStorage.getItem('userObject');
+                if (userObj) {
+                  try {
+                    const parsed = JSON.parse(userObj);
+                    userId = parsed?.id || parsed?._id;
+                  } catch (e) {}
+                }
+              }
+
+              if (userId) {
+                await userAPI.deleteAccount(userId);
+              } else {
+                throw new Error('Active user account not found. Please sign in again.');
+              }
+
               await AsyncStorage.clear();
               if (Platform.OS === 'android') {
                 ToastAndroid.show(
@@ -264,7 +289,10 @@ const SettingsScreen = ({ navigation }) => {
                 routes: [{ name: 'Login' }],
               });
             } catch (err) {
-              console.error('Delete account error', err);
+              CustomAlert.error(
+                'Could not delete account',
+                err?.message || 'The server did not delete this account. Your data is still on this phone.'
+              );
             }
           },
         },
@@ -288,38 +316,21 @@ const SettingsScreen = ({ navigation }) => {
     }
   };
 
-  const handleTestBackendConnection = async () => {
-    try {
-      const currentUrl = await getBaseUrl();
-      const res = await systemAPI.checkHealth();
-      CustomAlert.success(
-        'Server Online! 🟢',
-        `Successfully connected to backend:\n• URL: ${currentUrl}\n• Status: ${res.status}\n• DB: ${res.mongodbStatus || 'Connected'}`
-      );
-    } catch (err) {
-      const currentUrl = await getBaseUrl();
-      CustomAlert.error(
-        'Connection Failed 🔴',
-        `Cannot reach backend server at:\n${currentUrl}\n\nError: ${err.message}\n\nPlease check if 'npm run dev' is running in D:\\Backend.`
-      );
-    }
-  };
-
   return (
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={[styles.backArrowText, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <CustomText
           variant="headlineMd"
@@ -409,15 +420,6 @@ const SettingsScreen = ({ navigation }) => {
             subtitle="Tap to select language"
             type="action"
             onPress={() => setShowLanguageModal(true)}
-            theme={theme}
-            isDark={isDark}
-          />
-          <SettingItem
-            icon="🌐"
-            title="Backend Server Status"
-            subtitle="Tap to test connection & health check"
-            type="action"
-            onPress={handleTestBackendConnection}
             theme={theme}
             isDark={isDark}
           />
@@ -523,7 +525,7 @@ const SettingsScreen = ({ navigation }) => {
                 onPress={() => setShowLanguageModal(false)}
                 style={[styles.langCloseBtn, isDark ? styles.langCloseBtnDark : styles.langCloseBtnLight]}
               >
-                <CustomText style={[styles.closeIconText, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}>✕</CustomText>
+                <Icon name="close" size={18} color={isDark ? colors.dark.text : colors.light.text} />
               </TouchableOpacity>
             </View>
 
@@ -595,10 +597,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerDark: {
-    backgroundColor: '#050510',
+    backgroundColor: colors.dark.background,
   },
   containerLight: {
-    backgroundColor: '#FAF9FE',
+    backgroundColor: colors.light.background,
   },
   header: {
     flexDirection: 'row',
@@ -617,12 +619,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backArrowText: {
     fontSize: 18,
@@ -631,33 +633,33 @@ const styles = StyleSheet.create({
     width: 36,
   },
   textPrimaryDark: {
-    color: '#F8FAFC',
+    color: colors.dark.text,
   },
   textPrimaryLight: {
-    color: '#1A1B1F',
+    color: colors.light.text,
   },
   textSecondaryDark: {
-    color: '#94A3B8',
+    color: colors.dark.textSecondary,
   },
   textSecondaryLight: {
-    color: '#717786',
+    color: colors.light.textSecondary,
   },
   textMutedDark: {
-    color: '#64748B',
+    color: colors.dark.textMuted,
   },
   textMutedLight: {
-    color: '#717786',
+    color: colors.light.textSecondary,
   },
   textDanger: {
-    color: '#EF4444',
+    color: colors.brand.error,
   },
   sectionCardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   sectionCardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   borderDark: {
     borderBottomColor: 'rgba(255, 255, 255, 0.06)',
@@ -672,22 +674,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFDAD6',
   },
   iconBoxNormalDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
   },
   iconBoxNormalLight: {
-    backgroundColor: '#F4F3F8',
+    backgroundColor: colors.light.elevated,
   },
   emojiIconText: {
     fontSize: 20,
   },
   tintDanger: {
-    tintColor: '#EF4444',
+    tintColor: colors.brand.error,
   },
   tintDark: {
-    tintColor: '#F8FAFC',
+    tintColor: colors.dark.text,
   },
   tintLight: {
-    tintColor: '#1A1B1F',
+    tintColor: colors.light.text,
   },
   subtitleText: {
     marginTop: 1,
@@ -696,7 +698,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   chevronLight: {
-    color: '#C1C6D7',
+    color: colors.light.chevron,
   },
   backIcon: {
     width: 16,
@@ -765,12 +767,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   langModalCardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   langModalCardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   langModalHeader: {
     flexDirection: 'row',
@@ -790,12 +792,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   langCloseBtnDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   langCloseBtnLight: {
-    backgroundColor: '#F4F3F8',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.light.elevated,
+    borderColor: colors.light.border,
   },
   closeIconText: {
     fontSize: 14,
@@ -813,7 +815,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
   },
   langOptionDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderColor: 'rgba(255, 255, 255, 0.06)',
   },
   langOptionLight: {
@@ -822,11 +824,11 @@ const styles = StyleSheet.create({
   },
   langOptionActiveDark: {
     backgroundColor: 'rgba(0, 122, 255, 0.12)',
-    borderColor: '#007AFF',
+    borderColor: colors.brand.primary,
   },
   langOptionActiveLight: {
     backgroundColor: 'rgba(0, 122, 255, 0.08)',
-    borderColor: '#007AFF',
+    borderColor: colors.brand.primary,
   },
   langOptionLeft: {
     flexDirection: 'row',
@@ -843,7 +845,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textBlue: {
-    color: '#007AFF',
+    color: colors.brand.primary,
   },
   radioCircle: {
     width: 22,
@@ -854,7 +856,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   radioCircleActive: {
-    borderColor: '#007AFF',
+    borderColor: colors.brand.primary,
   },
   radioCircleInactiveDark: {
     borderColor: '#4A4D5A',
@@ -866,7 +868,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
   },
 });
 

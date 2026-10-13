@@ -15,8 +15,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../../../context/ThemeContext';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import { icons } from '../../../constants/assets';
 import { interviewQuestions, cheatsheets } from '../../../data/interviewData';
+import { colors } from '../../../theme/theme';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -26,6 +28,7 @@ const CATEGORIES = ['All', 'Fundamentals', 'Architecture', 'Performance', 'State
 
 const InterviewPrepScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
 
   const [activeTab, setActiveTab] = useState('questions'); // 'questions' | 'cheatsheets'
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -78,17 +81,17 @@ const InterviewPrepScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={{ fontSize: 18, color: isDark ? '#F8FAFC' : '#1A1B1F' }}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <CustomText
           variant="headlineMd"
@@ -138,11 +141,11 @@ const InterviewPrepScreen = ({ navigation }) => {
         <>
           {/* Search Box */}
           <View style={[styles.searchBox, isDark ? styles.searchBoxDark : styles.searchBoxLight]}>
-            <Icon name="search" size={18} color={isDark ? '#64748B' : '#717786'} style={{ marginRight: 8 }} />
+            <Icon name="search" size={18} color={isDark ? colors.dark.textMuted : colors.light.textSecondary} style={{ marginRight: 8 }} />
             <TextInput
               style={[styles.searchInput, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}
               placeholder="Search interview questions..."
-              placeholderTextColor={isDark ? '#64748B' : '#717786'}
+              placeholderTextColor={isDark ? colors.dark.textMuted : colors.light.textSecondary}
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
@@ -249,7 +252,7 @@ const InterviewPrepScreen = ({ navigation }) => {
                         <Icon
                           name={isBookmarked ? 'star' : 'star-border'}
                           size={22}
-                          color={isBookmarked ? '#F59E0B' : (isDark ? '#64748B' : '#C1C6D7')}
+                          color={isBookmarked ? colors.brand.warning : (isDark ? colors.dark.textMuted : colors.light.chevron)}
                         />
                       </TouchableOpacity>
                     </View>
@@ -275,7 +278,7 @@ const InterviewPrepScreen = ({ navigation }) => {
                       {q.tips && (
                         <View style={[styles.tipsBox, isDark ? styles.tipsBoxDark : styles.tipsBoxLight]}>
                           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-                            <Icon name="lightbulb-outline" size={14} color="#F59E0B" style={{ marginRight: 4 }} />
+                            <Icon name="lightbulb-outline" size={14} color={colors.brand.warning} style={{ marginRight: 4 }} />
                             <CustomText
                               variant="caption"
                               weight="bold"
@@ -358,8 +361,8 @@ const InterviewPrepScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -378,20 +381,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backIcon: { width: 16, height: 16, transform: [{ rotate: '90deg' }] },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
   tabSwitcher: {
     flexDirection: 'row',
     marginHorizontal: 20,
@@ -401,12 +404,12 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   tabSwitcherDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   tabSwitcherLight: {
-    backgroundColor: '#F4F3F8',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.light.elevated,
+    borderColor: colors.light.border,
   },
   tabButton: {
     flex: 1,
@@ -415,9 +418,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   tabButtonActive: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
   },
-  tabTextActive: { color: '#FFFFFF' },
+  tabTextActive: { color: colors.brand.white },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -429,20 +432,20 @@ const styles = StyleSheet.create({
     height: 48,
   },
   searchBoxDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   searchBoxLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   searchIcon: {
     width: 18,
     height: 18,
     marginRight: 10,
   },
-  searchIconDark: { tintColor: '#64748B' },
-  searchIconLight: { tintColor: '#717786' },
+  searchIconDark: { tintColor: colors.dark.textMuted },
+  searchIconLight: { tintColor: colors.light.textSecondary },
   searchInput: {
     flex: 1,
     fontSize: 14,
@@ -458,18 +461,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   categoryPillActive: {
-    backgroundColor: '#007AFF',
-    borderColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
+    borderColor: colors.brand.primary,
   },
   categoryPillDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   categoryPillLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
-  categoryTextActive: { color: '#FFFFFF' },
+  categoryTextActive: { color: colors.brand.white },
   listContainer: {
     paddingHorizontal: 20,
     paddingBottom: 60,
@@ -481,12 +484,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   cardHeader: { padding: 16 },
   badgeRow: {
@@ -504,9 +507,9 @@ const styles = StyleSheet.create({
   midBadgeBg: { backgroundColor: 'rgba(245, 158, 11, 0.15)' },
   juniorBadgeBg: { backgroundColor: 'rgba(16, 185, 129, 0.15)' },
   levelBadgeText: { fontSize: 10, fontWeight: 'bold' },
-  seniorBadgeText: { color: '#EF4444' },
-  midBadgeText: { color: '#F59E0B' },
-  juniorBadgeText: { color: '#10B981' },
+  seniorBadgeText: { color: colors.brand.error },
+  midBadgeText: { color: colors.brand.warning },
+  juniorBadgeText: { color: colors.brand.success },
   questionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -535,11 +538,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 12,
   },
-  codeBlockDark: { backgroundColor: '#050510' },
+  codeBlockDark: { backgroundColor: colors.dark.background },
   codeBlockLight: { backgroundColor: '#1E202E' },
   codeText: {
     fontSize: 12,
-    color: '#00C1FD',
+    color: colors.brand.accent,
     lineHeight: 18,
   },
   tipsBox: {
@@ -548,7 +551,7 @@ const styles = StyleSheet.create({
   },
   tipsBoxDark: { backgroundColor: 'rgba(0, 193, 253, 0.08)' },
   tipsBoxLight: { backgroundColor: 'rgba(0, 122, 255, 0.08)' },
-  tipHeader: { color: '#007AFF' },
+  tipHeader: { color: colors.brand.primary },
   tipBody: { marginTop: 2 },
   cheatCard: {
     borderRadius: 16,

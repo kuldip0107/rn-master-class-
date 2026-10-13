@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
+import { colors } from '../../theme/theme';
 
 const Card = ({
   children,
@@ -15,8 +16,8 @@ const Card = ({
   const Container = onPress ? TouchableOpacity : View;
 
   const getContainerStyle = () => {
-    const cardBg = isDark ? '#0F111A' : '#FFFFFF';
-    const borderColor = isDark ? 'rgba(255, 255, 255, 0.08)' : '#E3E2E7';
+    const cardBg = isDark ? colors.dark.card : colors.brand.white;
+    const borderColor = isDark ? 'rgba(255, 255, 255, 0.08)' : colors.light.border;
 
     switch (variant) {
       case 'outlined':
@@ -27,7 +28,7 @@ const Card = ({
         };
       case 'flat':
         return {
-          backgroundColor: isDark ? '#161823' : '#F4F3F8',
+          backgroundColor: isDark ? colors.dark.elevated : colors.light.elevated,
           borderWidth: 0,
         };
       case 'elevated':

@@ -9,6 +9,7 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 import CustomText from './CustomText';
 import Icon from './Icon';
+import { colors } from '../../theme/theme';
 
 const AppTextInput = ({
   label,
@@ -64,7 +65,7 @@ const AppTextInput = ({
           <Icon
             name={iconName}
             size={20}
-            color={iconColor || (isFocused ? '#007AFF' : (isDark ? '#64748B' : '#717786'))}
+            color={iconColor || (isFocused ? colors.brand.primary : (isDark ? colors.dark.textMuted : colors.light.textSecondary))}
             style={styles.leftIconVector}
           />
         ) : icon ? (
@@ -86,7 +87,7 @@ const AppTextInput = ({
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          placeholderTextColor={isDark ? '#64748B' : '#717786'}
+          placeholderTextColor={isDark ? colors.dark.textMuted : colors.light.textSecondary}
           style={[
             styles.textInput,
             isDark ? styles.textDark : styles.textLight,
@@ -110,7 +111,7 @@ const AppTextInput = ({
             <Icon
               name={showPassword ? 'visibility-off' : 'visibility'}
               size={20}
-              color="#007AFF"
+             color={iconColor || (isFocused ? colors.brand.primary : (isDark ? colors.dark.textMuted : colors.light.textSecondary))}
             />
           </TouchableOpacity>
         ) : rightIcon ? (
@@ -155,8 +156,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     letterSpacing: 0.2,
   },
-  labelDark: { color: '#94A3B8' },
-  labelLight: { color: '#414755' },
+  labelDark: { color: colors.dark.textSecondary },
+  labelLight: { color: colors.light.textSecondary },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
     height: 52,
     paddingHorizontal: 16,
   },
-  inputDark: { backgroundColor: '#161823' },
+  inputDark: { backgroundColor: colors.dark.elevated },
   inputLight: { backgroundColor: '#F2F2F7' },
   borderDark: {
     borderWidth: 1,
@@ -176,11 +177,11 @@ const styles = StyleSheet.create({
   },
   borderFocused: {
     borderWidth: 1.5,
-    borderColor: '#007AFF',
+    borderColor: colors.brand.primary,
   },
   borderError: {
     borderWidth: 1.5,
-    borderColor: '#EF4444',
+    borderColor: colors.brand.error,
   },
   leftIcon: {
     width: 20,
@@ -197,23 +198,23 @@ const styles = StyleSheet.create({
   rightIconEmoji: {
     fontSize: 16,
   },
-  iconFocused: { tintColor: '#007AFF' },
-  iconMuted: { tintColor: '#717786' },
+  iconFocused: { tintColor: colors.brand.primary },
+  iconMuted: { tintColor: colors.light.textSecondary },
   textInput: {
     flex: 1,
     height: '100%',
     fontSize: 15,
     paddingVertical: 0,
   },
-  textDark: { color: '#F8FAFC' },
-  textLight: { color: '#1A1B1F' },
+  textDark: { color: colors.dark.text },
+  textLight: { color: colors.light.text },
   rightAction: {
     paddingLeft: 10,
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 36,
   },
-  toggleText: { color: '#007AFF' },
+  toggleText: { color: colors.brand.primary },
   rightIcon: {
     width: 18,
     height: 18,

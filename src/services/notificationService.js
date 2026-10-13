@@ -57,9 +57,6 @@ export const notificationService = {
         type: TriggerType.TIMESTAMP,
         timestamp: date.getTime(),
         repeatFrequency: RepeatFrequency.DAILY,
-        alarmManager: {
-          allowWhileIdle: true,
-        },
       };
 
       // Cancel existing reminder if any before creating a new one

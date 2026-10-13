@@ -16,6 +16,7 @@ import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
 import { authAPI, saveUserSession } from '../../../services/api';
 import { signInWithGoogle } from '../../../services/googleAuth';
+import { colors } from '../../../theme/theme';
 
 const GoogleSignInModal = ({ visible, onClose, onSuccess }) => {
   const { isDark } = useTheme();
@@ -207,7 +208,7 @@ const GoogleSignInModal = ({ visible, onClose, onSuccess }) => {
                 <Icon
                   name="chevron-right"
                   size={20}
-                  color={isDark ? '#64748B' : '#94A3B8'}
+                  color={isDark ? colors.dark.textMuted : colors.dark.textSecondary}
                 />
               )}
             </TouchableOpacity>
@@ -224,7 +225,7 @@ const GoogleSignInModal = ({ visible, onClose, onSuccess }) => {
                 onPress={() => setShowCustomForm(true)}
               >
                 <View style={[styles.addIconCircle, isDark ? styles.addIconDark : styles.addIconLight]}>
-                  <Icon name="person-add" size={18} color={isDark ? '#94A3B8' : '#64748B'} />
+                  <Icon name="person-add" size={18} color={isDark ? colors.dark.textSecondary : colors.dark.textMuted} />
                 </View>
                 <CustomText
                   variant="body"
@@ -246,7 +247,7 @@ const GoogleSignInModal = ({ visible, onClose, onSuccess }) => {
                 <TextInput
                   style={[styles.textInput, isDark ? styles.textInputDark : styles.textInputLight]}
                   placeholder="e.g. yourname@gmail.com"
-                  placeholderTextColor={isDark ? '#64748B' : '#94A3B8'}
+                  placeholderTextColor={isDark ? colors.dark.textMuted : colors.dark.textSecondary}
                   value={customEmail}
                   onChangeText={setCustomEmail}
                   keyboardType="email-address"
@@ -263,7 +264,7 @@ const GoogleSignInModal = ({ visible, onClose, onSuccess }) => {
                 <TextInput
                   style={[styles.textInput, isDark ? styles.textInputDark : styles.textInputLight]}
                   placeholder="e.g. Alex Sharma"
-                  placeholderTextColor={isDark ? '#64748B' : '#94A3B8'}
+                  placeholderTextColor={isDark ? colors.dark.textMuted : colors.dark.textSecondary}
                   value={customName}
                   onChangeText={setCustomName}
                   autoCapitalize="words"
@@ -286,7 +287,7 @@ const GoogleSignInModal = ({ visible, onClose, onSuccess }) => {
                     disabled={loading}
                   >
                     {loading ? (
-                      <ActivityIndicator size="small" color="#FFFFFF" />
+                      <ActivityIndicator size="small" color={isDark ? colors.dark.textMuted : colors.dark.textSecondary} />
                     ) : (
                       <CustomText variant="caption" weight="bold" style={styles.continueBtnText}>
                         SIGN IN
@@ -345,12 +346,12 @@ const styles = StyleSheet.create({
     paddingBottom: 28,
   },
   sheetDark: {
-    backgroundColor: '#12141F',
+    backgroundColor: colors.dark.card,
     borderTopWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.12)',
   },
   sheetLight: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     borderTopWidth: 1,
     borderColor: '#E2E8F0',
   },
@@ -371,7 +372,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
@@ -417,7 +418,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   accountItemLight: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.dark.text,
     borderColor: '#E2E8F0',
   },
   accountAvatar: {
@@ -431,7 +432,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -482,7 +483,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   customFormLight: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.dark.text,
     borderColor: '#E2E8F0',
   },
   inputLabel: {
@@ -498,12 +499,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   textInputDark: {
-    backgroundColor: '#12141F',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.15)',
-    color: '#FFFFFF',
+    color: colors.brand.white,
   },
   textInputLight: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     borderColor: '#CBD5E1',
     color: '#1E293B',
   },
@@ -534,7 +535,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   continueBtnText: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
   },
   footerNoteBox: {
     marginTop: 8,
@@ -561,12 +562,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1F5F9',
     borderColor: '#E2E8F0',
   },
-  textPrimaryDark: { color: '#F8FAFC' },
+  textPrimaryDark: { color: colors.dark.text },
   textPrimaryLight: { color: '#0F172A' },
-  textSecondaryDark: { color: '#94A3B8' },
+  textSecondaryDark: { color: colors.dark.textSecondary },
   textSecondaryLight: { color: '#475569' },
-  textMutedDark: { color: '#64748B' },
-  textMutedLight: { color: '#94A3B8' },
+  textMutedDark: { color: colors.dark.textMuted },
+  textMutedLight: { color: colors.dark.textSecondary },
 });
 
 export default GoogleSignInModal;

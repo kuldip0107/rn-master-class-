@@ -18,6 +18,7 @@ import { icons } from '../../../constants/assets';
 import { CustomAlert } from '../../../context/AlertContext';
 
 import { authAPI } from '../../../services/api';
+import { colors } from '../../../theme/theme';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const { isDark } = useTheme();
@@ -45,14 +46,14 @@ const ForgotPasswordScreen = ({ navigation }) => {
       const response = await authAPI.forgotPassword({ email: email.trim() });
       setLoading(false);
 
-      if (response && response.otp) {
+      if (__DEV__ && response && response.otp) {
         setOtp(String(response.otp));
       }
       setStep(2);
 
       CustomAlert.success(
-        'Code Generated',
-        response.otp
+        'Code sent',
+        __DEV__ && response?.otp
           ? `Reset OTP code is: ${response.otp}. Please set your new password below.`
           : 'Password reset code has been sent. Please enter it below.'
       );
@@ -100,7 +101,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       <KeyboardAvoidingView
@@ -115,7 +116,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
           {/* Top Circular Badge */}
           <View style={styles.badgeContainer}>
             <View style={[styles.badgeCircle, isDark ? styles.badgeCircleDark : styles.badgeCircleLight]}>
-              <Icon name="vpn-key" size={36} color="#007AFF" />
+              <Icon name="vpn-key" size={36} color={colors.brand.primary} />
             </View>
           </View>
 
@@ -201,9 +202,12 @@ const ForgotPasswordScreen = ({ navigation }) => {
                   style={{ alignSelf: 'center', marginTop: 12 }}
                   onPress={() => setStep(1)}
                 >
-                  <CustomText style={{ color: '#007AFF', fontSize: 14 }}>
-                    ← Resend or change email
-                  </CustomText>
+                  <View style={styles.resendRow}>
+                    <Icon name="arrow-back" size={16} color={colors.brand.primary} />
+                    <CustomText style={{ color: colors.brand.primary, fontSize: 14 }}>
+                      Resend or change email
+                    </CustomText>
+                  </View>
                 </TouchableOpacity>
               </>
             )}
@@ -231,16 +235,22 @@ const ForgotPasswordScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  resendRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+  },
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   flexContainer: { flex: 1 },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
   darkBlueTint: { tintColor: '#0058BC' },
-  backButtonText: { color: '#007AFF', textAlign: 'center' },
+  backButtonText: { color: colors.brand.primary, textAlign: 'center' },
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 20,

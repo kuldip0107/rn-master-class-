@@ -5,7 +5,8 @@
 export const APP_CONFIG = {
   APP_NAME: 'RN Master Class',
   VERSION: '2.4.0',
-  DEFAULT_BASE_URL: 'http://localhost:5000',
+  DEFAULT_BASE_URL: 'https://rn-masterclass-backend.onrender.com',
+  PRODUCTION_BASE_URL: 'https://rn-masterclass-backend.onrender.com',
   API_TIMEOUT_MS: 15000,
   SUPPORT_EMAIL: 'support@rnmasterclass.dev',
   TOTAL_COMPONENTS: 47,

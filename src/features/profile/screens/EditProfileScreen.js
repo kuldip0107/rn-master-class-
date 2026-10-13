@@ -20,11 +20,14 @@ import CustomText from '../../../components/common/CustomText';
 import AppTextInput from '../../../components/common/AppTextInput';
 import Button from '../../../components/common/Button';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import { userAPI } from '../../../services/api';
+import { colors } from '../../../theme/theme';
 
 const EditProfileScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const { isDark } = useTheme();
+  const topInset = useTopInset();
 
   const [userId, setUserId] = useState(null);
   const [userEmail, setUserEmail] = useState('');
@@ -70,6 +73,7 @@ const EditProfileScreen = ({ navigation }) => {
     setShowPhotoModal(false);
     const options = {
       mediaType: 'photo',
+      selectionLimit: 1,
       maxWidth: 500,
       maxHeight: 500,
       quality: 0.7,
@@ -192,19 +196,17 @@ const EditProfileScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header Bar */}
-      <View style={[styles.header, isDark ? styles.headerBorderDark : styles.headerBorderLight]}>
+      <View style={[styles.header, isDark ? styles.headerBorderDark : styles.headerBorderLight, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={[styles.backArrowText, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}>
-            ←
-          </CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
 
         <CustomText
@@ -247,11 +249,11 @@ const EditProfileScreen = ({ navigation }) => {
                 {profileImage ? (
                   <Image source={{ uri: profileImage }} style={styles.avatarPhoto} resizeMode="cover" />
                 ) : (
-                  <Icon name="person" size={56} color="#007AFF" />
+                  <Icon name="person" size={56} color={colors.brand.primary} />
                 )}
               </View>
               <View style={styles.editBadge}>
-                <Icon name="photo-camera" size={14} color="#FFFFFF" />
+                <Icon name="photo-camera" size={14} color={colors.brand.white} />
               </View>
             </TouchableOpacity>
 
@@ -367,7 +369,7 @@ const EditProfileScreen = ({ navigation }) => {
               activeOpacity={0.7}
             >
               <View style={[styles.optionIconBox, styles.galleryIconBg]}>
-                <Icon name="photo-library" size={22} color="#007AFF" />
+                <Icon name="photo-library" size={22} color={colors.brand.primary} />
               </View>
               <View style={styles.optionTextBox}>
                 <CustomText weight="bold" style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}>
@@ -385,7 +387,7 @@ const EditProfileScreen = ({ navigation }) => {
               activeOpacity={0.7}
             >
               <View style={[styles.optionIconBox, styles.cameraIconBg]}>
-                <Icon name="photo-camera" size={22} color="#10B981" />
+                <Icon name="photo-camera" size={22} color={colors.brand.primary} />
               </View>
               <View style={styles.optionTextBox}>
                 <CustomText weight="bold" style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}>
@@ -404,7 +406,7 @@ const EditProfileScreen = ({ navigation }) => {
                 activeOpacity={0.7}
               >
                 <View style={[styles.optionIconBox, styles.deleteIconBg]}>
-                  <Icon name="delete" size={22} color="#EF4444" />
+                  <Icon name="delete" size={22} color={colors.brand.error} />
                 </View>
                 <View style={styles.optionTextBox}>
                   <CustomText weight="bold" style={styles.deleteText}>
@@ -438,10 +440,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerDark: {
-    backgroundColor: '#050510',
+    backgroundColor: colors.dark.background,
   },
   containerLight: {
-    backgroundColor: '#FAF9FE',
+    backgroundColor: colors.light.background,
   },
   header: {
     flexDirection: 'row',
@@ -454,11 +456,11 @@ const styles = StyleSheet.create({
   },
   headerBorderDark: {
     borderBottomColor: 'rgba(255, 255, 255, 0.08)',
-    backgroundColor: '#050510',
+    backgroundColor: colors.dark.background,
   },
   headerBorderLight: {
     borderBottomColor: 'rgba(0, 0, 0, 0.06)',
-    backgroundColor: '#FAF9FE',
+    backgroundColor: colors.light.background,
   },
   backButton: {
     width: 38,
@@ -480,10 +482,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 10,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
   },
   saveHeaderText: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontSize: 13,
   },
   btnDisabled: {
@@ -498,20 +500,20 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     borderColor: 'rgba(0, 0, 0, 0.06)',
   },
   textPrimaryDark: {
-    color: '#F8FAFC',
+    color: colors.dark.text,
   },
   textPrimaryLight: {
-    color: '#1A1B1F',
+    color: colors.light.text,
   },
   textSecondaryDark: {
-    color: '#94A3B8',
+    color: colors.dark.textSecondary,
   },
   textSecondaryLight: {
-    color: '#717786',
+    color: colors.light.textSecondary,
   },
   previewCard: {
     borderRadius: 16,
@@ -534,7 +536,7 @@ const styles = StyleSheet.create({
     height: 96,
     borderRadius: 48,
     borderWidth: 3,
-    borderColor: '#007AFF',
+    borderColor: colors.brand.primary,
     backgroundColor: 'rgba(0, 122, 255, 0.12)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -552,11 +554,11 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#FFFFFF',
+    borderColor: colors.brand.white,
   },
   changePhotoBtn: {
     paddingVertical: 6,
@@ -565,7 +567,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   changePhotoText: {
-    color: '#007AFF',
+    color: colors.brand.primary,
     fontSize: 13,
   },
   previewName: {
@@ -618,7 +620,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#94A3B8',
+    backgroundColor: colors.dark.textSecondary,
     alignSelf: 'center',
     marginBottom: 16,
     opacity: 0.5,
@@ -639,7 +641,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
   },
   sheetOptionLight: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.dark.text,
   },
   optionIconBox: {
     width: 44,
@@ -659,7 +661,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(239, 68, 68, 0.12)',
   },
   deleteText: {
-    color: '#EF4444',
+    color: colors.brand.error,
   },
   optionTextBox: {
     flex: 1,

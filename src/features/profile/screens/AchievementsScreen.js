@@ -9,10 +9,13 @@ import {
 import { useTheme } from '../../../context/ThemeContext';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import { useQuiz } from '../../../context/QuizContext';
+import { colors } from '../../../theme/theme';
 
 const AchievementsScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
   const { quizHistory, achievements, summary, refreshHistory } = useQuiz();
 
   useEffect(() => {
@@ -28,17 +31,17 @@ const AchievementsScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <CustomText style={[styles.backArrowText, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <CustomText
           variant="headlineMd"
@@ -71,7 +74,7 @@ const AchievementsScreen = ({ navigation }) => {
       {quizHistory.length === 0 ? (
         <View style={styles.emptyState}>
           <View style={[styles.emptyIconCircle, isDark ? styles.emptyIconCircleDark : styles.emptyIconCircleLight]}>
-            <Icon name="emoji-events" size={36} color="#F59E0B" />
+            <Icon name="emoji-events" size={36} color={colors.brand.warning} />
           </View>
           <CustomText
             variant="headlineMd"
@@ -94,7 +97,7 @@ const AchievementsScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <View style={[styles.historyCard, isDark ? styles.historyCardDark : styles.historyCardLight]}>
               <View style={[styles.iconCircle, isDark ? styles.iconCircleDark : styles.iconCircleLight]}>
-                <Icon name="emoji-events" size={22} color="#F59E0B" />
+                <Icon name="emoji-events" size={22} color={colors.brand.warning} />
               </View>
               <View style={styles.cardInfo}>
                 <CustomText
@@ -140,8 +143,8 @@ const AchievementsScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -159,12 +162,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backArrowText: {
     fontSize: 18,
@@ -187,25 +190,25 @@ const styles = StyleSheet.create({
     borderColor: '#1F2438',
   },
   summaryCardLight: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.brand.white,
     borderColor: '#E2E8F0',
   },
-  summaryValBlue: { color: '#007AFF' },
-  summaryValGreen: { color: '#10B981' },
-  summaryValOrange: { color: '#F59E0B' },
+  summaryValBlue: { color: colors.brand.primary },
+  summaryValGreen: { color: colors.brand.success },
+  summaryValOrange: { color: colors.brand.warning },
   backIcon: { width: 16, height: 16, transform: [{ rotate: '90deg' }] },
   headerSpacer: { width: 36 },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
-  brandTint: { tintColor: '#007AFF' },
-  cyanTint: { tintColor: '#00C1FD' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#717786' },
-  textMutedDark: { color: '#64748B' },
-  textMutedLight: { color: '#717786' },
-  scoreNumber: { color: '#007AFF' },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
+  brandTint: { tintColor: colors.brand.primary },
+  cyanTint: { tintColor: colors.brand.accent },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
+  textMutedDark: { color: colors.dark.textMuted },
+  textMutedLight: { color: colors.light.textSecondary },
+  scoreNumber: { color: colors.brand.primary },
   listContent: {
     paddingHorizontal: 20,
     paddingTop: 10,
@@ -225,12 +228,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   historyCardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   historyCardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   iconCircle: {
     width: 44,

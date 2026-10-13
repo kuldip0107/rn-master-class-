@@ -3,9 +3,8 @@ import {
   View,
   StyleSheet,
   FlatList,
-  Dimensions,
+  useWindowDimensions,
   TouchableOpacity,
-  Image,
   StatusBar,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,9 +12,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '../../../context/ThemeContext';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
-import { icons } from '../../../constants/assets';
-
-const { width } = Dimensions.get('window');
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTopInset } from '../../../hooks/useTopInset';
+import { colors } from '../../../theme/theme';
 
 const slides = [
   {
@@ -24,7 +23,7 @@ const slides = [
     subtitle: 'INTERACTIVE LESSONS',
     description: 'Learn to build high-performance mobile applications with our production-grade curriculum.',
     iconName: 'computer',
-    iconColor: '#007AFF',
+    iconColor: colors.brand.primary,
   },
   {
     id: '2',
@@ -32,7 +31,7 @@ const slides = [
     subtitle: 'REAL-WORLD CHALLENGES',
     description: 'Test your knowledge with real-world scenarios and track your progress with daily streaks.',
     iconName: 'emoji-events',
-    iconColor: '#8B5CF6',
+    iconColor: colors.category.purple,
   },
   {
     id: '3',
@@ -40,12 +39,16 @@ const slides = [
     subtitle: 'ARCHITECT LEVEL',
     description: 'Complete modules, earn badges, and join an elite community of React Native architects.',
     iconName: 'school',
-    iconColor: '#10B981',
+    iconColor: colors.brand.success,
   },
 ];
 
 const OnboardingScreen = ({ navigation }) => {
   const { isDark } = useTheme();
+  const { width } = useWindowDimensions();
+  const topInset = useTopInset();
+  const insets = useSafeAreaInsets();
+  const artSize = Math.min(width * 0.62, 280);
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef(null);
 
@@ -67,9 +70,8 @@ const OnboardingScreen = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.slide}>
-      {/* Icon Card */}
-      <View style={styles.imageCard}>
+    <View style={[styles.slide, { width }]}>
+      <View style={[styles.imageCard, { width: artSize, height: artSize }]}>
         <View style={[styles.glowBg, isDark ? styles.glowBgDark : styles.glowBgLight]} />
         <View style={[styles.iconSquare, isDark ? styles.iconSquareDark : styles.iconSquareLight]}>
           <Icon name={item.iconName} size={56} color={item.iconColor} />
@@ -104,11 +106,11 @@ const OnboardingScreen = ({ navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
       {/* Header */}
-      <View style={styles.topHeader}>
+      <View style={[styles.topHeader, { paddingTop: topInset + 8 }]}>
         <CustomText
           weight="bold"
           style={[styles.brandTitle, isDark ? styles.textMutedDark : styles.textMutedLight]}
@@ -137,7 +139,7 @@ const OnboardingScreen = ({ navigation }) => {
       />
 
       {/* Footer Controls */}
-      <View style={styles.footerContainer}>
+      <View style={[styles.footerContainer, { paddingBottom: Math.max(insets.bottom, 16) }]}>
         {/* Pagination Dots */}
         <View style={styles.dotsRow}>
           {slides.map((_, index) => (
@@ -159,7 +161,7 @@ const OnboardingScreen = ({ navigation }) => {
           onPress={handleNext}
         >
           <LinearGradient
-            colors={['#007AFF', '#00C1FD']}
+            colors={[colors.brand.primary, colors.brand.accent]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.buttonGradient}
@@ -167,7 +169,7 @@ const OnboardingScreen = ({ navigation }) => {
             <CustomText weight="bold" style={styles.buttonText}>
               {currentIndex === slides.length - 1 ? 'GET STARTED' : 'CONTINUE'}
             </CustomText>
-            <CustomText style={{ fontSize: 18, color: '#FFFFFF', marginLeft: 8 }}>→</CustomText>
+            <Icon name="arrow-forward" size={18} color={colors.brand.white} style={{ marginLeft: 8 }} />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -177,16 +179,16 @@ const OnboardingScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
-  textMutedDark: { color: '#64748B' },
-  textMutedLight: { color: '#717786' },
-  cyanTint: { tintColor: '#00C1FD' },
-  skipButtonText: { color: '#007AFF' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
+  textMutedDark: { color: colors.dark.textMuted },
+  textMutedLight: { color: colors.light.textSecondary },
+  cyanTint: { tintColor: colors.brand.accent },
+  skipButtonText: { color: colors.brand.primary },
   topHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -199,14 +201,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   slide: {
-    width: width,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 28,
   },
   imageCard: {
-    width: width * 0.7,
-    height: width * 0.7,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -227,19 +226,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#007AFF',
+    shadowColor: colors.brand.primary,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.15,
     shadowRadius: 18,
     elevation: 8,
   },
   iconSquareDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(0, 193, 253, 0.25)',
   },
   iconSquareLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   slideImage: {
     width: 60,
@@ -264,7 +263,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 122, 255, 0.2)',
   },
   tagText: {
-    color: '#007AFF',
+    color: colors.brand.primary,
     letterSpacing: 1.5,
     fontSize: 11,
   },
@@ -281,7 +280,7 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     paddingHorizontal: 28,
-    paddingBottom: 48,
+    paddingBottom: 24,
   },
   dotsRow: {
     flexDirection: 'row',
@@ -296,10 +295,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   dotInactiveDark: { backgroundColor: 'rgba(255,255,255,0.15)' },
-  dotInactiveLight: { backgroundColor: '#E3E2E7' },
+  dotInactiveLight: { backgroundColor: colors.light.border },
   dotActive: {
     width: 24,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
   },
   nextButton: {
     borderRadius: 12,
@@ -313,14 +312,14 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontSize: 15,
     letterSpacing: 0.5,
   },
   buttonArrow: {
     width: 16,
     height: 16,
-    tintColor: '#FFFFFF',
+    tintColor: colors.brand.white,
     marginLeft: 8,
     transform: [{ rotate: '-90deg' }],
   },

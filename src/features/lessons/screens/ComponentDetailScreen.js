@@ -18,13 +18,16 @@ import { CustomAlert } from '../../../context/AlertContext';
 import Container from '../../../components/common/Container';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
+import { useTopInset } from '../../../hooks/useTopInset';
 import { userAPI } from '../../../services/api';
 import { lessonProgressService } from '../../../services/lessonProgressService';
 import { soundService } from '../../../services/soundService';
 import { hapticService } from '../../../services/hapticService';
+import { colors } from '../../../theme/theme';
 
 const ComponentDetailScreen = ({ route, navigation }) => {
   const { isDark } = useTheme();
+  const topInset = useTopInset();
   const { componentData, component } = route.params || {};
   const rawTarget = componentData || component;
 
@@ -81,7 +84,7 @@ const ComponentDetailScreen = ({ route, navigation }) => {
       await lessonProgressService.updateProgress(lessonId, 100);
       setReadingProgress(100);
       if (Platform.OS === 'android') {
-        ToastAndroid.show('🎉 Lesson completed! 100% saved.', ToastAndroid.SHORT);
+        ToastAndroid.show('Lesson completed. 100% saved.', ToastAndroid.SHORT);
       } else {
         CustomAlert.success('Complete!', 'Lesson marked as 100% complete.');
       }
@@ -123,12 +126,12 @@ const ComponentDetailScreen = ({ route, navigation }) => {
   if (!rawData || typeof rawData !== 'object') {
     return (
       <Container>
-        <View style={[styles.topBar, isDark ? styles.topBarDark : styles.topBarLight]}>
+        <View style={[styles.topBar, isDark ? styles.topBarDark : styles.topBarLight, { paddingTop: topInset + 12 }]}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <CustomText style={{ fontSize: 18, color: isDark ? '#F8FAFC' : '#1A1B1F' }}>←</CustomText>
+            <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
           </TouchableOpacity>
           <CustomText weight="bold" style={styles.topBarTitle}>
             Details
@@ -476,7 +479,7 @@ const ComponentDetailScreen = ({ route, navigation }) => {
                 <Icon
                   name={copied ? 'check-circle' : 'content-copy'}
                   size={16}
-                  color={copied ? '#10B981' : '#94A3B8'}
+                  color={copied ? colors.brand.success : colors.dark.textSecondary}
                   style={{ marginRight: 4 }}
                 />
                 <CustomText
@@ -667,13 +670,20 @@ const ComponentDetailScreen = ({ route, navigation }) => {
       <View style={[styles.lessonFooterCard, isDark ? styles.lessonFooterDark : styles.lessonFooterLight]}>
         <View style={styles.lessonFooterRow}>
           <View style={styles.lessonFooterInfo}>
-            <CustomText
-              variant="headlineMd"
-              weight="bold"
-              style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}
-            >
-              {isCompleted ? '🎉 Lesson Completed!' : '📖 Reading Progress'}
-            </CustomText>
+            <View style={styles.lessonTitleRow}>
+              <Icon
+                name={isCompleted ? 'emoji-events' : 'menu-book'}
+                size={20}
+                color={isCompleted ? colors.brand.success : colors.brand.accent}
+              />
+              <CustomText
+                variant="headlineMd"
+                weight="bold"
+                style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}
+              >
+                {isCompleted ? 'Lesson completed' : 'Reading progress'}
+              </CustomText>
+            </View>
             <CustomText
               variant="small"
               style={isDark ? styles.textSecondaryDark : styles.textSecondaryLight}
@@ -692,7 +702,7 @@ const ComponentDetailScreen = ({ route, navigation }) => {
             <CustomText
               variant="small"
               weight="bold"
-              style={{ color: isCompleted ? '#10B981' : '#00C1FD' }}
+              style={{ color: isCompleted ? colors.brand.success : colors.brand.accent }}
             >
               {readingProgress}%
             </CustomText>
@@ -707,8 +717,13 @@ const ComponentDetailScreen = ({ route, navigation }) => {
           onPress={handleToggleComplete}
           activeOpacity={0.8}
         >
+          <Icon
+            name={isCompleted ? 'restart-alt' : 'check-circle'}
+            size={18}
+            color={colors.brand.white}
+          />
           <CustomText weight="bold" style={styles.completeButtonText}>
-            {isCompleted ? '✅ Mark Incomplete (Reset)' : 'Mark as Complete (100%) 🔥'}
+            {isCompleted ? 'Mark incomplete' : 'Mark as complete'}
           </CustomText>
         </TouchableOpacity>
       </View>
@@ -719,16 +734,16 @@ const ComponentDetailScreen = ({ route, navigation }) => {
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
         barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={isDark ? '#050510' : '#FAF9FE'}
+        backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
 
-      <View style={[styles.topBar, isDark ? styles.topBarDark : styles.topBarLight]}>
+      <View style={[styles.topBar, isDark ? styles.topBarDark : styles.topBarLight, { paddingTop: topInset + 12 }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
         >
-          <CustomText style={{ fontSize: 18, color: isDark ? '#F8FAFC' : '#1A1B1F' }}>←</CustomText>
+          <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
         </TouchableOpacity>
         <CustomText
           variant="headlineMd"
@@ -747,7 +762,7 @@ const ComponentDetailScreen = ({ route, navigation }) => {
               styles.topProgressBarFill,
               {
                 width: `${Math.max(readingProgress > 0 ? 5 : 0, readingProgress)}%`,
-                backgroundColor: readingProgress >= 100 ? '#10B981' : '#00C1FD',
+                backgroundColor: readingProgress >= 100 ? colors.brand.success : colors.brand.accent,
               },
             ]}
           />
@@ -785,8 +800,8 @@ const ComponentDetailScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  containerDark: { backgroundColor: '#050510' },
-  containerLight: { backgroundColor: '#FAF9FE' },
+  containerDark: { backgroundColor: colors.dark.background },
+  containerLight: { backgroundColor: colors.light.background },
   topBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -797,12 +812,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topBarDark: {
-    backgroundColor: '#050510',
+    backgroundColor: colors.dark.background,
     borderBottomColor: 'rgba(255,255,255,0.08)',
   },
   topBarLight: {
-    backgroundColor: '#FAF9FE',
-    borderBottomColor: '#E3E2E7',
+    backgroundColor: colors.light.background,
+    borderBottomColor: colors.light.border,
   },
   backButton: {
     width: 36,
@@ -813,28 +828,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   backButtonDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   backButtonLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   backIcon: { width: 16, height: 16, transform: [{ rotate: '90deg' }] },
-  iconLight: { tintColor: '#F8FAFC' },
-  iconDark: { tintColor: '#1A1B1F' },
+  iconLight: { tintColor: colors.dark.text },
+  iconDark: { tintColor: colors.light.text },
   headerSpacer: { width: 36 },
-  textPrimaryDark: { color: '#F8FAFC' },
-  textPrimaryLight: { color: '#1A1B1F' },
-  textSecondaryDark: { color: '#94A3B8' },
-  textSecondaryLight: { color: '#414755' },
+  textPrimaryDark: { color: colors.dark.text },
+  textPrimaryLight: { color: colors.light.text },
+  textSecondaryDark: { color: colors.dark.textSecondary },
+  textSecondaryLight: { color: colors.light.textSecondary },
   cardDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   cardLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   listContent: {
     paddingHorizontal: 20,
@@ -858,7 +873,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   codeBlockContainerDark: {
-    backgroundColor: '#050510',
+    backgroundColor: colors.dark.background,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   codeBlockContainerLight: {
@@ -878,11 +893,11 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255,255,255,0.05)',
   },
   codeHeaderLight: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderBottomColor: '#2A2D3D',
   },
   codeLanguage: {
-    color: '#00C1FD',
+    color: colors.brand.accent,
     fontSize: 12,
     letterSpacing: 1,
     textTransform: 'uppercase',
@@ -893,14 +908,14 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   copyIcon: { width: 14, height: 14 },
-  cyanTint: { tintColor: '#00C1FD' },
-  successTint: { tintColor: '#10B981' },
-  cyanColor: { color: '#00C1FD' },
-  successColor: { color: '#10B981' },
-  brandColor: { color: '#007AFF' },
+  cyanTint: { tintColor: colors.brand.accent },
+  successTint: { tintColor: colors.brand.success },
+  cyanColor: { color: colors.brand.accent },
+  successColor: { color: colors.brand.success },
+  brandColor: { color: colors.brand.primary },
   codeScrollView: { maxHeight: 260 },
   codeBlock: { padding: 16 },
-  codeText: { color: '#F8FAFC', fontSize: 13, lineHeight: 20 },
+  codeText: { color: colors.dark.text, fontSize: 13, lineHeight: 20 },
   propsTitle: { fontSize: 20, marginBottom: 12, marginTop: 8 },
   sectionHeader: {
     paddingVertical: 8,
@@ -911,15 +926,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   sectionHeaderDark: {
-    backgroundColor: '#161823',
+    backgroundColor: colors.dark.elevated,
     borderColor: 'rgba(255,255,255,0.08)',
   },
   sectionHeaderLight: {
-    backgroundColor: '#F4F3F8',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.light.elevated,
+    borderColor: colors.light.border,
   },
   sectionHeaderText: {
-    color: '#007AFF',
+    color: colors.brand.primary,
     letterSpacing: 0.8,
     textTransform: 'uppercase',
     fontSize: 11,
@@ -944,13 +959,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginRight: 6,
   },
-  badgeText: { fontSize: 10, color: '#EF4444', fontWeight: 'bold' },
+  badgeText: { fontSize: 10, color: colors.brand.error, fontWeight: 'bold' },
   platformBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
-  platformBadgeDark: { backgroundColor: '#161823' },
-  platformBadgeLight: { backgroundColor: '#F4F3F8' },
+  platformBadgeDark: { backgroundColor: colors.dark.elevated },
+  platformBadgeLight: { backgroundColor: colors.light.elevated },
   propType: {
     fontSize: 12,
-    color: '#007AFF',
+    color: colors.brand.primary,
     backgroundColor: 'rgba(0, 122, 255, 0.1)',
     alignSelf: 'flex-start',
     paddingHorizontal: 8,
@@ -961,16 +976,16 @@ const styles = StyleSheet.create({
   usageText: { fontSize: 13, marginBottom: 6 },
   metaContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 4 },
   metaText: { marginRight: 12, marginBottom: 2 },
-  returnsText: { color: '#00C1FD', marginBottom: 6 },
+  returnsText: { color: colors.brand.accent, marginBottom: 6 },
   nestedContainer: { padding: 10, borderRadius: 8, marginTop: 4, marginBottom: 6 },
-  nestedContainerDark: { backgroundColor: '#161823' },
-  nestedContainerLight: { backgroundColor: '#F4F3F8' },
-  nestedLabel: { color: '#007AFF', marginBottom: 2 },
+  nestedContainerDark: { backgroundColor: colors.dark.elevated },
+  nestedContainerLight: { backgroundColor: colors.light.elevated },
+  nestedLabel: { color: colors.brand.primary, marginBottom: 2 },
   nestedText: { fontSize: 12 },
   propDescription: { fontSize: 14, lineHeight: 20, marginTop: 4 },
   propDescDark: { color: '#CBD5E1' },
-  propDescLight: { color: '#414755' },
-  topBarTitle: { color: '#1A1B1F' },
+  propDescLight: { color: colors.light.textSecondary },
+  topBarTitle: { color: colors.light.text },
   emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
   topProgressBarTrack: {
     height: 4,
@@ -980,7 +995,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E202E',
   },
   topTrackLight: {
-    backgroundColor: '#E3E2E7',
+    backgroundColor: colors.light.border,
   },
   topProgressBarFill: {
     height: '100%',
@@ -995,12 +1010,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   lessonFooterDark: {
-    backgroundColor: '#0F111A',
+    backgroundColor: colors.dark.card,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   lessonFooterLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E3E2E7',
+    backgroundColor: colors.brand.white,
+    borderColor: colors.light.border,
   },
   lessonFooterRow: {
     flexDirection: 'row',
@@ -1017,20 +1032,27 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 12,
   },
+  lessonTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   completeButton: {
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 8,
   },
   completeButtonActive: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.brand.primary,
   },
   completeButtonDone: {
-    backgroundColor: '#10B981',
+    backgroundColor: colors.brand.success,
   },
   completeButtonText: {
-    color: '#FFFFFF',
+    color: colors.brand.white,
     fontSize: 15,
   },
 });
