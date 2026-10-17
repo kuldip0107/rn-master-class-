@@ -22,3 +22,4 @@ export { soundService } from './soundService';
 export { hapticService } from './hapticService';
 export { lessonProgressService } from './lessonProgressService';
 export { appUsageService } from './appUsageService';
+export { contentService } from './contentService';

@@ -23,6 +23,7 @@ import { userAPI } from '../../../services/api';
 import { lessonProgressService } from '../../../services/lessonProgressService';
 import { soundService } from '../../../services/soundService';
 import { hapticService } from '../../../services/hapticService';
+import { contentService } from '../../../services/contentService';
 import { colors } from '../../../theme/theme';
 
 const ComponentDetailScreen = ({ route, navigation }) => {
@@ -32,10 +33,41 @@ const ComponentDetailScreen = ({ route, navigation }) => {
   const rawTarget = componentData || component;
 
   // Unpack nested componentData if passed inside item wrapper
-  const rawData =
+  const initialRaw =
     rawTarget && typeof rawTarget === 'object' && rawTarget.componentData
       ? rawTarget.componentData
       : rawTarget;
+
+  const [liveData, setLiveData] = useState(initialRaw);
+  const rawData = liveData || initialRaw;
+
+  useEffect(() => {
+    let isMounted = true;
+    const lookupKey =
+      rawData?.component ||
+      rawTarget?.name ||
+      rawData?.name ||
+      rawTarget?.id ||
+      route.params?.lessonId;
+
+    if (lookupKey) {
+      contentService
+        .getComponentDetail(lookupKey, initialRaw, (fresh) => {
+          if (isMounted && fresh) {
+            setLiveData(fresh);
+          }
+        })
+        .then((resolved) => {
+          if (isMounted && resolved) {
+            setLiveData(resolved);
+          }
+        });
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const lessonId =
     route.params?.lessonId ||

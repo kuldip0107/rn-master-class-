@@ -359,3 +359,28 @@ export const notificationAPI = {
       method: 'PUT',
     }),
 };
+
+/* ==========================================================================
+   8. COMPONENTS & CURRICULUM CLOUD APIs
+   ========================================================================== */
+
+export const componentsAPI = {
+  // GET /api/components?format=sections
+  getAll: (format = 'sections') =>
+    apiRequest(`/api/components?format=${format}`, {
+      method: 'GET',
+    }),
+
+  // GET /api/components/all/full
+  getFullBundle: () =>
+    apiRequest('/api/components/all/full', {
+      method: 'GET',
+    }),
+
+  // GET /api/components/:id
+  getById: (id) =>
+    apiRequest(`/api/components/${id}`, {
+      method: 'GET',
+    }),
+};
+

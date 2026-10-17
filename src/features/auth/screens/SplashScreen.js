@@ -9,6 +9,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomText from '../../../components/common/CustomText';
+import { contentService } from '../../../services/contentService';
 import { colors } from '../../../theme/theme';
 
 const { width } = Dimensions.get('window');
@@ -62,6 +63,9 @@ const SplashScreen = ({ navigation }) => {
       try {
         const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
         const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+
+        // Silently warm up components cache from MongoDB Atlas in background
+        contentService.getComponentsList().catch(() => {});
 
         const timeoutId = setTimeout(() => {
           if (!navigation || typeof navigation.replace !== 'function') {

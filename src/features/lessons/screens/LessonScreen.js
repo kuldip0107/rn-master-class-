@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -13,6 +13,7 @@ import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
 import { useTopInset } from '../../../hooks/useTopInset';
 import reactNativeComponents from '../../../data/componentsData';
+import { contentService } from '../../../services/contentService';
 import { colors } from '../../../theme/theme';
 
 const SECTION_LOOK = {
@@ -35,9 +36,29 @@ const LessonScreen = ({ navigation }) => {
   const { isDark } = useTheme();
   const topInset = useTopInset();
   const [searchQuery, setSearchQuery] = useState('');
+  const [componentsList, setComponentsList] = useState(reactNativeComponents);
+
+  useEffect(() => {
+    let isMounted = true;
+    contentService
+      .getComponentsList((fresh) => {
+        if (isMounted && fresh) {
+          setComponentsList(fresh);
+        }
+      })
+      .then((initial) => {
+        if (isMounted && initial) {
+          setComponentsList(initial);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Filter the data based on searchQuery
-  const filteredData = reactNativeComponents
+  const filteredData = componentsList
     .map((section) => ({
       ...section,
       data: section.data.filter(

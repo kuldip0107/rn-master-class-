@@ -20,6 +20,7 @@ import { useQuiz } from '../../../context/QuizContext';
 import { soundService } from '../../../services/soundService';
 import { hapticService } from '../../../services/hapticService';
 import reactNativeComponents from '../../../data/componentsData';
+import { contentService } from '../../../services/contentService';
 import { colors } from '../../../theme/theme';
 
 const QUESTIONS_COUNT = 12;
@@ -28,6 +29,7 @@ const PracticalScreen = ({ navigation }) => {
   const { isDark } = useTheme();
   const topInset = useTopInset();
   const { addQuizResult } = useQuiz();
+  const [componentsSource, setComponentsSource] = useState(reactNativeComponents);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -35,8 +37,19 @@ const PracticalScreen = ({ navigation }) => {
   const [showResult, setShowResult] = useState(false);
   const progress = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    let isMounted = true;
+    contentService.getComponentsList((fresh) => {
+      if (isMounted && fresh) setComponentsSource(fresh);
+    }).then((initial) => {
+      if (isMounted && initial) setComponentsSource(initial);
+    });
+    return () => { isMounted = false; };
+  }, []);
+
   const generateQuestions = useCallback(() => {
-    let sourceData = reactNativeComponents || [];
+    let sourceData = componentsSource || reactNativeComponents || [];
+
     if (sourceData.length === 0) {
       sourceData = [
         {
