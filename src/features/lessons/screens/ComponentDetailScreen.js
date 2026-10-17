@@ -18,6 +18,7 @@ import { CustomAlert } from '../../../context/AlertContext';
 import Container from '../../../components/common/Container';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
+import CustomLoader from '../../../components/common/CustomLoader';
 import { useTopInset } from '../../../hooks/useTopInset';
 import { userAPI } from '../../../services/api';
 import { lessonProgressService } from '../../../services/lessonProgressService';
@@ -761,6 +762,38 @@ const ComponentDetailScreen = ({ route, navigation }) => {
       </View>
     );
   };
+
+  if (!rawData) {
+    return (
+      <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
+        <StatusBar
+          barStyle={isDark ? 'light-content' : 'dark-content'}
+          backgroundColor={isDark ? colors.dark.background : colors.light.background}
+        />
+        <View style={[styles.topBar, isDark ? styles.topBarDark : styles.topBarLight, { paddingTop: topInset + 12 }]}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
+          >
+            <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
+          </TouchableOpacity>
+          <CustomText
+            variant="headlineMd"
+            weight="bold"
+            style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}
+          >
+            {titleText || 'Loading Lesson...'}
+          </CustomText>
+          <View style={styles.headerSpacer} />
+        </View>
+        <CustomLoader
+          message="Loading Documentation..."
+          subMessage="Fetching component details & live sandbox"
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>

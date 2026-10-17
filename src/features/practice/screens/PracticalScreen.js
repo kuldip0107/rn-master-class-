@@ -15,6 +15,7 @@ import Container from '../../../components/common/Container';
 import CustomText from '../../../components/common/CustomText';
 import Button from '../../../components/common/Button';
 import Icon from '../../../components/common/Icon';
+import CustomLoader from '../../../components/common/CustomLoader';
 import { useTopInset } from '../../../hooks/useTopInset';
 import { useQuiz } from '../../../context/QuizContext';
 import { soundService } from '../../../services/soundService';
@@ -271,6 +272,38 @@ const PracticalScreen = ({ navigation }) => {
     inputRange: [0, 1],
     outputRange: ['0%', '100%'],
   });
+
+  if (questions.length === 0 && !showResult) {
+    return (
+      <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
+        <StatusBar
+          barStyle={isDark ? 'light-content' : 'dark-content'}
+          backgroundColor={isDark ? colors.dark.background : colors.light.background}
+        />
+        <View style={[styles.headerBar, { paddingTop: topInset + 12 }]}>
+          <TouchableOpacity
+            onPress={handleExitQuiz}
+            style={[styles.backButton, isDark ? styles.backButtonDark : styles.backButtonLight]}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Icon name="arrow-back" size={22} color={isDark ? colors.dark.text : colors.light.text} />
+          </TouchableOpacity>
+          <CustomText
+            variant="headlineMd"
+            weight="bold"
+            style={isDark ? styles.textPrimaryDark : styles.textPrimaryLight}
+          >
+            Practical Quiz
+          </CustomText>
+          <View style={styles.headerSpacer} />
+        </View>
+        <CustomLoader
+          message="Preparing Interactive Quiz..."
+          subMessage="Loading 12 hands-on React Native questions"
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Animated,
+  RefreshControl,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +20,7 @@ import Icon from '../../../components/common/Icon';
 import { userAPI } from '../../../services/api';
 import { lessonProgressService } from '../../../services/lessonProgressService';
 import { appUsageService } from '../../../services/appUsageService';
+import { contentService } from '../../../services/contentService';
 import { useTopInset } from '../../../hooks/useTopInset';
 
 import flexboxData from '../../../data/Homescreen Data/flexbox.json';
@@ -167,172 +169,190 @@ const HomeScreen = ({ navigation }) => {
     }, [])
   );
 
-  useEffect(() => {
-    const initializeData = async () => {
-      if (initLock.current) return;
-      initLock.current = true;
-      try {
-        const storedId = await AsyncStorage.getItem('userId');
-        let currentName = await AsyncStorage.getItem('userName');
+  const initializeData = useCallback(async (force = false) => {
+    if (initLock.current && !force) return;
+    initLock.current = true;
+    try {
+      const storedId = await AsyncStorage.getItem('userId');
+      let currentName = await AsyncStorage.getItem('userName');
 
-        // Resolve real user name (cleanse any placeholder/fallback 'React Native Developer')
-        if (
-          !currentName ||
-          currentName === 'React Native Developer' ||
-          currentName === 'Alex' ||
-          currentName === 'User'
-        ) {
-          const userStr = await AsyncStorage.getItem('userObject');
-          if (userStr) {
-            try {
-              const parsed = JSON.parse(userStr);
-              if (parsed.name && parsed.name !== 'React Native Developer') {
-                currentName = parsed.name;
-              }
-            } catch (_) {}
-          }
-        }
-
-        if (!currentName || currentName === 'React Native Developer') {
-          const userEmail = await AsyncStorage.getItem('userEmail');
-          if (userEmail) {
-            const derived = userEmail
-              .split('@')[0]
-              .replace(/[._\d]+/g, ' ')
-              .trim()
-              .replace(/\b\w/g, (c) => c.toUpperCase());
-            if (derived) currentName = derived;
-          }
-        }
-
-        if (currentName && currentName !== 'React Native Developer') {
-          setUserName(currentName);
-          await AsyncStorage.setItem('userName', currentName);
-        }
-        setNameReady(true);
-
-        const storedAvatarColor =
-          (await AsyncStorage.getItem('avatarColor')) ||
-          (await AsyncStorage.getItem('userAvatarColor'));
-        if (storedAvatarColor) setAvatarColor(storedAvatarColor);
-
-        let storedProfileImage = await AsyncStorage.getItem('profileImage');
-        if (!storedProfileImage) {
-          const userStr = await AsyncStorage.getItem('userObject');
-          if (userStr) {
-            try {
-              const parsed = JSON.parse(userStr);
-              if (parsed.profileImage || parsed.photoUrl) {
-                storedProfileImage = parsed.profileImage || parsed.photoUrl;
-              }
-            } catch (_) {}
-          }
-        }
-        if (storedProfileImage) setProfileImage(storedProfileImage);
-
-        const lastDate = await AsyncStorage.getItem('lastActiveDate');
-        const currentStreak = await AsyncStorage.getItem('streak');
-        const todayStr = new Date().toISOString().split('T')[0];
-
-        let newStreak = 1;
-
-        if (lastDate === todayStr) {
-          // Same day app open
-          newStreak = currentStreak ? parseInt(currentStreak, 10) : 1;
-        } else if (lastDate) {
-          const yesterday = new Date();
-          yesterday.setDate(yesterday.getDate() - 1);
-          const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-          if (lastDate === yesterdayStr) {
-            // Consecutive day login: increment streak
-            newStreak = currentStreak ? parseInt(currentStreak, 10) + 1 : 2;
-          } else {
-            // Missed a day: reset streak
-            newStreak = 1;
-          }
-        } else if (currentStreak) {
-          // Logged in previously (e.g. yesterday) without lastActiveDate cached
-          newStreak = parseInt(currentStreak, 10) + 1;
-        }
-
-        setStreak(newStreak);
-        await AsyncStorage.setItem('lastActiveDate', todayStr);
-        await AsyncStorage.setItem('streak', String(newStreak));
-
-        const previousStreak = currentStreak ? parseInt(currentStreak, 10) : 0;
-        if (lastDate !== todayStr && newStreak > previousStreak && previousStreak > 0) {
-          const celebratedDate = await AsyncStorage.getItem('streakCelebratedDate');
-          if (celebratedDate !== todayStr) {
-            setShowStreakCelebration(true);
-            await AsyncStorage.setItem('streakCelebratedDate', todayStr);
-          }
-        }
-
-        // Sync with backend if user is logged in
-        if (storedId) {
+      // Resolve real user name (cleanse any placeholder/fallback 'React Native Developer')
+      if (
+        !currentName ||
+        currentName === 'React Native Developer' ||
+        currentName === 'Alex' ||
+        currentName === 'User'
+      ) {
+        const userStr = await AsyncStorage.getItem('userObject');
+        if (userStr) {
           try {
-            const [profileRes, progressRes] = await Promise.allSettled([
-              userAPI.getProfile(storedId),
-              userAPI.getProgress(storedId),
-            ]);
-
-            if (profileRes.status === 'fulfilled' && profileRes.value?.user) {
-              const u = profileRes.value.user;
-              if (u.name && u.name !== 'React Native Developer') {
-                setUserName(u.name);
-                await AsyncStorage.setItem('userName', u.name);
-              }
-              if (u.avatarColor) setAvatarColor(u.avatarColor);
-              if (u.profileImage) {
-                setProfileImage(u.profileImage);
-                await AsyncStorage.setItem('profileImage', u.profileImage);
-              }
-              if (u.streak != null) {
-                const effectiveStreak = Math.max(newStreak, u.streak);
-                setStreak(effectiveStreak);
-                await AsyncStorage.setItem('streak', String(effectiveStreak));
-              }
+            const parsed = JSON.parse(userStr);
+            if (parsed.name && parsed.name !== 'React Native Developer') {
+              currentName = parsed.name;
             }
-
-            if (progressRes.status === 'fulfilled' && progressRes.value?.progress) {
-              const p = progressRes.value.progress;
-              if (p.streak != null) {
-                const effectiveStreak = Math.max(newStreak, p.streak);
-                setStreak(effectiveStreak);
-                await AsyncStorage.setItem('streak', String(effectiveStreak));
-                if (p.lastActiveDate) {
-                  await AsyncStorage.setItem('lastActiveDate', p.lastActiveDate);
-                }
-                // If client has higher streak, sync with server
-                if (effectiveStreak > p.streak) {
-                  userAPI.updateProgress(storedId, {
-                    streak: effectiveStreak,
-                    lastActiveDate: todayStr,
-                  }).catch(() => {});
-                }
-              }
-            }
-          } catch (syncErr) {
-            console.log('Home background sync notice:', syncErr.message);
-          }
+          } catch (_) {}
         }
-        // Auto-sync screen time data with backend
-        appUsageService.syncNow().catch(() => {});
-      } catch (e) {
-        console.error(e);
-      } finally {
-        initLock.current = false;
-        setNameReady(true);
       }
-    };
 
+      if (!currentName || currentName === 'React Native Developer') {
+        const userEmail = await AsyncStorage.getItem('userEmail');
+        if (userEmail) {
+          const derived = userEmail
+            .split('@')[0]
+            .replace(/[._\d]+/g, ' ')
+            .trim()
+            .replace(/\b\w/g, (c) => c.toUpperCase());
+          if (derived) currentName = derived;
+        }
+      }
+
+      if (currentName && currentName !== 'React Native Developer') {
+        setUserName(currentName);
+        await AsyncStorage.setItem('userName', currentName);
+      }
+      setNameReady(true);
+
+      const storedAvatarColor =
+        (await AsyncStorage.getItem('avatarColor')) ||
+        (await AsyncStorage.getItem('userAvatarColor'));
+      if (storedAvatarColor) setAvatarColor(storedAvatarColor);
+
+      let storedProfileImage = await AsyncStorage.getItem('profileImage');
+      if (!storedProfileImage) {
+        const userStr = await AsyncStorage.getItem('userObject');
+        if (userStr) {
+          try {
+            const parsed = JSON.parse(userStr);
+            if (parsed.profileImage || parsed.photoUrl) {
+              storedProfileImage = parsed.profileImage || parsed.photoUrl;
+            }
+          } catch (_) {}
+        }
+      }
+      if (storedProfileImage) setProfileImage(storedProfileImage);
+
+      const lastDate = await AsyncStorage.getItem('lastActiveDate');
+      const currentStreak = await AsyncStorage.getItem('streak');
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      let newStreak = 1;
+
+      if (lastDate === todayStr) {
+        // Same day app open
+        newStreak = currentStreak ? parseInt(currentStreak, 10) : 1;
+      } else if (lastDate) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterdayStr = yesterday.toISOString().split('T')[0];
+
+        if (lastDate === yesterdayStr) {
+          // Consecutive day login: increment streak
+          newStreak = currentStreak ? parseInt(currentStreak, 10) + 1 : 2;
+        } else {
+          // Missed a day: reset streak
+          newStreak = 1;
+        }
+      } else if (currentStreak) {
+        // Logged in previously (e.g. yesterday) without lastActiveDate cached
+        newStreak = parseInt(currentStreak, 10) + 1;
+      }
+
+      setStreak(newStreak);
+      await AsyncStorage.setItem('lastActiveDate', todayStr);
+      await AsyncStorage.setItem('streak', String(newStreak));
+
+      const previousStreak = currentStreak ? parseInt(currentStreak, 10) : 0;
+      if (lastDate !== todayStr && newStreak > previousStreak && previousStreak > 0) {
+        const celebratedDate = await AsyncStorage.getItem('streakCelebratedDate');
+        if (celebratedDate !== todayStr) {
+          setShowStreakCelebration(true);
+          await AsyncStorage.setItem('streakCelebratedDate', todayStr);
+        }
+      }
+
+      // Sync with backend if user is logged in
+      if (storedId) {
+        try {
+          const [profileRes, progressRes] = await Promise.allSettled([
+            userAPI.getProfile(storedId),
+            userAPI.getProgress(storedId),
+          ]);
+
+          if (profileRes.status === 'fulfilled' && profileRes.value?.user) {
+            const u = profileRes.value.user;
+            if (u.name && u.name !== 'React Native Developer') {
+              setUserName(u.name);
+              await AsyncStorage.setItem('userName', u.name);
+            }
+            if (u.avatarColor) setAvatarColor(u.avatarColor);
+            if (u.profileImage) {
+              setProfileImage(u.profileImage);
+              await AsyncStorage.setItem('profileImage', u.profileImage);
+            }
+            if (u.streak != null) {
+              const effectiveStreak = Math.max(newStreak, u.streak);
+              setStreak(effectiveStreak);
+              await AsyncStorage.setItem('streak', String(effectiveStreak));
+            }
+          }
+
+          if (progressRes.status === 'fulfilled' && progressRes.value?.progress) {
+            const p = progressRes.value.progress;
+            if (p.streak != null) {
+              const effectiveStreak = Math.max(newStreak, p.streak);
+              setStreak(effectiveStreak);
+              await AsyncStorage.setItem('streak', String(effectiveStreak));
+              if (p.lastActiveDate) {
+                await AsyncStorage.setItem('lastActiveDate', p.lastActiveDate);
+              }
+              // If client has higher streak, sync with server
+              if (effectiveStreak > p.streak) {
+                userAPI.updateProgress(storedId, {
+                  streak: effectiveStreak,
+                  lastActiveDate: todayStr,
+                }).catch(() => {});
+              }
+            }
+          }
+        } catch (syncErr) {
+          console.log('Home background sync notice:', syncErr.message);
+        }
+      }
+      // Auto-sync screen time data with backend
+      appUsageService.syncNow().catch(() => {});
+    } catch (e) {
+      console.error(e);
+    } finally {
+      initLock.current = false;
+      setNameReady(true);
+    }
+  }, []);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await Promise.allSettled([
+        initializeData(true),
+        lessonProgressService.getAllProgress().then(setLessonProgress),
+        contentService.fetchComponents(true),
+        appUsageService.syncNow(),
+      ]);
+    } catch (_) {
+      // Ignore refresh errors
+    } finally {
+      setRefreshing(false);
+    }
+  }, [initializeData]);
+
+  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       initializeData();
     });
     initializeData();
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, initializeData]);
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
@@ -700,7 +720,18 @@ const HomeScreen = ({ navigation }) => {
         barStyle={isDark ? 'light-content' : 'dark-content'}
         backgroundColor={isDark ? colors.dark.background : colors.light.background}
       />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[colors.brand.primary, colors.brand.accent]}
+            tintColor={isDark ? colors.brand.accent : colors.brand.primary}
+          />
+        }
+      >
         <View style={[styles.topSection, { paddingTop: topInset + 8 }]}>
           {renderHeader()}
           {showStreakCelebration ? renderCelebration() : null}

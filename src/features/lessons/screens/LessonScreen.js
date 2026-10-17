@@ -7,10 +7,12 @@ import {
   TextInput,
   SectionList,
   Platform,
+  RefreshControl,
 } from 'react-native';
 import { useTheme } from '../../../context/ThemeContext';
 import CustomText from '../../../components/common/CustomText';
 import Icon from '../../../components/common/Icon';
+import CustomLoader from '../../../components/common/CustomLoader';
 import { useTopInset } from '../../../hooks/useTopInset';
 import reactNativeComponents from '../../../data/componentsData';
 import { contentService } from '../../../services/contentService';
@@ -37,6 +39,19 @@ const LessonScreen = ({ navigation }) => {
   const topInset = useTopInset();
   const [searchQuery, setSearchQuery] = useState('');
   const [componentsList, setComponentsList] = useState(reactNativeComponents);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await contentService.syncListInBackground((fresh) => {
+        if (fresh) {
+          setComponentsList(fresh);
+        }
+      });
+    } catch (_) {}
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -170,6 +185,21 @@ const LessonScreen = ({ navigation }) => {
     );
   };
 
+  if (!componentsList || componentsList.length === 0) {
+    return (
+      <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
+        <StatusBar
+          barStyle={isDark ? 'light-content' : 'dark-content'}
+          backgroundColor={isDark ? colors.dark.background : colors.light.background}
+        />
+        <CustomLoader
+          message="Loading Curriculum..."
+          subMessage="Fetching 47+ React Native components from cloud"
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
       <StatusBar
@@ -183,6 +213,15 @@ const LessonScreen = ({ navigation }) => {
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         ListHeaderComponent={renderHeader}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={[colors.brand.primary, colors.brand.accent]}
+            tintColor={colors.brand.primary}
+            progressBackgroundColor={isDark ? colors.dark.card : colors.brand.white}
+          />
+        }
         contentContainerStyle={[styles.listContent, { paddingTop: topInset + 12 }]}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled={false}

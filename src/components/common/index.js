@@ -6,3 +6,5 @@ export { default as CustomAlertModal } from './CustomAlertModal';
 export { default as CustomText } from './CustomText';
 export { default as GoogleSignInModal } from './GoogleSignInModal';
 export { default as Icon } from './Icon';
+export { default as CustomLoader } from './CustomLoader';
+
