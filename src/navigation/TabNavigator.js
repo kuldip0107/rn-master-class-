@@ -65,7 +65,7 @@ const TabNavigator = () => {
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '600',
-          marginBottom: Platform.OS === 'ios' ? 0 : 6,
+          marginBottom: Platform.OS === 'ios' ? 0 : 4,
         },
         headerShown: false,
       }}
@@ -110,9 +110,9 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   tabBar: {
     borderTopWidth: 1,
-    height: Platform.OS === 'ios' ? 82 : 68,
-    paddingBottom: Platform.OS === 'ios' ? 22 : 6,
-    paddingTop: 8,
+    height: Platform.OS === 'ios' ? 82 : 60,
+    paddingBottom: Platform.OS === 'ios' ? 22 : 4,
+    paddingTop: 6,
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },

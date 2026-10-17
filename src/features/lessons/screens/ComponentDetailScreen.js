@@ -125,7 +125,7 @@ const ComponentDetailScreen = ({ route, navigation }) => {
 
   if (!rawData || typeof rawData !== 'object') {
     return (
-      <Container>
+      <Container safeArea={false}>
         <View style={[styles.topBar, isDark ? styles.topBarDark : styles.topBarLight, { paddingTop: topInset + 12 }]}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -854,7 +854,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 60,
+    paddingBottom: 20,
   },
   headerContainer: { marginBottom: 20 },
   title: { fontSize: 28, marginBottom: 8 },

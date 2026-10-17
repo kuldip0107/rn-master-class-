@@ -20,7 +20,7 @@ const TermsScreen = ({ navigation }) => {
   const topInset = useTopInset();
 
   const handleOpenOnlinePrivacy = () => {
-    Linking.openURL('https://rn-masterclass-backend.onrender.com/privacy-policy').catch(
+    Linking.openURL('https://rn-masterclass-backend.onrender.com/privacy-policy.html').catch(
       (err) => {
         console.log('Error opening privacy policy URL', err);
       }
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    paddingBottom: 60,
+    paddingBottom: 20,
   },
   card: {
     borderRadius: 16,

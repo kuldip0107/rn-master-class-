@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
   categoryTextActive: { color: colors.brand.white },
   listContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 60,
+    paddingBottom: 20,
   },
   questionCard: {
     borderRadius: 16,

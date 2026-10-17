@@ -720,7 +720,7 @@ const styles = StyleSheet.create({
   containerDark: { backgroundColor: colors.dark.background },
   containerLight: { backgroundColor: colors.light.background },
   scrollContent: {
-    paddingBottom: 90,
+    paddingBottom: 20,
   },
   topSection: {
     paddingHorizontal: 20,

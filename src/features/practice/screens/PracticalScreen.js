@@ -161,7 +161,7 @@ const PracticalScreen = ({ navigation }) => {
 
   if (questions.length === 0) {
     return (
-      <Container noPadding style={isDark ? styles.containerDark : styles.containerLight}>
+      <Container noPadding safeArea={false} style={isDark ? styles.containerDark : styles.containerLight}>
         <View style={styles.loadingContainer}>
           <CustomText variant="h3">Loading Quiz...</CustomText>
         </View>
@@ -175,7 +175,7 @@ const PracticalScreen = ({ navigation }) => {
     const isPassing = percent >= 70;
 
     return (
-      <Container noPadding style={isDark ? styles.containerDark : styles.containerLight}>
+      <Container noPadding safeArea={false} style={isDark ? styles.containerDark : styles.containerLight}>
         <StatusBar
           barStyle={isDark ? 'light-content' : 'dark-content'}
           backgroundColor={isDark ? colors.dark.background : colors.light.background}
@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 90,
+    paddingBottom: 20,
   },
   questionContainer: {
     marginBottom: 24,
@@ -526,7 +526,7 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 24,
+    paddingBottom: Platform.OS === 'ios' ? 20 : 12,
     paddingTop: 8,
   },
   loadingContainer: {

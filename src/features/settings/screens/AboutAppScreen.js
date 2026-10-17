@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   textMutedDark: { color: colors.dark.textMuted },
   textMutedLight: { color: colors.light.textSecondary },
   headerSpacer: { width: 36 },
-  content: { paddingHorizontal: 20, paddingBottom: 60 },
+  content: { paddingHorizontal: 20, paddingBottom: 20 },
   logoSection: { alignItems: 'center', marginVertical: 20 },
   logoBox: {
     width: 76,

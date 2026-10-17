@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 20,
     paddingTop: Platform.OS === 'ios' ? 60 : 48,
-    paddingBottom: 90,
+    paddingBottom: 20,
   },
   headerContainer: { marginBottom: 20 },
   headerTitle: { fontSize: 30, marginBottom: 4 },

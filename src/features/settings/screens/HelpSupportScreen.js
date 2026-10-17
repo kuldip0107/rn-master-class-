@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
   textSecondaryLight: { color: colors.light.textSecondary },
   textMutedDark: { color: colors.dark.textMuted },
   textMutedLight: { color: colors.light.textSecondary },
-  content: { paddingHorizontal: 20, paddingBottom: 60 },
+  content: { paddingHorizontal: 20, paddingBottom: 20 },
   sectionTitle: { letterSpacing: 1, fontSize: 11, marginTop: 16, marginBottom: 12, marginLeft: 4 },
   sectionTitleFaq: { letterSpacing: 1, fontSize: 11, marginTop: 24, marginBottom: 12, marginLeft: 4 },
   actionRow: { flexDirection: 'row', gap: 12 },

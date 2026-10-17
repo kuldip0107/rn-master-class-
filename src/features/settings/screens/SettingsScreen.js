@@ -707,7 +707,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 20,
-    paddingBottom: 60,
+    paddingBottom: 20,
   },
   sectionTitle: {
     letterSpacing: 1,

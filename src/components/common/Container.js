@@ -10,15 +10,17 @@ const Container = ({
   statusBarStyle,
   noPadding = false,
   safeArea = true,
+  edges = ['top', 'left', 'right'],
 }) => {
   const { theme, isDark } = useTheme();
   const Wrapper = safeArea ? SafeAreaView : View;
   const bgColor = backgroundColor || theme.colors.background;
   const resolvedStatusBarStyle =
     statusBarStyle || (isDark ? 'light-content' : 'dark-content');
+  const wrapperProps = safeArea ? { edges } : {};
 
   return (
-    <Wrapper style={[styles.container, { backgroundColor: bgColor }, style]}>
+    <Wrapper {...wrapperProps} style={[styles.container, { backgroundColor: bgColor }, style]}>
       <StatusBar
         barStyle={resolvedStatusBarStyle}
         backgroundColor={bgColor}

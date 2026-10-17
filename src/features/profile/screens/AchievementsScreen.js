@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 20,
     paddingTop: 10,
-    paddingBottom: 60,
+    paddingBottom: 20,
   },
   historyCard: {
     flexDirection: 'row',

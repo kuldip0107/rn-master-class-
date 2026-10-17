@@ -215,29 +215,30 @@ const SignupScreen = ({ navigation }) => {
             />
 
             {/* Checkbox Terms */}
-            <TouchableOpacity
-              style={styles.checkboxRow}
-              activeOpacity={0.8}
-              onPress={() => {
-                setAgreeTerms(!agreeTerms);
-                setErrors((prev) => ({ ...prev, terms: null }));
-              }}
-            >
-              <View
-                style={[
-                  styles.checkbox,
-                  {
-                    borderColor: isDark ? 'rgba(255,255,255,0.2)' : colors.light.chevron,
-                    backgroundColor: agreeTerms
-                      ? colors.brand.primary
-                      : isDark
-                      ? colors.dark.elevated
-                      : '#F2F2F7',
-                  },
-                ]}
+            <View style={styles.checkboxRow}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  setAgreeTerms(!agreeTerms);
+                  setErrors((prev) => ({ ...prev, terms: null }));
+                }}
               >
-                {agreeTerms && <Icon name="check" size={14} color={colors.brand.white} />}
-              </View>
+                <View
+                  style={[
+                    styles.checkbox,
+                    {
+                      borderColor: isDark ? 'rgba(255,255,255,0.2)' : colors.light.chevron,
+                      backgroundColor: agreeTerms
+                        ? colors.brand.primary
+                        : isDark
+                        ? colors.dark.elevated
+                        : '#F2F2F7',
+                    },
+                  ]}
+                >
+                  {agreeTerms && <Icon name="check" size={14} color={colors.brand.white} />}
+                </View>
+              </TouchableOpacity>
               <CustomText
                 variant="caption"
                 style={[styles.checkboxText, { color: isDark ? colors.dark.textSecondary : colors.light.textSecondary }]}
@@ -246,7 +247,8 @@ const SignupScreen = ({ navigation }) => {
                 <CustomText
                   variant="caption"
                   weight="bold"
-                  style={{ color: isDark ? colors.dark.text : colors.light.text }}
+                  style={{ color: colors.brand.primary, textDecorationLine: 'underline' }}
+                  onPress={() => navigation.navigate('Terms')}
                 >
                   Terms of Service
                 </CustomText>{' '}
@@ -254,13 +256,14 @@ const SignupScreen = ({ navigation }) => {
                 <CustomText
                   variant="caption"
                   weight="bold"
-                  style={{ color: isDark ? colors.dark.text : colors.light.text }}
+                  style={{ color: colors.brand.primary, textDecorationLine: 'underline' }}
+                  onPress={() => navigation.navigate('Terms')}
                 >
                   Privacy Policy
                 </CustomText>
                 .
               </CustomText>
-            </TouchableOpacity>
+            </View>
 
             {errors.terms && (
               <CustomText
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingTop: 50,
-    paddingBottom: 40,
+    paddingBottom: 20,
     justifyContent: 'center',
     maxWidth: 440,
     width: '100%',
