@@ -71,7 +71,7 @@ export const strings = {
     contactTitle: 'Contact Us',
     messagePlaceholder: 'Type your message here...',
     sendButton: 'Send Message',
-    contactInfo: 'You can also reach us at kuldipbharda0@gmail.com',
+    contactInfo: 'You can also reach us at dnklabs07@gmail.com',
     faqs: [
       {
         question: 'How do I unlock premium features?',

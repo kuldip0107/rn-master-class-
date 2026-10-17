@@ -8,7 +8,7 @@ export const APP_CONFIG = {
   DEFAULT_BASE_URL: 'https://rn-masterclass-backend.onrender.com',
   PRODUCTION_BASE_URL: 'https://rn-masterclass-backend.onrender.com',
   API_TIMEOUT_MS: 15000,
-  SUPPORT_EMAIL: 'support@rnmasterclass.dev',
+  SUPPORT_EMAIL: 'dnklabs07@gmail.com',
   TOTAL_COMPONENTS: 47,
 };
 
